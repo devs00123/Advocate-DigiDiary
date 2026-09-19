@@ -1,9 +1,9 @@
 const dotenv = require('dotenv');
 dotenv.config();
 
-if (process.env.NODE_ENV === 'production') {
+if (process.env.NODE_ENV === 'production' && process.env.SEED_ON_EMPTY !== 'true') {
   console.error('\n[FATAL ERROR] SEED SCRIPT ABORTED!');
-  console.error('Seed scripts are strictly forbidden from running in PRODUCTION mode.\n');
+  console.error('Seed scripts are forbidden from running in PRODUCTION mode unless SEED_ON_EMPTY=true is set.\n');
   process.exit(1);
 }
 
