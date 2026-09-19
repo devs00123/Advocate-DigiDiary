@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chamber Expenses — Advocate DigiDiary</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Plus+Jakarta+Sans:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+  <link rel="stylesheet" href="/css/variables.css">
+  <link rel="stylesheet" href="/css/global.css">
+  <link rel="stylesheet" href="/css/layout.css">
+  <link rel="stylesheet" href="/css/components.css">
+  <link rel="stylesheet" href="/css/responsive.css">
+</head>
+<body>
+
+  <div class="app-container">
+    <!-- Sidebar -->
+    <aside class="sidebar" id="appSidebar">
+      <div class="sidebar-header">
+        <div class="brand-badge">
+          <div class="brand-logo-icon">
+            <img src="/img/logo.svg" alt="Advocate DigiDiary" style="width: 22px; height: 22px;">
+          </div>
+          <div class="brand-titles">
+            <div class="title">ADVOCATE DIGIDIARY</div>
+            <div class="subtitle">CHAMBERS SUITE</div>
+          </div>
+        </div>
+      </div>
+
+      <nav class="sidebar-nav">
+        <div class="nav-section-label" style="padding: 6px 14px 2px; font-size: 10px; font-weight: 700; color: rgba(255,255,255,0.4); text-transform: uppercase; letter-spacing: 0.05em;">Chamber</div>
+        <a href="/dashboard.html" class="nav-link">
+          <span class="material-symbols-outlined">dashboard</span>
+          <span>Dashboard</span>
+        </a>
+        <a href="/cases.html" class="nav-link">
+          <span class="material-symbols-outlined">gavel</span>
+          <span>Case Portfolio</span>
+        </a>
+        <a href="/hearings.html" class="nav-link">
+          <span class="material-symbols-outlined">calendar_today</span>
+          <span>Hearing Diary</span>
+        </a>
+        <a href="/calendar.html" class="nav-link">
+          <span class="material-symbols-outlined">date_range</span>
+          <span>Court Calendar</span>
+        </a>
+        <a href="/notes.html" class="nav-link">
+          <span class="material-symbols-outlined">edit_note</span>
+          <span>Legal Notebook</span>
+        </a>
+
+        <div class="nav-section-label" style="padding: 12px 14px 2px; font-size: 10px; font-weight: 700; color: rgba(255,255,255,0.4); text-transform: uppercase; letter-spacing: 0.05em;">Practice</div>
+        <a href="/clients.html" class="nav-link">
+          <span class="material-symbols-outlined">group</span>
+          <span>Clients</span>
+        </a>
+        <a href="/tasks.html" class="nav-link">
+          <span class="material-symbols-outlined">check_box</span>
+          <span>Tasks & Deadlines</span>
+        </a>
+        <a href="/fees.html" class="nav-link">
+          <span class="material-symbols-outlined">payments</span>
+          <span>Fees & Ledger</span>
+        </a>
+        <a href="/expenses.html" class="nav-link active">
+          <span class="material-symbols-outlined">receipt_long</span>
+          <span>Expenses</span>
+        </a>
+        <a href="/reminders.html" class="nav-link">
+          <span class="material-symbols-outlined">notifications</span>
+          <span>Reminders</span>
+        </a>
+
+        <div class="nav-section-label" style="padding: 12px 14px 2px; font-size: 10px; font-weight: 700; color: rgba(255,255,255,0.4); text-transform: uppercase; letter-spacing: 0.05em;">Firm & Insights</div>
+        <a href="/analytics.html" class="nav-link">
+          <span class="material-symbols-outlined">insights</span>
+          <span>Analytics</span>
+        </a>
+        <a href="/reports.html" class="nav-link">
+          <span class="material-symbols-outlined">description</span>
+          <span>Reports</span>
+        </a>
+        <a href="/team.html" class="nav-link">
+          <span class="material-symbols-outlined">badge</span>
+          <span>Firm & Team</span>
+        </a>
+        <a href="/audit-logs.html" class="nav-link">
+          <span class="material-symbols-outlined">history</span>
+          <span>Audit Logs</span>
+        </a>
+        <a href="/settings.html" class="nav-link">
+          <span class="material-symbols-outlined">settings</span>
+          <span>Settings</span>
+        </a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="user-profile-card">
+          <div class="user-profile-info">
+            <div class="user-name" id="sidebarUserName">Advocate</div>
+            <div class="firm-name" id="sidebarFirmName">Chambers</div>
+            <div class="bar-enrollment" id="sidebarBarEnrollment">Advocate</div>
+          </div>
+          <button class="btn btn-icon btn-sm logout-btn" id="logoutBtn" title="Sign Out" style="background: none; border: none; cursor: pointer;">
+            <span class="material-symbols-outlined" style="font-size: 18px; color: var(--on-tertiary-container);">logout</span>
+          </button>
+        </div>
+        <div class="sidebar-status-row">
+          <div class="status-indicator">
+            <div class="status-dot"></div>
+            <span>Atlas Connected</span>
+          </div>
+          <span class="role-tag" id="sidebarUserRole">ADVOCATE</span>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content Wrapper -->
+    <div class="main-wrapper">
+      <!-- Top Header -->
+      <header class="top-header">
+        <div style="display: flex; align-items: center; gap: 1rem;">
+          <button class="btn btn-icon btn-sm d-md-none" id="mobileMenuToggle" style="border: none; background: none; cursor: pointer;">
+            <span class="material-symbols-outlined">menu</span>
+          </button>
+          <div class="header-search">
+            <div class="search-input-wrapper">
+              <span class="material-symbols-outlined">search</span>
+              <input type="text" class="search-input" id="globalSearchTrigger" placeholder="Search cases, clients, hearings, notes..." readonly>
+              <div class="search-shortcut">Ctrl+K</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="header-actions">
+          <button class="btn btn-sm btn-primary" id="openAddExpenseBtn">
+            <span class="material-symbols-outlined" style="font-size: 16px;">add</span>
+            <span>Record Expense</span>
+          </button>
+        </div>
+      </header>
+
+      <!-- Main Content -->
+      <main class="main-content">
+        <!-- Page Title & Header -->
+        <div class="page-header" style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1.5rem;">
+          <div>
+            <h1 class="page-title" style="font-family: var(--font-headline); font-size: 1.75rem; color: var(--navy-900); margin-bottom: 0.25rem;">
+              Chamber Practice Expenses & Disbursements
+            </h1>
+            <p class="page-subtitle" style="color: var(--text-muted); font-size: 0.875rem;">
+              Court fees, stamping, advocate clerkage, counsel conferences, travel and research subscriptions
+            </p>
+          </div>
+
+          <div style="display: flex; gap: 0.5rem;">
+            <a href="/api/reports/expense-summary?format=excel" target="_blank" class="btn btn-sm btn-outline">
+              <span class="material-symbols-outlined" style="font-size: 16px;">table_view</span>
+              <span>Export Excel</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- KPI Grid -->
+        <div class="grid grid-cols-3 gap-6" style="margin-bottom: 1.5rem;">
+          <div class="card kpi-card">
+            <span class="kpi-title" style="font-size: 0.8125rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase;">Total Chamber Expenses</span>
+            <div class="kpi-value" id="totalExpensesVal" style="font-family: var(--font-headline); font-size: 2rem; font-weight: 700; color: var(--navy-900); line-height: 1.2; margin-top: 4px;">₹0</div>
+            <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 4px;">Disbursements across all matters</div>
+          </div>
+          <div class="card kpi-card">
+            <span class="kpi-title" style="font-size: 0.8125rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase;">Court Fees & Stamping</span>
+            <div class="kpi-value" id="courtFeesVal" style="font-family: var(--font-headline); font-size: 2rem; font-weight: 700; color: var(--gold-700); line-height: 1.2; margin-top: 4px;">₹0</div>
+            <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 4px;">Court filing & procedural duties</div>
+          </div>
+          <div class="card kpi-card">
+            <span class="kpi-title" style="font-size: 0.8125rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase;">Client Billable Outlays</span>
+            <div class="kpi-value" id="billableExpensesVal" style="font-family: var(--font-headline); font-size: 2rem; font-weight: 700; color: var(--primary); line-height: 1.2; margin-top: 4px;">₹0</div>
+            <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 4px;">Reimbursable from clients</div>
+          </div>
+        </div>
+
+        <!-- Filter Toolbar -->
+        <div class="card" style="padding: 1rem; margin-bottom: 1.5rem;">
+          <div class="grid grid-cols-12 gap-4" style="align-items: center;">
+            <div class="col-span-6">
+              <div class="input-wrapper">
+                <input type="text" id="expenseSearchInput" class="form-control" placeholder="Search by description, reference, or case...">
+                <span class="material-symbols-outlined input-icon">search</span>
+              </div>
+            </div>
+            <div class="col-span-3">
+              <select id="expenseCategoryFilter" class="form-control">
+                <option value="">All Categories</option>
+                <option value="Court Fee">Court Fee & Stamping</option>
+                <option value="Travel">Travel & Lodging</option>
+                <option value="Clerkage">Clerkage & Process</option>
+                <option value="Stationery">Stationery & Printing</option>
+                <option value="Research">Research & Subscriptions</option>
+                <option value="Other">Other Office</option>
+              </select>
+            </div>
+            <div class="col-span-3" style="display: flex; justify-content: flex-end; gap: 0.5rem;">
+              <button class="btn btn-sm btn-outline" id="resetExpenseFilter">Reset</button>
+              <button class="btn btn-sm btn-primary" id="applyExpenseFilter">Filter</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Expenses Table Card -->
+        <div class="card" style="padding: 0; overflow: hidden;">
+          <div class="table-container" style="border: none;">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Expense Date</th>
+                  <th>Category</th>
+                  <th>Description</th>
+                  <th>Associated Case</th>
+                  <th>Amount (₹)</th>
+                  <th>Billable</th>
+                  <th>Receipt / Reference</th>
+                  <th style="text-align: right;">Action</th>
+                </tr>
+              </thead>
+              <tbody id="expensesTableBody">
+                <tr>
+                  <td colspan="8" style="text-align: center; padding: 2.5rem; color: var(--text-muted);">
+                    Loading expenses...
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <!-- Record Expense Modal -->
+  <div class="modal-backdrop" id="expenseModal">
+    <div class="modal-dialog" style="max-width: 520px;">
+      <div class="modal-header">
+        <h3 class="modal-title" style="font-family: var(--font-headline); font-size: 1.25rem;">Record Chamber Disbursement</h3>
+        <button class="modal-close" onclick="UI.closeModal('expenseModal')">&times;</button>
+      </div>
+      <form id="expenseForm">
+        <div class="modal-body">
+          <div class="grid grid-cols-2 gap-4">
+            <div class="form-group">
+              <label class="form-label" for="expAmount">Amount (₹) *</label>
+              <input type="number" id="expAmount" class="form-control" placeholder="1500" min="1" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="expDate">Expense Date *</label>
+              <input type="date" id="expDate" class="form-control" required>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-2 gap-4">
+            <div class="form-group">
+              <label class="form-label" for="expCategory">Category *</label>
+              <select id="expCategory" class="form-control" required>
+                <option value="Court Fee">Court Fee & Stamping</option>
+                <option value="Travel">Travel & Lodging</option>
+                <option value="Clerkage">Clerkage & Process</option>
+                <option value="Stationery">Stationery & Printing</option>
+                <option value="Research">Research & Subscriptions</option>
+                <option value="Other">Other Office</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="expBillable">Billable to Client?</label>
+              <select id="expBillable" class="form-control">
+                <option value="true">Yes (Reimbursable)</option>
+                <option value="false">No (Chamber Overhead)</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="expCaseSelect">Associated Case (Optional)</label>
+            <select id="expCaseSelect" class="form-control">
+              <option value="">General Chamber Overhead</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="expDesc">Description / Purpose *</label>
+            <input type="text" id="expDesc" class="form-control" placeholder="e.g. Court filing fees for rejoinder application" required>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="expReceipt">Receipt / Invoice Ref #</label>
+            <input type="text" id="expReceipt" class="form-control" placeholder="REC-84920">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline" onclick="UI.closeModal('expenseModal')">Cancel</button>
+          <button type="submit" class="btn btn-primary" id="saveExpenseBtn">Save Expense</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="/js/ui.js"></script>
+  <script src="/js/api.js"></script>
+  <script src="/js/auth.js"></script>
+  <script src="/js/search.js"></script>
+  <script src="/js/expenses.js"></script>
+</body>
+</html>

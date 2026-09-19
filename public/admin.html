@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+  <title>Advocate DigiDiary — Super Admin & Platform Telemetry</title>
+  
+  <!-- Fonts & Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet" />
+  
+  <!-- CSS Styling matching Stitch UI tokens -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "surface-container-low": "#f2f4f6",
+            "surface-container-lowest": "#ffffff",
+            "primary-fixed": "#dce1ff",
+            "error-container": "#ffdad6",
+            "surface-container-highest": "#e0e3e5",
+            "secondary-fixed-dim": "#eec14b",
+            "on-secondary-container": "#735700",
+            "on-surface-variant": "#46464d",
+            "surface-container-high": "#e6e8ea",
+            "secondary-container": "#fece57",
+            "primary-container": "#141a32",
+            "on-background": "#191c1e",
+            "tertiary-container": "#0b1a3d",
+            "surface-bright": "#f7f9fb",
+            "on-secondary": "#ffffff",
+            "on-tertiary-fixed": "#0b1a3d",
+            "surface-tint": "#575d78",
+            "on-surface": "#191c1e",
+            "surface-container": "#eceef0",
+            "primary": "#0A1128",
+            "tertiary": "#162447",
+            "error": "#ba1a1a",
+            "on-error": "#ffffff",
+            "on-error-container": "#93000a",
+            "outline-variant": "#c6c6ce",
+            "on-secondary-fixed": "#251a00",
+            "inverse-on-surface": "#eff1f3",
+            "secondary-fixed": "#ffdf98",
+            "tertiary-fixed-dim": "#b8c5f1",
+            "tertiary-fixed": "#dae2ff",
+            "background": "#f7f9fb",
+            "inverse-surface": "#2d3133",
+            "on-tertiary-container": "#7683ab",
+            "surface": "#f7f9fb",
+            "on-primary-container": "#7c839f",
+            "surface-dim": "#d8dadc",
+            "on-primary-fixed-variant": "#3f465f",
+            "outline": "#76767e",
+            "surface-variant": "#e0e3e5",
+            "on-primary-fixed": "#141a32",
+            "on-tertiary-fixed-variant": "#38466a",
+            "on-tertiary": "#ffffff",
+            "on-secondary-fixed-variant": "#5a4300",
+            "primary-fixed-dim": "#bfc5e4",
+            "on-primary": "#ffffff",
+            "secondary": "#C59B27"
+          },
+          fontFamily: {
+            "headline-lg": ["Playfair Display", "serif"],
+            "headline-md": ["Playfair Display", "serif"],
+            "headline-sm": ["Playfair Display", "serif"],
+            "headline-xl": ["Playfair Display", "serif"],
+            "body-lg": ["Inter", "sans-serif"],
+            "body-md": ["Inter", "sans-serif"],
+            "body-sm": ["Inter", "sans-serif"],
+            "label-lg": ["Plus Jakarta Sans", "sans-serif"],
+            "label-md": ["Plus Jakarta Sans", "sans-serif"],
+            "label-sm": ["Plus Jakarta Sans", "sans-serif"]
+          },
+          spacing: {
+            "space-xs": "0.25rem",
+            "space-sm": "0.5rem",
+            "space-md": "0.75rem",
+            "space-lg": "1.25rem",
+            "space-xl": "2rem"
+          }
+        }
+      }
+    };
+  </script>
+  <style>
+    @layer base {
+      html, body { margin: 0; padding: 0; }
+    }
+    .custom-scroll::-webkit-scrollbar { width: 6px; height: 6px; }
+    .custom-scroll::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+    .custom-scroll::-webkit-scrollbar-track { background: transparent; }
+
+    @media (max-width: 1023px) {
+      aside {
+        transform: translateX(-100%);
+        transition: transform 0.25s ease-in-out;
+      }
+      aside.open {
+        transform: translateX(0);
+      }
+      .pl-72 {
+        padding-left: 0 !important;
+      }
+      header.fixed {
+        left: 0 !important;
+      }
+    }
+  </style>
+</head>
+<body class="bg-background font-body-md text-on-surface antialiased">
+  <!-- ASIDE / NAVIGATION RAIL -->
+  <aside class="fixed left-0 top-0 h-full w-72 bg-surface-container-low shadow-[0_1px_8px_rgba(0,0,0,0.04)] z-50 flex flex-col justify-between">
+    <div class="flex flex-col">
+      <!-- Chamber Brand Header -->
+      <div class="h-16 px-space-md flex items-center justify-between bg-surface-container border-b border-surface-container-high">
+        <div class="flex items-center gap-space-sm">
+          <div class="w-8 h-8 rounded bg-primary flex items-center justify-center text-secondary font-bold text-base shadow-sm">
+            §
+          </div>
+          <div class="flex flex-col">
+            <span class="font-headline-sm text-[16px] font-bold text-primary leading-tight">DigiDiary</span>
+            <span class="font-label-sm text-[10px] tracking-wider uppercase text-on-surface-variant">Super Admin</span>
+          </div>
+        </div>
+        <span class="px-space-xs py-0.5 bg-secondary-container text-on-secondary-container font-label-sm text-[10px] rounded uppercase font-bold">Root</span>
+      </div>
+
+      <!-- Navigation Links -->
+      <div class="px-space-md py-space-sm">
+        <div class="text-on-surface-variant font-label-sm text-[11px] uppercase tracking-wider mb-space-xs px-space-xs font-semibold">Platform Control</div>
+        <nav class="flex flex-col gap-space-xs">
+          <a class="flex items-center justify-between px-space-md py-space-sm rounded bg-primary-container text-surface-container-lowest font-label-md text-label-md transition-colors" href="#overview">
+            <span class="flex items-center gap-space-sm">
+              <span class="material-symbols-outlined text-[18px]">dashboard</span>Overview & Metrics
+            </span>
+          </a>
+          <a class="flex items-center justify-between px-space-md py-space-sm rounded text-on-surface-variant font-label-md text-label-md hover:bg-surface-container-high hover:text-on-surface transition-colors" href="#advocatesSection">
+            <span class="flex items-center gap-space-sm">
+              <span class="material-symbols-outlined text-[18px]">badge</span>Advocate Accounts
+            </span>
+          </a>
+          <a class="flex items-center justify-between px-space-md py-space-sm rounded text-on-surface-variant font-label-md text-label-md hover:bg-surface-container-high hover:text-on-surface transition-colors" href="#trafficSection">
+            <span class="flex items-center gap-space-sm">
+              <span class="material-symbols-outlined text-[18px]">traffic</span>Active Sessions & Traffic
+            </span>
+          </a>
+          <a class="flex items-center justify-between px-space-md py-space-sm rounded text-on-surface-variant font-label-md text-label-md hover:bg-surface-container-high hover:text-on-surface transition-colors" href="fees.html">
+            <span class="flex items-center gap-space-sm">
+              <span class="material-symbols-outlined text-[18px]">receipt_long</span>Chamber Subscriptions
+            </span>
+          </a>
+          <a class="flex items-center justify-between px-space-md py-space-sm rounded text-on-surface-variant font-label-md text-label-md hover:bg-surface-container-high hover:text-on-surface transition-colors" href="javascript:void(0)" id="navHealthBtn">
+            <span class="flex items-center gap-space-sm">
+              <span class="material-symbols-outlined text-[18px]">shield</span>System Health & Security
+            </span>
+          </a>
+          <a class="flex items-center justify-between px-space-md py-space-sm rounded text-on-surface-variant font-label-md text-label-md hover:bg-surface-container-high hover:text-on-surface transition-colors" href="#liveFeedCard">
+            <span class="flex items-center gap-space-sm">
+              <span class="material-symbols-outlined text-[18px]">terminal</span>Audit & Access Logs
+            </span>
+          </a>
+        </nav>
+      </div>
+    </div>
+
+    <!-- Cluster Bottom Box & Back to App -->
+    <div class="p-space-md bg-surface-container flex flex-col gap-space-sm border-t border-surface-container-high">
+      <div class="bg-surface-container-lowest p-space-sm rounded shadow-[0_1px_2px_0_rgba(10,17,40,0.04)]">
+        <div class="flex items-center gap-space-xs mb-1">
+          <span class="w-2 h-2 rounded-full bg-secondary"></span>
+          <span class="font-label-sm text-[11px] text-on-surface uppercase font-bold">Secure Cluster</span>
+        </div>
+        <p class="font-body-sm text-[12px] text-on-surface-variant">
+          Region: ap-south-1 (Mumbai)<br/>
+          Engine: MongoDB Atlas • TLS 1.3
+        </p>
+      </div>
+      <nav class="flex flex-col">
+        <a class="flex items-center gap-space-sm px-space-sm py-space-sm text-on-surface-variant font-label-md text-label-md hover:bg-surface-container-high hover:text-on-surface rounded transition-colors" href="dashboard.html">
+          <span class="material-symbols-outlined text-[18px]">arrow_back</span>Back to Chamber Dashboard
+        </a>
+      </nav>
+    </div>
+  </aside>
+
+  <!-- MAIN WORKSPACE -->
+  <div class="pl-72">
+    <!-- TOP HEADER -->
+    <header class="fixed top-0 left-72 right-0 h-16 bg-surface/90 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)] z-40 flex items-center justify-between px-space-lg border-b border-surface-container-high">
+      <div class="flex items-center gap-space-md flex-1 max-w-lg">
+        <button id="adminMobileToggle" class="lg:hidden p-space-xs text-on-surface hover:bg-surface-container rounded cursor-pointer" aria-label="Toggle Navigation">
+          <span class="material-symbols-outlined">menu</span>
+        </button>
+        <div class="relative w-full">
+          <span class="material-symbols-outlined absolute left-space-sm top-1/2 -translate-y-1/2 text-on-surface-variant text-[18px]">search</span>
+          <input id="masterSearchInput" class="w-full h-10 pl-9 pr-space-md bg-surface-container-lowest border border-surface-container rounded text-on-surface font-body-sm text-body-sm placeholder:text-on-surface-variant focus:outline-none focus:border-primary" placeholder="Master Search: Chamber ID, Bar Council No, Advocate, Node..." type="text" />
+        </div>
+      </div>
+
+      <div class="flex items-center gap-space-lg">
+        <div class="hidden xl:flex items-center gap-space-xs px-space-sm py-1 bg-surface-container rounded">
+          <span class="material-symbols-outlined text-[16px] text-secondary">dns</span>
+          <span class="font-label-sm text-label-sm text-on-surface-variant">Production • Node.js / Mongo Atlas</span>
+        </div>
+        <div class="flex items-center gap-space-xs px-space-sm py-1 bg-surface-container rounded">
+          <span class="w-2 h-2 rounded-full bg-secondary-fixed-dim animate-pulse"></span>
+          <span class="font-label-sm text-label-sm text-on-surface font-medium">System: 99.98% Normal</span>
+        </div>
+        <button aria-label="Alerts" id="btnNotifications" class="relative p-space-xs text-on-surface-variant hover:text-on-surface hover:bg-surface-container rounded transition-colors">
+          <span class="material-symbols-outlined text-[20px]">notifications</span>
+          <span class="absolute top-1.5 right-1.5 w-1.5 h-1.5 bg-error rounded-full"></span>
+        </button>
+        <div class="flex items-center gap-space-sm pl-space-sm">
+          <div class="flex flex-col text-right hidden sm:flex">
+            <span class="font-label-md text-label-md text-on-surface font-semibold" id="adminUserName">Master Admin</span>
+            <span class="font-label-sm text-[11px] text-on-surface-variant" id="adminUserEmail">root@advocatedigi.com</span>
+          </div>
+          <div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-on-primary">
+            <span class="material-symbols-outlined text-[18px]">admin_panel_settings</span>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- CONTENT BODY -->
+    <main class="w-full pt-20 px-space-lg pb-space-xl bg-surface" id="overview">
+      <div class="flex flex-col w-full max-w-7xl mx-auto">
+        
+        <!-- SECURITY OVERLAY NOTICE BANNER -->
+        <div class="relative overflow-hidden bg-primary-container text-surface-container-lowest px-space-lg py-space-md rounded-xl shadow-md mb-space-lg flex flex-col xl:flex-row xl:items-center justify-between gap-space-md">
+          <div class="absolute -right-8 -bottom-10 opacity-5 pointer-events-none">
+            <span class="material-symbols-outlined text-[180px] text-surface-container-lowest">gavel</span>
+          </div>
+          <div class="flex flex-col gap-1 z-10">
+            <div class="flex items-center gap-space-sm flex-wrap">
+              <h1 class="font-headline-lg text-2xl md:text-3xl text-surface-container-lowest tracking-tight">Platform Intelligence & Super-Admin Console</h1>
+              <span class="inline-flex items-center gap-1.5 px-space-sm py-0.5 rounded-full bg-surface-container-lowest/10 text-secondary-fixed text-label-sm font-label-sm uppercase tracking-wider backdrop-blur-md">
+                <span class="w-2 h-2 rounded-full bg-secondary-fixed animate-ping"></span>
+                Root Administrator Restricted • 2FA Active
+              </span>
+            </div>
+            <p class="font-body-md text-sm text-on-primary-container max-w-3xl">
+              Restricted Access • Multi-Chamber Root Governance • Real-time traffic, advocate onboarding, court engagement telemetry & practice health metrics.
+            </p>
+          </div>
+
+          <!-- Quick Action Controls -->
+          <div class="flex flex-wrap items-center gap-space-xs z-10">
+            <button id="btnExportAudit" class="flex items-center gap-1.5 px-space-md py-space-xs bg-surface-container-lowest/10 hover:bg-surface-container-lowest/20 text-surface-container-lowest text-label-md font-label-md rounded transition-colors" title="Download immutable audit trail">
+              <span class="material-symbols-outlined text-[16px] text-secondary-fixed">download</span>
+              Export Audit (CSV)
+            </button>
+            <button id="btnHealthReport" class="flex items-center gap-1.5 px-space-md py-space-xs bg-surface-container-lowest/10 hover:bg-surface-container-lowest/20 text-surface-container-lowest text-label-md font-label-md rounded transition-colors">
+              <span class="material-symbols-outlined text-[16px] text-secondary-fixed">health_and_safety</span>
+              Generate Health Report
+            </button>
+            <button id="btnPurgeStale" class="flex items-center gap-1.5 px-space-md py-space-xs bg-surface-container-lowest/10 hover:bg-surface-container-lowest/20 text-surface-container-lowest text-label-md font-label-md rounded transition-colors">
+              <span class="material-symbols-outlined text-[16px] text-secondary-fixed">cleaning_services</span>
+              Purge Stale
+            </button>
+            <button id="btnInviteChamberHead" class="flex items-center gap-1.5 px-space-md py-space-xs bg-secondary-container text-on-secondary-container text-label-md font-label-md rounded shadow-sm hover:brightness-105 transition-all font-semibold">
+              <span class="material-symbols-outlined text-[16px]">person_add</span>
+              Invite Chamber Head
+            </button>
+          </div>
+        </div>
+
+        <!-- 5 TELEMETRY KPI CARDS -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-space-md mb-space-lg">
+          <!-- Card 1 -->
+          <div class="bg-surface-container-lowest p-space-md rounded-xl shadow-sm flex flex-col justify-between hover:shadow-md transition-shadow relative overflow-hidden border border-surface-container">
+            <div class="absolute top-0 left-0 w-1 h-full bg-secondary"></div>
+            <div class="flex items-center justify-between text-on-surface-variant mb-space-xs">
+              <span class="font-label-sm text-label-sm uppercase tracking-wider font-semibold">Advocate Roster</span>
+              <span class="material-symbols-outlined text-[20px] text-secondary">badge</span>
+            </div>
+            <div class="my-space-xs">
+              <span id="kpiAdvocateRoster" class="font-headline-xl text-3xl text-primary font-bold tracking-tight">1,842</span>
+            </div>
+            <div class="flex flex-col gap-0.5">
+              <span id="kpiAdvocateSub" class="font-label-sm text-label-sm text-secondary font-bold flex items-center gap-1">
+                <span class="material-symbols-outlined text-[14px]">arrow_upward</span> +128 this month
+              </span>
+              <span class="font-body-sm text-body-sm text-on-surface-variant">94.2% verified Bar Council ID</span>
+            </div>
+          </div>
+
+          <!-- Card 2 -->
+          <div class="bg-surface-container-lowest p-space-md rounded-xl shadow-sm flex flex-col justify-between hover:shadow-md transition-shadow relative overflow-hidden border border-surface-container">
+            <div class="absolute top-0 left-0 w-1 h-full bg-primary-container"></div>
+            <div class="flex items-center justify-between text-on-surface-variant mb-space-xs">
+              <span class="font-label-sm text-label-sm uppercase tracking-wider font-semibold">Total Platform Views</span>
+              <span class="material-symbols-outlined text-[20px] text-primary">visibility</span>
+            </div>
+            <div class="my-space-xs">
+              <span id="kpiPlatformViews" class="font-headline-xl text-3xl text-primary font-bold tracking-tight">482,910</span>
+            </div>
+            <div class="flex flex-col gap-0.5">
+              <span id="kpiViewsSub" class="font-label-sm text-label-sm text-secondary font-bold flex items-center gap-1">
+                <span class="material-symbols-outlined text-[14px]">trending_up</span> +18.4% vs 30d
+              </span>
+              <span class="font-body-sm text-body-sm text-on-surface-variant">Avg 16.4 views / session</span>
+            </div>
+          </div>
+
+          <!-- Card 3 -->
+          <div class="bg-surface-container-lowest p-space-md rounded-xl shadow-sm flex flex-col justify-between hover:shadow-md transition-shadow relative overflow-hidden border border-surface-container">
+            <div class="absolute top-0 left-0 w-1 h-full bg-secondary-fixed-dim"></div>
+            <div class="flex items-center justify-between text-on-surface-variant mb-space-xs">
+              <span class="font-label-sm text-label-sm uppercase tracking-wider font-semibold">Active Concurrent</span>
+              <span class="w-2.5 h-2.5 rounded-full bg-secondary animate-ping"></span>
+            </div>
+            <div class="my-space-xs">
+              <div class="flex items-baseline gap-1">
+                <span id="kpiActiveConcurrent" class="font-headline-xl text-3xl text-primary font-bold tracking-tight">148</span>
+                <span class="font-label-md text-label-md text-on-surface-variant">Lawyers</span>
+              </div>
+            </div>
+            <div id="kpiConcurrentSub" class="font-body-sm text-body-sm text-on-surface-variant leading-tight">
+              Delhi HC: 62 • Saket: 41<br/>SC: 28 • Others: 17
+            </div>
+          </div>
+
+          <!-- Card 4 -->
+          <div class="bg-surface-container-lowest p-space-md rounded-xl shadow-sm flex flex-col justify-between hover:shadow-md transition-shadow relative overflow-hidden border border-surface-container">
+            <div class="absolute top-0 left-0 w-1 h-full bg-tertiary-fixed-dim"></div>
+            <div class="flex items-center justify-between text-on-surface-variant mb-space-xs">
+              <span class="font-label-sm text-label-sm uppercase tracking-wider font-semibold">Sticky Retention</span>
+              <span class="material-symbols-outlined text-[20px] text-surface-tint">sync_saved_locally</span>
+            </div>
+            <div class="my-space-xs">
+              <span id="kpiStickyRetention" class="font-headline-xl text-3xl text-primary font-bold tracking-tight">78.4%</span>
+            </div>
+            <div class="flex flex-col gap-0.5">
+              <span class="font-label-sm text-label-sm text-on-surface font-semibold">Daily/Monthly Ratio</span>
+              <span class="font-body-sm text-body-sm text-on-surface-variant">+3.1% weekly stickiness</span>
+            </div>
+          </div>
+
+          <!-- Card 5 -->
+          <div class="bg-surface-container-lowest p-space-md rounded-xl shadow-sm flex flex-col justify-between hover:shadow-md transition-shadow relative overflow-hidden border border-surface-container">
+            <div class="absolute top-0 left-0 w-1 h-full bg-outline"></div>
+            <div class="flex items-center justify-between text-on-surface-variant mb-space-xs">
+              <span class="font-label-sm text-label-sm uppercase tracking-wider font-semibold">Data Footprint</span>
+              <span class="material-symbols-outlined text-[20px] text-on-surface-variant">storage</span>
+            </div>
+            <div class="my-space-xs">
+              <div class="flex items-baseline gap-1">
+                <span id="kpiDataFootprint" class="font-headline-xl text-3xl text-primary font-bold tracking-tight">14.2</span>
+                <span class="font-label-md text-label-md text-on-surface-variant">GB</span>
+              </div>
+            </div>
+            <div class="flex flex-col gap-0.5">
+              <span class="font-label-sm text-label-sm text-on-surface font-semibold">Mongo Atlas Master</span>
+              <span class="font-body-sm text-body-sm text-on-surface-variant">0 B Media • Pure Text Briefs</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- ANALYTICS GRAPHS & VISUALIZATIONS SECTION -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-space-lg mb-space-lg" id="trafficSection">
+          <!-- Daily Views & Concurrent Session Trend Chart (8 Cols) -->
+          <div class="lg:col-span-8 bg-surface-container-lowest p-space-lg rounded-xl shadow-sm flex flex-col justify-between border border-surface-container">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-space-md gap-2">
+              <div>
+                <div class="flex items-center gap-space-xs">
+                  <h2 class="font-headline-md text-xl font-bold text-primary">Hourly Traffic & Peak Docket Rush</h2>
+                  <span class="px-space-xs py-0.5 bg-surface-container text-on-surface-variant text-label-sm font-label-sm rounded uppercase font-semibold">Live Telemetry</span>
+                </div>
+                <p class="font-body-sm text-sm text-on-surface-variant mt-0.5">
+                  Bimodal judicial spikes: 09:00 AM - 11:30 AM (Cause list call) & 04:00 PM - 06:00 PM (Daily order & fee ledger reconciliation)
+                </p>
+              </div>
+              <div class="flex items-center gap-space-sm">
+                <div class="flex items-center gap-1">
+                  <span class="w-3 h-1.5 rounded-sm bg-primary-container"></span>
+                  <span class="font-label-sm text-label-sm text-on-surface-variant">Views (x100)</span>
+                </div>
+                <div class="flex items-center gap-1">
+                  <span class="w-3 h-1.5 rounded-sm bg-secondary"></span>
+                  <span class="font-label-sm text-label-sm text-on-surface-variant">Active Sessions</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- INLINE SVG DOCKET RUSH TELEMETRY CHART -->
+            <div class="w-full h-64 relative flex items-end">
+              <svg class="w-full h-full overflow-visible" preserveAspectRatio="none" viewBox="0 0 760 210">
+                <defs>
+                  <linearGradient id="viewGrad" x1="0" x2="0" y1="0" y2="1">
+                    <stop offset="0%" stop-color="#141a32" stop-opacity="0.25"></stop>
+                    <stop offset="100%" stop-color="#141a32" stop-opacity="0.0"></stop>
+                  </linearGradient>
+                  <linearGradient id="sessionGrad" x1="0" x2="0" y1="0" y2="1">
+                    <stop offset="0%" stop-color="#775a00" stop-opacity="0.22"></stop>
+                    <stop offset="100%" stop-color="#775a00" stop-opacity="0.0"></stop>
+                  </linearGradient>
+                </defs>
+                <!-- Horizontal Guide Gridlines -->
+                <line stroke="#eceef0" stroke-dasharray="4,4" stroke-width="1" x1="0" x2="760" y1="25" y2="25"></line>
+                <line stroke="#eceef0" stroke-dasharray="4,4" stroke-width="1" x1="0" x2="760" y1="75" y2="75"></line>
+                <line stroke="#eceef0" stroke-dasharray="4,4" stroke-width="1" x1="0" x2="760" y1="125" y2="125"></line>
+                <line stroke="#eceef0" stroke-dasharray="4,4" stroke-width="1" x1="0" x2="760" y1="175" y2="175"></line>
+                <!-- Area Fills -->
+                <path d="M 0,195 Q 60,190 120,185 T 220,40 T 320,80 T 420,150 T 520,30 T 620,110 T 760,160 L 760,205 L 0,205 Z" fill="url(#viewGrad)"></path>
+                <path d="M 0,200 Q 60,195 120,190 T 220,70 T 320,110 T 420,165 T 520,55 T 620,130 T 760,185 L 760,205 L 0,205 Z" fill="url(#sessionGrad)"></path>
+                <!-- Smooth Line 1 (Views) -->
+                <path d="M 0,195 Q 60,190 120,185 T 220,40 T 320,80 T 420,150 T 520,30 T 620,110 T 760,160" fill="none" stroke="#141a32" stroke-linecap="round" stroke-width="2.5"></path>
+                <!-- Smooth Line 2 (Sessions) -->
+                <path d="M 0,200 Q 60,195 120,190 T 220,70 T 320,110 T 420,165 T 520,55 T 620,130 T 760,185" fill="none" stroke="#775a00" stroke-linecap="round" stroke-width="2"></path>
+                <!-- Callout Points / Spikes -->
+                <circle cx="220" cy="40" fill="#141a32" r="5" stroke="#ffffff" stroke-width="2"></circle>
+                <circle cx="220" cy="70" fill="#775a00" r="4" stroke="#ffffff" stroke-width="2"></circle>
+                <circle cx="520" cy="30" fill="#141a32" r="5" stroke="#ffffff" stroke-width="2"></circle>
+                <circle cx="520" cy="55" fill="#775a00" r="4" stroke="#ffffff" stroke-width="2"></circle>
+              </svg>
+              <!-- Dynamic Hover Annotation Chips -->
+              <div class="absolute left-[26%] top-2 bg-surface-container-highest px-space-xs py-1 rounded shadow-sm text-center pointer-events-none">
+                <span class="font-label-sm text-label-sm text-primary font-bold">10:15 AM Peak</span>
+                <div class="font-label-sm text-[10px] text-on-surface-variant">1,240 req/min</div>
+              </div>
+              <div class="absolute left-[65%] top-0 bg-secondary-container px-space-xs py-1 rounded shadow-sm text-center pointer-events-none">
+                <span class="font-label-sm text-label-sm text-on-secondary-container font-bold">04:45 PM Reconciliation</span>
+                <div class="font-label-sm text-[10px] text-on-secondary-container">1,480 req/min</div>
+              </div>
+            </div>
+
+            <!-- X-Axis Timeline Labels -->
+            <div class="flex justify-between items-center text-on-surface-variant font-label-sm text-label-sm pt-space-sm border-t border-surface-container">
+              <span>06:00</span>
+              <span>08:00</span>
+              <span class="text-primary font-bold">10:00 (Roster)</span>
+              <span>12:00</span>
+              <span>14:00 (Lunch Recess)</span>
+              <span class="text-primary font-bold">16:30 (Reconcile)</span>
+              <span>19:00</span>
+              <span>22:00</span>
+            </div>
+          </div>
+
+          <!-- Most Viewed Modules & Architecture Share (4 Cols) -->
+          <div class="lg:col-span-4 bg-surface-container-lowest p-space-lg rounded-xl shadow-sm flex flex-col justify-between border border-surface-container">
+            <div>
+              <div class="flex items-center justify-between mb-space-xs">
+                <h2 class="font-headline-md text-xl font-bold text-primary">Traffic by Module</h2>
+                <span class="font-label-sm text-label-sm text-on-surface-variant font-medium">482k hits</span>
+              </div>
+              <p class="font-body-sm text-body-sm text-on-surface-variant mb-space-md">
+                Advocate usage categorized across core litigation workflows.
+              </p>
+
+              <!-- Progress Distribution Stack -->
+              <div class="flex flex-col gap-space-md">
+                <!-- Module 1 -->
+                <div>
+                  <div class="flex justify-between items-center mb-1">
+                    <span class="font-label-md text-label-md text-on-surface flex items-center gap-1.5 font-medium">
+                      <span class="material-symbols-outlined text-[16px] text-secondary">calendar_today</span>
+                      Hearing Diary & Daily Roster
+                    </span>
+                    <span id="pctHearings" class="font-label-md text-label-md text-primary font-bold">42%</span>
+                  </div>
+                  <div class="w-full h-2 bg-surface-container rounded-full overflow-hidden">
+                    <div id="barHearings" class="h-full bg-primary-container rounded-full transition-all duration-500" style="width: 42%;"></div>
+                  </div>
+                  <div class="flex justify-between font-label-sm text-[10px] text-on-surface-variant mt-0.5">
+                    <span>202,822 direct loads</span>
+                    <span>Avg latency: 24ms</span>
+                  </div>
+                </div>
+
+                <!-- Module 2 -->
+                <div>
+                  <div class="flex justify-between items-center mb-1">
+                    <span class="font-label-md text-label-md text-on-surface flex items-center gap-1.5 font-medium">
+                      <span class="material-symbols-outlined text-[16px] text-secondary">manage_search</span>
+                      Case Portfolio & CNR Lookup
+                    </span>
+                    <span id="pctCases" class="font-label-md text-label-md text-primary font-bold">28%</span>
+                  </div>
+                  <div class="w-full h-2 bg-surface-container rounded-full overflow-hidden">
+                    <div id="barCases" class="h-full bg-secondary rounded-full transition-all duration-500" style="width: 28%;"></div>
+                  </div>
+                  <div class="flex justify-between font-label-sm text-[10px] text-on-surface-variant mt-0.5">
+                    <span>135,215 brief queries</span>
+                    <span>eCourts API Gateway</span>
+                  </div>
+                </div>
+
+                <!-- Module 3 -->
+                <div>
+                  <div class="flex justify-between items-center mb-1">
+                    <span class="font-label-md text-label-md text-on-surface flex items-center gap-1.5 font-medium">
+                      <span class="material-symbols-outlined text-[16px] text-secondary">account_balance_wallet</span>
+                      Fee Ledger & Receipts
+                    </span>
+                    <span id="pctFinance" class="font-label-md text-label-md text-primary font-bold">18%</span>
+                  </div>
+                  <div class="w-full h-2 bg-surface-container rounded-full overflow-hidden">
+                    <div id="barFinance" class="h-full bg-secondary-fixed-dim rounded-full transition-all duration-500" style="width: 18%;"></div>
+                  </div>
+                  <div class="flex justify-between font-label-sm text-[10px] text-on-surface-variant mt-0.5">
+                    <span>86,923 receipts generated</span>
+                    <span>GST compliant</span>
+                  </div>
+                </div>
+
+                <!-- Module 4 -->
+                <div>
+                  <div class="flex justify-between items-center mb-1">
+                    <span class="font-label-md text-label-md text-on-surface flex items-center gap-1.5 font-medium">
+                      <span class="material-symbols-outlined text-[16px] text-secondary">edit_note</span>
+                      Digital Legal Notes & Citations
+                    </span>
+                    <span id="pctNotes" class="font-label-md text-label-md text-primary font-bold">12%</span>
+                  </div>
+                  <div class="w-full h-2 bg-surface-container rounded-full overflow-hidden">
+                    <div id="barNotes" class="h-full bg-outline rounded-full transition-all duration-500" style="width: 12%;"></div>
+                  </div>
+                  <div class="flex justify-between font-label-sm text-[10px] text-on-surface-variant mt-0.5">
+                    <span>57,950 diary entries</span>
+                    <span>Text Briefs (Zero Media)</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Quick Platform Health Ratio -->
+            <div class="pt-space-md mt-space-sm bg-surface-container-low p-space-sm rounded">
+              <div class="flex items-center justify-between text-on-surface font-label-sm text-label-sm mb-1">
+                <span>Client Surface Split</span>
+                <span class="font-bold">54% Web / 46% Mobile PWA</span>
+              </div>
+              <p class="font-body-sm text-[12px] text-on-surface-variant">
+                Leading clusters: <strong>New Delhi</strong> (44%), <strong>Mumbai</strong> (26%), <strong>Bengaluru</strong> (16%), <strong>Chandigarh</strong> (14%).
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- LOWER SPLIT: ADVOCATE ACCOUNTS TABLE & LIVE AUDIT MONITOR -->
+        <div class="grid grid-cols-1 xl:grid-cols-12 gap-space-lg" id="advocatesSection">
+          <!-- MAIN ACCOUNTS ROSTER TABLE (8 Cols) -->
+          <div class="xl:col-span-8 bg-surface-container-lowest p-space-lg rounded-xl shadow-sm flex flex-col justify-between border border-surface-container">
+            <div>
+              <div class="flex flex-col md:flex-row md:items-center justify-between pb-space-md gap-space-sm">
+                <div>
+                  <h2 class="font-headline-md text-xl font-bold text-primary">Advocate Registrations & Account Health</h2>
+                  <p class="font-body-sm text-sm text-on-surface-variant">Real-time scrutiny of Bar enrollment, verified cases, and active web sessions.</p>
+                </div>
+
+                <!-- Filter Controls -->
+                <div class="flex items-center gap-space-xs flex-wrap">
+                  <div class="relative">
+                    <span class="material-symbols-outlined absolute left-2 top-1/2 -translate-y-1/2 text-on-surface-variant text-[16px]">filter_list</span>
+                    <select id="filterJurisdiction" class="h-8 pl-7 pr-space-md bg-surface-container border border-surface-container rounded text-label-sm font-label-sm text-on-surface focus:outline-none cursor-pointer">
+                      <option value="all">All Jurisdictions (Pan India)</option>
+                      <option value="Delhi">Bar Council of Delhi (BCD)</option>
+                      <option value="Maharashtra">Maharashtra & Goa</option>
+                      <option value="Punjab">Punjab & Haryana</option>
+                      <option value="Karnataka">Karnataka Bar Council</option>
+                    </select>
+                  </div>
+                  <div class="relative">
+                    <select id="filterStatus" class="h-8 px-space-sm bg-surface-container border border-surface-container rounded text-label-sm font-label-sm text-on-surface focus:outline-none cursor-pointer">
+                      <option value="all">Status: All Accounts</option>
+                      <option value="Active Now">Active Now</option>
+                      <option value="Active Today">Active Today</option>
+                      <option value="Inactive">Inactive</option>
+                      <option value="Pending">Pending Verification</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Master Responsive Table -->
+              <div class="overflow-x-auto custom-scroll">
+                <table class="w-full text-left border-collapse">
+                  <thead>
+                    <tr class="bg-surface-container font-label-sm text-[11px] uppercase tracking-wider text-on-surface-variant">
+                      <th class="py-space-xs px-space-sm font-semibold">Advocate & Chamber</th>
+                      <th class="py-space-xs px-space-sm font-semibold">Enrollment & Contact</th>
+                      <th class="py-space-xs px-space-sm font-semibold text-center">Cases</th>
+                      <th class="py-space-xs px-space-sm font-semibold text-right">Views</th>
+                      <th class="py-space-xs px-space-sm font-semibold">Status</th>
+                      <th class="py-space-xs px-space-sm font-semibold text-center">Master Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody id="advocatesTableBody" class="divide-y divide-surface-container font-body-sm text-sm text-on-surface">
+                    <!-- Dynamic Rows Loaded via admin.js -->
+                    <tr>
+                      <td colspan="6" class="text-center py-8 text-on-surface-variant">Loading registered advocates...</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- Pagination & Table Footer -->
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between pt-space-md border-t border-surface-container text-on-surface-variant font-label-sm text-label-sm gap-2">
+              <span id="paginationInfo">Showing 1-10 of advocates</span>
+              <div class="flex items-center gap-1">
+                <button id="btnPrevPage" class="px-space-sm py-1 bg-surface-container hover:bg-surface-container-high rounded transition-colors text-on-surface font-medium disabled:opacity-40">Previous</button>
+                <span id="pageNumbersContainer" class="flex items-center gap-1">
+                  <button class="px-space-sm py-1 bg-primary-container text-surface-container-lowest font-bold rounded">1</button>
+                </span>
+                <button id="btnNextPage" class="px-space-sm py-1 bg-surface-container hover:bg-surface-container-high rounded transition-colors text-on-surface font-medium disabled:opacity-40">Next</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- LIVE CONCURRENT SESSIONS & SYSTEM GUARD (4 Cols) -->
+          <div class="xl:col-span-4 flex flex-col gap-space-lg" id="liveFeedCard">
+            <!-- Real-Time Event Stream Feed -->
+            <div class="bg-surface-container-lowest p-space-lg rounded-xl shadow-sm flex flex-col justify-between border border-surface-container">
+              <div>
+                <div class="flex items-center justify-between mb-space-xs">
+                  <div class="flex items-center gap-space-xs">
+                    <span class="material-symbols-outlined text-[20px] text-secondary">broadcast_on_personal</span>
+                    <h2 class="font-headline-md text-xl font-bold text-primary">Live Event Feed</h2>
+                  </div>
+                  <span class="w-2 h-2 rounded-full bg-secondary-fixed-dim animate-ping"></span>
+                </div>
+                <p class="font-body-sm text-sm text-on-surface-variant mb-space-md">
+                  Encrypted write stream piped from production cluster.
+                </p>
+
+                <!-- Timeline Events Container -->
+                <div id="liveFeedList" class="flex flex-col gap-space-sm max-h-[460px] overflow-y-auto custom-scroll pr-1">
+                  <!-- Dynamic Event Items loaded via admin.js -->
+                  <div class="p-space-sm bg-surface-container-low rounded-lg text-center text-on-surface-variant text-sm py-6">
+                    Pinging cluster event stream...
+                  </div>
+                </div>
+              </div>
+
+              <button id="btnRefreshFeed" class="w-full mt-space-md py-space-xs bg-surface-container hover:bg-surface-container-high text-on-surface font-label-sm text-label-sm rounded transition-colors flex items-center justify-center gap-1 font-semibold">
+                <span class="material-symbols-outlined text-[16px]">refresh</span>
+                Refresh Real-Time Stream
+              </button>
+            </div>
+
+            <!-- Root Security Lockout Banner -->
+            <div class="bg-primary-container text-surface-container-lowest p-space-md rounded-xl shadow-sm flex flex-col justify-between relative overflow-hidden">
+              <div class="flex items-center gap-space-sm mb-space-xs">
+                <span class="material-symbols-outlined text-secondary-fixed text-[22px]">verified_user</span>
+                <span class="font-label-md text-label-md font-bold uppercase tracking-wider text-surface-container-lowest">Root Security Lockout</span>
+              </div>
+              <p class="font-body-sm text-xs text-on-primary-container mb-space-sm leading-relaxed">
+                Super-Admin Protocol: Only authorized root credentials have access to this master telemetry panel. All administrative actions are recorded with IP stamps in the MongoDB audit cluster.
+              </p>
+              <div class="flex items-center justify-between pt-space-xs text-on-primary-container font-label-sm text-[11px]">
+                <span>Audit Block: #082914-SHA256</span>
+                <span class="text-secondary-fixed font-bold">Root Shield: Active</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PLATFORM SUMMARY FOOTER ACCENT -->
+        <div class="mt-space-lg pt-space-md pb-space-sm flex flex-col sm:flex-row items-center justify-between text-on-surface-variant font-label-sm text-label-sm border-t border-surface-container">
+          <div class="flex items-center gap-space-sm">
+            <span class="w-2 h-2 rounded-full bg-secondary"></span>
+            <span>Advocate DigiDiary Enterprise v4.8.2-prod • Super Admin Engine</span>
+          </div>
+          <div class="flex items-center gap-space-md mt-2 sm:mt-0 text-xs">
+            <span>Bar Council API: Connected</span>
+            <span>eCourts Sync: Stable (0.4s)</span>
+            <span>TLS 1.3 Strict-Transport</span>
+          </div>
+        </div>
+
+      </div>
+    </main>
+  </div>
+
+  <!-- MODAL: INVITE CHAMBER HEAD -->
+  <div id="modalInvite" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-surface-container-lowest rounded-xl max-w-lg w-full p-6 shadow-xl border border-surface-container">
+      <div class="flex items-center justify-between pb-4 border-b border-surface-container mb-4">
+        <div class="flex items-center gap-2">
+          <div class="w-8 h-8 rounded bg-secondary-container text-on-secondary-container flex items-center justify-center">
+            <span class="material-symbols-outlined text-[20px]">person_add</span>
+          </div>
+          <h3 class="font-headline-sm text-lg font-bold text-primary">Invite Chamber Head</h3>
+        </div>
+        <button id="btnCloseInvite" class="text-on-surface-variant hover:text-on-surface">
+          <span class="material-symbols-outlined">close</span>
+        </button>
+      </div>
+
+      <form id="formInviteChamberHead" class="flex flex-col gap-4">
+        <div>
+          <label class="block font-label-sm text-xs font-semibold text-on-surface mb-1">Full Legal Name *</label>
+          <input type="text" id="inviteName" required class="w-full h-10 px-3 border border-surface-container rounded bg-surface-container-lowest text-sm text-on-surface focus:outline-none focus:border-primary" placeholder="Adv. Rajesh Singhania" />
+        </div>
+        <div>
+          <label class="block font-label-sm text-xs font-semibold text-on-surface mb-1">Official Email Address *</label>
+          <input type="email" id="inviteEmail" required class="w-full h-10 px-3 border border-surface-container rounded bg-surface-container-lowest text-sm text-on-surface focus:outline-none focus:border-primary" placeholder="advocate@chamber.law" />
+        </div>
+        <div>
+          <label class="block font-label-sm text-xs font-semibold text-on-surface mb-1">Law Firm / Chamber Name</label>
+          <input type="text" id="inviteFirmName" class="w-full h-10 px-3 border border-surface-container rounded bg-surface-container-lowest text-sm text-on-surface focus:outline-none focus:border-primary" placeholder="Singhania & Partners LLP" />
+        </div>
+        <div>
+          <label class="block font-label-sm text-xs font-semibold text-on-surface mb-1">Bar Enrollment Number</label>
+          <input type="text" id="inviteEnrollment" class="w-full h-10 px-3 border border-surface-container rounded bg-surface-container-lowest text-sm text-on-surface focus:outline-none focus:border-primary" placeholder="D/1429/2011" />
+        </div>
+        <div class="flex justify-end gap-2 pt-2">
+          <button type="button" id="btnCancelInvite" class="px-4 py-2 bg-surface-container rounded text-sm text-on-surface hover:bg-surface-container-high transition-colors font-medium">Cancel</button>
+          <button type="submit" class="px-5 py-2 bg-primary text-surface-container-lowest rounded text-sm font-semibold hover:bg-tertiary transition-colors shadow">Send Invitation</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: HEALTH REPORT -->
+  <div id="modalHealth" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-surface-container-lowest rounded-xl max-w-xl w-full p-6 shadow-xl border border-surface-container">
+      <div class="flex items-center justify-between pb-4 border-b border-surface-container mb-4">
+        <div class="flex items-center gap-2">
+          <div class="w-8 h-8 rounded bg-primary text-secondary flex items-center justify-center">
+            <span class="material-symbols-outlined text-[20px]">health_and_safety</span>
+          </div>
+          <h3 class="font-headline-sm text-lg font-bold text-primary">System Health Diagnostics</h3>
+        </div>
+        <button id="btnCloseHealth" class="text-on-surface-variant hover:text-on-surface">
+          <span class="material-symbols-outlined">close</span>
+        </button>
+      </div>
+
+      <div id="healthContent" class="flex flex-col gap-4 text-sm">
+        <p class="text-on-surface-variant">Gathering cluster telemetry...</p>
+      </div>
+
+      <div class="flex justify-end pt-4 border-t border-surface-container mt-4">
+        <button id="btnDismissHealth" class="px-4 py-2 bg-primary text-white rounded text-sm font-semibold hover:bg-tertiary transition-colors">Close Diagnostics</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Core Scripts -->
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/admin.js"></script>
+</body>
+</html>

@@ -1,0 +1,299 @@
+/* Advocate DigiDiary — Responsive Design System */
+
+/* ==========================================================================
+   LAPTOP & SMALL DESKTOP (1280px - 1439px)
+   ========================================================================== */
+@media (max-width: 1439px) {
+  .kpi-grid-5 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .kpi-grid-4 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .lg\:grid-cols-5 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+/* ==========================================================================
+   TABLET LANDSCAPE & COMPACT LAPTOP (1024px - 1279px)
+   ========================================================================== */
+@media (max-width: 1279px) {
+  .kpi-grid-5 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .kpi-grid-4 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .col-span-8, .col-span-7, .col-span-5, .col-span-4 {
+    grid-column: span 12 / span 12;
+  }
+
+  .lg\:col-span-8, .lg\:col-span-4 {
+    grid-column: span 12 / span 12;
+  }
+
+  .session-badge {
+    display: none;
+  }
+
+  .header-search {
+    max-width: 360px;
+  }
+}
+
+/* ==========================================================================
+   TABLET PORTRAIT & MOBILE OVERLAY (Under 1024px)
+   ========================================================================== */
+@media (max-width: 1023px) {
+  .sidebar {
+    transform: translateX(-100%);
+    box-shadow: var(--shadow-2xl);
+    z-index: 50;
+  }
+
+  .sidebar.mobile-open {
+    transform: translateX(0);
+  }
+
+  .main-wrapper {
+    margin-left: 0;
+  }
+
+  .top-header {
+    left: 0;
+  }
+
+  .mobile-menu-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+  }
+
+  .header-search {
+    max-width: 280px;
+  }
+
+  .chamber-text {
+    display: none;
+  }
+
+  .main-content {
+    padding: 22px 20px 60px;
+  }
+
+  .grid-12 {
+    gap: 16px;
+  }
+}
+
+/* ==========================================================================
+   MOBILE PHONES & SMALL TABLETS (Under 768px)
+   ========================================================================== */
+@media (max-width: 767px) {
+  .top-header {
+    height: 56px;
+    padding: 0 16px;
+  }
+
+  .main-content {
+    margin-top: 56px;
+    padding: 16px 14px 80px;
+    min-height: calc(100vh - 56px);
+  }
+
+  .kpi-grid-5, .kpi-grid-4 {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .kpi-card {
+    padding: 14px 16px;
+  }
+
+  .kpi-value {
+    font-size: 26px;
+  }
+
+  .grid-cols-2, .grid-cols-3, .grid-cols-4, .grid-cols-12 {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  .col-span-1, .col-span-2, .col-span-3, .col-span-4,
+  .col-span-5, .col-span-6, .col-span-7, .col-span-8, .col-span-12 {
+    grid-column: span 1 / span 1;
+  }
+
+  .page-header {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+
+  .page-title {
+    font-size: 1.4rem;
+  }
+
+  .header-search {
+    display: none;
+  }
+
+  .search-shortcut {
+    display: none;
+  }
+
+  .card {
+    padding: 16px;
+    border-radius: var(--radius-lg);
+  }
+
+  .table-container {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    border-radius: var(--radius-lg);
+    margin-left: -2px;
+    margin-right: -2px;
+  }
+
+  .data-table th, .data-table td {
+    padding: 9px 10px;
+    font-size: 12px;
+    white-space: nowrap;
+  }
+
+  .drawer {
+    max-width: 100%;
+    width: 100%;
+  }
+
+  .modal-dialog {
+    width: 95%;
+    max-width: 95%;
+    max-height: 92vh;
+    border-radius: var(--radius-lg);
+  }
+
+  .modal-header {
+    padding: 12px 16px;
+  }
+
+  .modal-body {
+    padding: 16px;
+  }
+
+  .modal-footer {
+    padding: 12px 16px;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .btn {
+    padding: 7px 14px;
+    font-size: 12px;
+  }
+
+  .btn-lg {
+    padding: 9px 18px;
+    font-size: 13px;
+  }
+
+  /* Notebook responsive layout */
+  .notebook-container {
+    flex-direction: column;
+    height: auto;
+    min-height: 500px;
+  }
+
+  .notes-list-pane {
+    width: 100%;
+    max-height: 240px;
+    border-right: none;
+    border-bottom: 1px solid var(--outline-variant);
+  }
+
+  .note-editor-pane {
+    width: 100%;
+    min-height: 350px;
+  }
+
+  /* Tabs responsive scrolling */
+  .tabs-header {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    gap: 4px;
+  }
+
+  .tab-btn {
+    padding: 8px 12px;
+    font-size: 12px;
+  }
+
+  .tabs-pills {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    width: 100%;
+  }
+
+  /* Toast notification on mobile */
+  .toast-container {
+    left: 14px;
+    right: 14px;
+    bottom: 16px;
+    align-items: center;
+  }
+
+  .toast {
+    min-width: unset;
+    width: 100%;
+    max-width: 100%;
+  }
+}
+
+/* ==========================================================================
+   EXTRA SMALL PHONES (Under 480px)
+   ========================================================================== */
+@media (max-width: 479px) {
+  .main-content {
+    padding: 12px 10px 80px;
+  }
+
+  .card {
+    padding: 12px;
+  }
+
+  .page-title {
+    font-size: 1.25rem;
+  }
+
+  .page-subtitle {
+    font-size: 0.8rem;
+  }
+
+  .header-actions .btn span:not(.material-symbols-outlined) {
+    display: none;
+  }
+
+  .header-actions .btn {
+    padding: 6px 8px;
+  }
+
+  .auth-card {
+    border-radius: var(--radius-lg);
+  }
+
+  .auth-body {
+    padding: 12px 16px 20px;
+  }
+
+  .auth-header {
+    padding: 18px 16px 8px;
+  }
+}

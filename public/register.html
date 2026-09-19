@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Advocate DigiDiary — Register Chamber Practice</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,600&family=Plus+Jakarta+Sans:wght@500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet" />
+  <link rel="stylesheet" href="/css/variables.css" />
+  <link rel="stylesheet" href="/css/global.css" />
+  <link rel="stylesheet" href="/css/components.css" />
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      background: radial-gradient(circle at 10% 20%, #0E1A38 0%, #0A1128 60%, #050814 100%);
+      font-family: var(--font-body, 'Inter', sans-serif);
+      color: var(--text-color, #0F172A);
+      padding: 40px 16px 60px;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    /* Ambient watermark legal symbol */
+    body::before {
+      content: '§';
+      position: fixed;
+      left: 3%;
+      bottom: -60px;
+      font-family: var(--font-headline, 'Playfair Display', serif);
+      font-size: 380px;
+      color: rgba(197, 155, 39, 0.035);
+      pointer-events: none;
+      user-select: none;
+      line-height: 1;
+      z-index: 0;
+    }
+
+    .register-container {
+      position: relative;
+      z-index: 10;
+      width: 100%;
+      max-width: 1060px;
+      margin: auto;
+      background: #FFFFFF;
+      border-radius: 20px;
+      box-shadow: 0 30px 70px -15px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 255, 255, 0.08);
+      overflow: hidden;
+      display: grid;
+      grid-template-columns: 1.05fr 1.45fr;
+    }
+
+    /* Left Brand Showcase Column */
+    .brand-showcase {
+      background: linear-gradient(160deg, #0A1128 0%, #0E1C44 55%, #141A32 100%);
+      padding: 44px 38px;
+      color: #FFFFFF;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+      overflow: hidden;
+      border-right: 1px solid rgba(197, 155, 39, 0.2);
+    }
+
+    .brand-showcase::after {
+      content: '';
+      position: absolute;
+      top: -80px;
+      right: -80px;
+      width: 240px;
+      height: 240px;
+      background: radial-gradient(circle, rgba(197, 155, 39, 0.2) 0%, rgba(197, 155, 39, 0) 70%);
+      pointer-events: none;
+    }
+
+    .brand-header-group {
+      position: relative;
+      z-index: 2;
+    }
+
+    .brand-crest {
+      width: 54px;
+      height: 54px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, var(--gold-500, #C59B27) 0%, var(--gold-700, #8B6D18) 100%);
+      color: #0A1128;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 8px 20px rgba(197, 155, 39, 0.35);
+      margin-bottom: 20px;
+    }
+
+    .brand-title {
+      font-family: var(--font-headline, 'Playfair Display', serif);
+      font-size: 28px;
+      font-weight: 700;
+      color: #FFFFFF;
+      letter-spacing: -0.02em;
+      line-height: 1.2;
+      margin-bottom: 6px;
+    }
+
+    .brand-subtitle {
+      font-family: var(--font-label, 'Plus Jakarta Sans', sans-serif);
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--secondary-container, #FECE57);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 24px;
+    }
+
+    .brand-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 12px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.07);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      font-size: 11px;
+      color: rgba(255, 255, 255, 0.85);
+      font-family: var(--font-label, sans-serif);
+      margin-bottom: 32px;
+    }
+
+    .brand-features-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .brand-feature-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+    }
+
+    .feature-icon-box {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      background: rgba(197, 155, 39, 0.15);
+      border: 1px solid rgba(197, 155, 39, 0.3);
+      color: var(--gold-500, #C59B27);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .feature-text-title {
+      font-size: 13px;
+      font-weight: 600;
+      color: #FFFFFF;
+      line-height: 1.3;
+    }
+
+    .feature-text-desc {
+      font-size: 11px;
+      color: rgba(255, 255, 255, 0.65);
+      margin-top: 2px;
+      line-height: 1.4;
+    }
+
+    .brand-footer-quote {
+      position: relative;
+      z-index: 2;
+      padding-top: 24px;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      font-size: 12px;
+      font-style: italic;
+      color: rgba(255, 255, 255, 0.75);
+      line-height: 1.5;
+    }
+
+    /* Right Form Column */
+    .form-pane {
+      background: #FFFFFF;
+      padding: 44px 44px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .form-header {
+      margin-bottom: 22px;
+    }
+
+    .form-title {
+      font-family: var(--font-headline, 'Playfair Display', serif);
+      font-size: 26px;
+      font-weight: 700;
+      color: var(--navy-900, #0A1128);
+      margin-bottom: 6px;
+    }
+
+    .form-subtitle {
+      font-size: 13px;
+      color: var(--text-muted, #64748B);
+    }
+
+    /* Section divider badge */
+    .section-divider {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin: 20px 0 14px;
+      font-family: var(--font-label, sans-serif);
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--gold-700, #8B6D18);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .section-divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: #E2E8F0;
+    }
+
+    .form-grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    .form-group {
+      margin-bottom: 14px;
+    }
+
+    .form-label {
+      display: block;
+      font-family: var(--font-label, 'Plus Jakarta Sans', sans-serif);
+      font-size: 12px;
+      font-weight: 600;
+      color: #1E293B;
+      margin-bottom: 5px;
+    }
+
+    .input-wrapper {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .input-wrapper .leading-icon {
+      position: absolute;
+      left: 14px;
+      color: #94A3B8;
+      font-size: 19px;
+      pointer-events: none;
+      transition: color 0.15s ease;
+    }
+
+    .styled-input {
+      width: 100%;
+      height: 44px;
+      padding: 10px 14px 10px 42px;
+      background: #F8FAFC;
+      border: 1.5px solid #CBD5E1;
+      border-radius: 9px;
+      color: #0F172A;
+      font-size: 13.5px;
+      font-family: var(--font-body, 'Inter', sans-serif);
+      transition: all 0.15s ease;
+    }
+
+    .styled-input:focus {
+      background: #FFFFFF;
+      border-color: var(--gold-500, #C59B27);
+      box-shadow: 0 0 0 3px rgba(197, 155, 39, 0.2);
+      outline: none;
+    }
+
+    .styled-input:focus + .leading-icon,
+    .input-wrapper:focus-within .leading-icon {
+      color: var(--gold-600, #B08A1F);
+    }
+
+    .styled-input::placeholder {
+      color: #94A3B8;
+    }
+
+    .styled-input:-webkit-autofill,
+    .styled-input:-webkit-autofill:hover, 
+    .styled-input:-webkit-autofill:focus, 
+    .styled-input:-webkit-autofill:active {
+      -webkit-box-shadow: 0 0 0 1000px #F8FAFC inset !important;
+      -webkit-text-fill-color: #0F172A !important;
+      caret-color: #0F172A !important;
+      transition: background-color 5000s ease-in-out 0s;
+    }
+
+    .trailing-btn {
+      position: absolute;
+      right: 12px;
+      background: none;
+      border: none;
+      color: #94A3B8;
+      cursor: pointer;
+      padding: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 6px;
+    }
+
+    .trailing-btn:hover {
+      color: #1E293B;
+      background: #E2E8F0;
+    }
+
+    .submit-btn {
+      width: 100%;
+      height: 48px;
+      margin-top: 10px;
+      background: linear-gradient(135deg, var(--gold-500, #C59B27) 0%, var(--gold-700, #8B6D18) 100%);
+      color: #FFFFFF;
+      border: none;
+      border-radius: 10px;
+      font-family: var(--font-label, 'Plus Jakarta Sans', sans-serif);
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      box-shadow: 0 4px 14px rgba(197, 155, 39, 0.35);
+      transition: all 0.2s ease;
+    }
+
+    .submit-btn:hover {
+      filter: brightness(1.08);
+      transform: translateY(-1px);
+      box-shadow: 0 6px 20px rgba(197, 155, 39, 0.45);
+    }
+
+    .submit-btn:active {
+      transform: translateY(0);
+    }
+
+    .form-footer-link {
+      text-align: center;
+      margin-top: 18px;
+      font-size: 13px;
+      color: #64748B;
+    }
+
+    .form-footer-link a {
+      color: var(--gold-700, #8B6D18);
+      font-weight: 600;
+      text-decoration: none;
+      margin-left: 4px;
+    }
+
+    .form-footer-link a:hover {
+      text-decoration: underline;
+    }
+
+    .alert-banner {
+      padding: 10px 14px;
+      border-radius: 8px;
+      background: #FEE2E2;
+      border: 1px solid #F87171;
+      color: #991B1B;
+      font-size: 12px;
+      font-weight: 500;
+      margin-bottom: 16px;
+      display: none;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 960px) {
+      .register-container {
+        grid-template-columns: 1fr;
+        max-width: 520px;
+      }
+      .brand-showcase {
+        padding: 32px 24px 24px;
+        border-right: none;
+        border-bottom: 1px solid rgba(197, 155, 39, 0.2);
+        text-align: center;
+        align-items: center;
+      }
+      .brand-crest {
+        margin: 0 auto 14px;
+      }
+      .brand-features-list,
+      .brand-footer-quote {
+        display: none;
+      }
+      .form-pane {
+        padding: 32px 24px;
+      }
+      .form-grid-2 {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="register-container">
+    <!-- Left Showcase Column -->
+    <div class="brand-showcase">
+      <div class="brand-header-group">
+        <div class="brand-crest">
+          <span class="material-symbols-outlined" style="font-size: 28px;">account_balance</span>
+        </div>
+        <h1 class="brand-title">Advocate DigiDiary</h1>
+        <div class="brand-subtitle">Establish Chamber Practice & Firm Workspace</div>
+        <div class="brand-pill">
+          <span class="material-symbols-outlined" style="font-size: 14px; color: var(--gold-500, #C59B27);">security</span>
+          <span>Sovereign Chamber Multi-Tenancy</span>
+        </div>
+
+        <ul class="brand-features-list">
+          <li class="brand-feature-item">
+            <div class="feature-icon-box">
+              <span class="material-symbols-outlined" style="font-size: 18px;">domain</span>
+            </div>
+            <div>
+              <div class="feature-text-title">Dedicated Chamber Workspace</div>
+              <div class="feature-text-desc">Independent tenant isolation ensures complete confidentiality across all legal proceedings.</div>
+            </div>
+          </li>
+          <li class="brand-feature-item">
+            <div class="feature-icon-box">
+              <span class="material-symbols-outlined" style="font-size: 18px;">group</span>
+            </div>
+            <div>
+              <div class="feature-text-title">Role-Based Counsel Delegation</div>
+              <div class="feature-text-desc">Add partners, associates, juniors, and clerks with granular privilege control.</div>
+            </div>
+          </li>
+          <li class="brand-feature-item">
+            <div class="feature-icon-box">
+              <span class="material-symbols-outlined" style="font-size: 18px;">receipt_long</span>
+            </div>
+            <div>
+              <div class="feature-text-title">Fee Ledgers & Financial Oversight</div>
+              <div class="feature-text-desc">Track professional retainer fees, receipts, case disbursements, and outstanding balances.</div>
+            </div>
+          </li>
+        </ul>
+      </div>
+
+      <div class="brand-footer-quote">
+        "Designed to uphold the dignity and privacy of Indian legal practice with zero-document cloud storage compliance."
+      </div>
+    </div>
+
+    <!-- Right Form Column -->
+    <div class="form-pane">
+      <div class="form-header">
+        <h2 class="form-title">Register Chamber Practice</h2>
+        <p class="form-subtitle">Establish your law firm workspace and senior counsel administration in 60 seconds.</p>
+      </div>
+
+      <div id="errorAlert" class="alert-banner"></div>
+
+      <form id="registerForm">
+        <!-- Section 1: Senior Advocate Profile -->
+        <div class="section-divider">
+          <span class="material-symbols-outlined" style="font-size: 16px;">badge</span>
+          <span>Senior Advocate / Founder Profile</span>
+        </div>
+
+        <div class="form-grid-2">
+          <div class="form-group">
+            <label class="form-label" for="name">Advocate Full Name *</label>
+            <div class="input-wrapper">
+              <span class="material-symbols-outlined leading-icon">person</span>
+              <input class="styled-input" type="text" id="name" required placeholder="Adv. Rajesh Singhania" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="enrollmentNumber">Bar Council Enrollment No.</label>
+            <div class="input-wrapper">
+              <span class="material-symbols-outlined leading-icon">pin</span>
+              <input class="styled-input" type="text" id="enrollmentNumber" placeholder="e.g. D/1429/2011" />
+            </div>
+          </div>
+        </div>
+
+        <!-- Section 2: Chamber & Practice Registry -->
+        <div class="section-divider">
+          <span class="material-symbols-outlined" style="font-size: 16px;">gavel</span>
+          <span>Chamber & Firm Registry</span>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="lawFirmName">Law Firm / Chamber Title *</label>
+          <div class="input-wrapper">
+            <span class="material-symbols-outlined leading-icon">corporate_fare</span>
+            <input class="styled-input" type="text" id="lawFirmName" required placeholder="Singhania & Partners LLP" />
+          </div>
+        </div>
+
+        <div class="form-grid-2">
+          <div class="form-group">
+            <label class="form-label" for="email">Chamber Email Address *</label>
+            <div class="input-wrapper">
+              <span class="material-symbols-outlined leading-icon">alternate_email</span>
+              <input class="styled-input" type="email" id="email" required placeholder="rajesh@singhania.law" autocomplete="email" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="phone">Mobile / Contact Number</label>
+            <div class="input-wrapper">
+              <span class="material-symbols-outlined leading-icon">call</span>
+              <input class="styled-input" type="tel" id="phone" placeholder="+91 98110 00000" />
+            </div>
+          </div>
+        </div>
+
+        <div class="form-grid-2">
+          <div class="form-group">
+            <label class="form-label" for="chamberNumber">Chamber / Room No.</label>
+            <div class="input-wrapper">
+              <span class="material-symbols-outlined leading-icon">meeting_room</span>
+              <input class="styled-input" type="text" id="chamberNumber" placeholder="Chamber 402, Block A" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="password">Account Password *</label>
+            <div class="input-wrapper">
+              <span class="material-symbols-outlined leading-icon">lock</span>
+              <input class="styled-input" type="password" id="password" required placeholder="Min 6 characters" autocomplete="new-password" />
+              <button type="button" class="trailing-btn" id="togglePasswordBtn" title="Toggle password visibility">
+                <span class="material-symbols-outlined" id="eyeIcon" style="font-size: 18px;">visibility</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="address">Court Complex / Office Address</label>
+          <div class="input-wrapper">
+            <span class="material-symbols-outlined leading-icon">location_on</span>
+            <input class="styled-input" type="text" id="address" placeholder="Lawyers Chambers, Delhi High Court / Supreme Court of India" />
+          </div>
+        </div>
+
+        <button type="submit" id="submitBtn" class="submit-btn">
+          <span class="material-symbols-outlined" style="font-size: 20px;">how_to_reg</span>
+          <span>Establish Practice Workspace</span>
+        </button>
+      </form>
+
+      <div class="form-footer-link">
+        Already have an active chamber diary?
+        <a href="/login.html">Log In &rarr;</a>
+      </div>
+    </div>
+  </div>
+
+  <script src="/js/api.js"></script>
+  <script>
+    const form = document.getElementById('registerForm');
+    const errorAlert = document.getElementById('errorAlert');
+    const submitBtn = document.getElementById('submitBtn');
+    const passInput = document.getElementById('password');
+    const togglePasswordBtn = document.getElementById('togglePasswordBtn');
+    const eyeIcon = document.getElementById('eyeIcon');
+
+    // Password visibility toggle
+    togglePasswordBtn.addEventListener('click', () => {
+      if (passInput.type === 'password') {
+        passInput.type = 'text';
+        eyeIcon.textContent = 'visibility_off';
+      } else {
+        passInput.type = 'password';
+        eyeIcon.textContent = 'visibility';
+      }
+    });
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      errorAlert.style.display = 'none';
+
+      const name = document.getElementById('name').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const password = passInput.value;
+      const lawFirmName = document.getElementById('lawFirmName').value.trim();
+      const enrollmentNumber = document.getElementById('enrollmentNumber').value.trim();
+      const phone = document.getElementById('phone').value.trim();
+      const chamberNumber = document.getElementById('chamberNumber').value.trim();
+      const address = document.getElementById('address').value.trim();
+
+      if (password.length < 6) {
+        errorAlert.textContent = 'Password must be at least 6 characters long.';
+        errorAlert.style.display = 'block';
+        return;
+      }
+
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = '<span class="material-symbols-outlined" style="animation: spin 1s infinite; font-size: 18px;">progress_activity</span> Establishing Firm Workspace...';
+
+      try {
+        const payload = {
+          name,
+          email,
+          password,
+          lawFirmName,
+          enrollmentNumber,
+          phone,
+          chamberNumber,
+          address,
+        };
+
+        const res = await api.post('/auth/register', payload);
+        if (res && res.success) {
+          window.location.href = '/dashboard.html';
+        }
+      } catch (err) {
+        errorAlert.textContent = err.message || 'Registration failed. Please check the details provided.';
+        errorAlert.style.display = 'block';
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = '<span class="material-symbols-outlined" style="font-size: 20px;">how_to_reg</span> <span>Establish Practice Workspace</span>';
+      }
+    });
+  </script>
+</body>
+</html>

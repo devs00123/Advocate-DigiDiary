@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Advocate DigiDiary — Chamber Practice Login</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,600&family=Plus+Jakarta+Sans:wght@500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet" />
+  <link rel="stylesheet" href="/css/variables.css" />
+  <link rel="stylesheet" href="/css/global.css" />
+  <link rel="stylesheet" href="/css/components.css" />
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: radial-gradient(circle at 10% 20%, #0E1A38 0%, #0A1128 60%, #050814 100%);
+      font-family: var(--font-body, 'Inter', sans-serif);
+      color: var(--text-color, #0F172A);
+      padding: 32px 16px;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    /* Ambient watermark legal scales */
+    body::before {
+      content: '§';
+      position: fixed;
+      right: 4%;
+      bottom: -60px;
+      font-family: var(--font-headline, 'Playfair Display', serif);
+      font-size: 380px;
+      color: rgba(197, 155, 39, 0.035);
+      pointer-events: none;
+      user-select: none;
+      line-height: 1;
+      z-index: 0;
+    }
+
+    .login-container {
+      position: relative;
+      z-index: 10;
+      width: 100%;
+      max-width: 1020px;
+      margin: auto;
+      background: #FFFFFF;
+      border-radius: 20px;
+      box-shadow: 0 30px 70px -15px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 255, 255, 0.08);
+      overflow: hidden;
+      display: grid;
+      grid-template-columns: 1.15fr 1.35fr;
+      min-height: 620px;
+    }
+
+    /* Left Brand Showcase Column */
+    .brand-showcase {
+      background: linear-gradient(160deg, #0A1128 0%, #0E1C44 55%, #141A32 100%);
+      padding: 44px 38px;
+      color: #FFFFFF;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+      overflow: hidden;
+      border-right: 1px solid rgba(197, 155, 39, 0.2);
+    }
+
+    .brand-showcase::after {
+      content: '';
+      position: absolute;
+      top: -80px;
+      right: -80px;
+      width: 240px;
+      height: 240px;
+      background: radial-gradient(circle, rgba(197, 155, 39, 0.2) 0%, rgba(197, 155, 39, 0) 70%);
+      pointer-events: none;
+    }
+
+    .brand-header-group {
+      position: relative;
+      z-index: 2;
+    }
+
+    .brand-crest {
+      width: 54px;
+      height: 54px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, var(--gold-500, #C59B27) 0%, var(--gold-700, #8B6D18) 100%);
+      color: #0A1128;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 8px 20px rgba(197, 155, 39, 0.35);
+      margin-bottom: 20px;
+    }
+
+    .brand-title {
+      font-family: var(--font-headline, 'Playfair Display', serif);
+      font-size: 28px;
+      font-weight: 700;
+      color: #FFFFFF;
+      letter-spacing: -0.02em;
+      line-height: 1.2;
+      margin-bottom: 6px;
+    }
+
+    .brand-subtitle {
+      font-family: var(--font-label, 'Plus Jakarta Sans', sans-serif);
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--secondary-container, #FECE57);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 24px;
+    }
+
+    .brand-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 12px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.07);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      font-size: 11px;
+      color: rgba(255, 255, 255, 0.85);
+      font-family: var(--font-label, sans-serif);
+      margin-bottom: 32px;
+    }
+
+    .brand-features-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .brand-feature-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+    }
+
+    .feature-icon-box {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      background: rgba(197, 155, 39, 0.15);
+      border: 1px solid rgba(197, 155, 39, 0.3);
+      color: var(--gold-500, #C59B27);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .feature-text-title {
+      font-size: 13px;
+      font-weight: 600;
+      color: #FFFFFF;
+      line-height: 1.3;
+    }
+
+    .feature-text-desc {
+      font-size: 11px;
+      color: rgba(255, 255, 255, 0.65);
+      margin-top: 2px;
+      line-height: 1.4;
+    }
+
+    .brand-footer-quote {
+      position: relative;
+      z-index: 2;
+      padding-top: 24px;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      font-size: 12px;
+      font-style: italic;
+      color: rgba(255, 255, 255, 0.75);
+      line-height: 1.5;
+    }
+
+    /* Right Form Column */
+    .form-pane {
+      background: #FFFFFF;
+      padding: 44px 44px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .form-header {
+      margin-bottom: 26px;
+    }
+
+    .form-title {
+      font-family: var(--font-headline, 'Playfair Display', serif);
+      font-size: 26px;
+      font-weight: 700;
+      color: var(--navy-900, #0A1128);
+      margin-bottom: 6px;
+    }
+
+    .form-subtitle {
+      font-size: 13px;
+      color: var(--text-muted, #64748B);
+    }
+
+    .form-group {
+      margin-bottom: 18px;
+    }
+
+    .form-label {
+      display: block;
+      font-family: var(--font-label, 'Plus Jakarta Sans', sans-serif);
+      font-size: 12px;
+      font-weight: 600;
+      color: #1E293B;
+      margin-bottom: 6px;
+    }
+
+    .input-wrapper {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .input-wrapper .leading-icon {
+      position: absolute;
+      left: 14px;
+      color: #94A3B8;
+      font-size: 19px;
+      pointer-events: none;
+      transition: color 0.15s ease;
+    }
+
+    .styled-input {
+      width: 100%;
+      height: 46px;
+      padding: 10px 14px 10px 42px;
+      background: #F8FAFC;
+      border: 1.5px solid #CBD5E1;
+      border-radius: 10px;
+      color: #0F172A;
+      font-size: 14px;
+      font-family: var(--font-body, 'Inter', sans-serif);
+      transition: all 0.15s ease;
+    }
+
+    .styled-input:focus {
+      background: #FFFFFF;
+      border-color: var(--gold-500, #C59B27);
+      box-shadow: 0 0 0 3px rgba(197, 155, 39, 0.2);
+      outline: none;
+    }
+
+    .styled-input:focus + .leading-icon,
+    .input-wrapper:focus-within .leading-icon {
+      color: var(--gold-600, #B08A1F);
+    }
+
+    .styled-input::placeholder {
+      color: #94A3B8;
+    }
+
+    /* Prevent browser autofill from messing with input styling */
+    .styled-input:-webkit-autofill,
+    .styled-input:-webkit-autofill:hover, 
+    .styled-input:-webkit-autofill:focus, 
+    .styled-input:-webkit-autofill:active {
+      -webkit-box-shadow: 0 0 0 1000px #F8FAFC inset !important;
+      -webkit-text-fill-color: #0F172A !important;
+      caret-color: #0F172A !important;
+      transition: background-color 5000s ease-in-out 0s;
+    }
+
+    .trailing-btn {
+      position: absolute;
+      right: 12px;
+      background: none;
+      border: none;
+      color: #94A3B8;
+      cursor: pointer;
+      padding: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 6px;
+    }
+
+    .trailing-btn:hover {
+      color: #1E293B;
+      background: #E2E8F0;
+    }
+
+    .submit-btn {
+      width: 100%;
+      height: 48px;
+      margin-top: 8px;
+      background: linear-gradient(135deg, var(--gold-500, #C59B27) 0%, var(--gold-700, #8B6D18) 100%);
+      color: #FFFFFF;
+      border: none;
+      border-radius: 10px;
+      font-family: var(--font-label, 'Plus Jakarta Sans', sans-serif);
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      box-shadow: 0 4px 14px rgba(197, 155, 39, 0.35);
+      transition: all 0.2s ease;
+    }
+
+    .submit-btn:hover {
+      filter: brightness(1.08);
+      transform: translateY(-1px);
+      box-shadow: 0 6px 20px rgba(197, 155, 39, 0.45);
+    }
+
+    .submit-btn:active {
+      transform: translateY(0);
+    }
+
+    /* 1-Click Chamber Demo Accounts */
+    .demo-box {
+      margin-top: 24px;
+      padding: 16px;
+      border-radius: 12px;
+      background: #F8FAFC;
+      border: 1px solid #E2E8F0;
+    }
+
+    .demo-box-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 10px;
+    }
+
+    .demo-box-title {
+      font-family: var(--font-label, sans-serif);
+      font-size: 11px;
+      font-weight: 700;
+      color: #475569;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .demo-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 6px;
+    }
+
+    .demo-btn {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 12px;
+      background: #FFFFFF;
+      border: 1px solid #CBD5E1;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 12px;
+      color: #334155;
+      transition: all 0.15s ease;
+      text-align: left;
+    }
+
+    .demo-btn:hover {
+      border-color: var(--gold-500, #C59B27);
+      background: #FFFDF8;
+      transform: translateY(-1px);
+      box-shadow: 0 2px 6px rgba(197, 155, 39, 0.15);
+    }
+
+    .demo-btn.active {
+      border-color: var(--gold-600, #B08A1F);
+      background: #FFFDF5;
+      box-shadow: 0 0 0 1.5px var(--gold-500, #C59B27);
+    }
+
+    .demo-role-badge {
+      font-size: 10px;
+      font-weight: 700;
+      font-family: var(--font-label, sans-serif);
+      padding: 2px 6px;
+      border-radius: 4px;
+      background: #F1F5F9;
+      color: #0A1128;
+    }
+
+    .demo-btn:hover .demo-role-badge {
+      background: rgba(197, 155, 39, 0.15);
+      color: #8B6D18;
+    }
+
+    .form-footer-link {
+      text-align: center;
+      margin-top: 20px;
+      font-size: 13px;
+      color: #64748B;
+    }
+
+    .form-footer-link a {
+      color: var(--gold-700, #8B6D18);
+      font-weight: 600;
+      text-decoration: none;
+      margin-left: 4px;
+    }
+
+    .form-footer-link a:hover {
+      text-decoration: underline;
+    }
+
+    .alert-banner {
+      padding: 10px 14px;
+      border-radius: 8px;
+      background: #FEE2E2;
+      border: 1px solid #F87171;
+      color: #991B1B;
+      font-size: 12px;
+      font-weight: 500;
+      margin-bottom: 16px;
+      display: none;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 900px) {
+      .login-container {
+        grid-template-columns: 1fr;
+        max-width: 480px;
+        min-height: auto;
+      }
+      .brand-showcase {
+        padding: 32px 24px 24px;
+        border-right: none;
+        border-bottom: 1px solid rgba(197, 155, 39, 0.2);
+        text-align: center;
+        align-items: center;
+      }
+      .brand-crest {
+        margin: 0 auto 14px;
+      }
+      .brand-features-list,
+      .brand-footer-quote {
+        display: none;
+      }
+      .form-pane {
+        padding: 32px 24px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="login-container">
+    <!-- Left Showcase Column -->
+    <div class="brand-showcase">
+      <div class="brand-header-group">
+        <div class="brand-crest">
+          <span class="material-symbols-outlined" style="font-size: 28px;">balance</span>
+        </div>
+        <h1 class="brand-title">Advocate DigiDiary</h1>
+        <div class="brand-subtitle">Chambers Practice & Digital Court Suite</div>
+        <div class="brand-pill">
+          <span class="material-symbols-outlined" style="font-size: 14px; color: var(--gold-500, #C59B27);">verified_user</span>
+          <span>End-to-End Chamber Tenant Isolation</span>
+        </div>
+
+        <ul class="brand-features-list">
+          <li class="brand-feature-item">
+            <div class="feature-icon-box">
+              <span class="material-symbols-outlined" style="font-size: 18px;">gavel</span>
+            </div>
+            <div>
+              <div class="feature-text-title">Multi-Jurisdiction Litigation Docket</div>
+              <div class="feature-text-desc">Supreme Court, High Courts, District & Sessions, NCLT & Tribunals.</div>
+            </div>
+          </li>
+          <li class="brand-feature-item">
+            <div class="feature-icon-box">
+              <span class="material-symbols-outlined" style="font-size: 18px;">shield_lock</span>
+            </div>
+            <div>
+              <div class="feature-text-title">Zero-Document Storage Compliance</div>
+              <div class="feature-text-desc">Absolute privacy guarantee — notes and dockets encrypted; zero persistent court briefs.</div>
+            </div>
+          </li>
+          <li class="brand-feature-item">
+            <div class="feature-icon-box">
+              <span class="material-symbols-outlined" style="font-size: 18px;">calendar_month</span>
+            </div>
+            <div>
+              <div class="feature-text-title">Daily Cause Lists & Hearing Sync</div>
+              <div class="feature-text-desc">Real-time tracking of court proceedings, item numbers, and bench assignments.</div>
+            </div>
+          </li>
+        </ul>
+      </div>
+
+      <div class="brand-footer-quote">
+        "The digital companion engineered for precision across daily cause lists, drafting deadlines, and chamber financial ledgers."
+      </div>
+    </div>
+
+    <!-- Right Login Form Column -->
+    <div class="form-pane">
+      <div class="form-header">
+        <h2 class="form-title">Chamber Sign In</h2>
+        <p class="form-subtitle">Enter your enrolled chamber credentials to access your active practice.</p>
+      </div>
+
+      <div id="errorAlert" class="alert-banner"></div>
+
+      <form id="loginForm">
+        <div class="form-group">
+          <label class="form-label" for="email">Chamber Email Address *</label>
+          <div class="input-wrapper">
+            <span class="material-symbols-outlined leading-icon">alternate_email</span>
+            <input class="styled-input" type="email" id="email" required placeholder="advocate@singhania.law" autocomplete="email" />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px;">
+            <label class="form-label" for="password" style="margin-bottom: 0;">Password *</label>
+            <a href="/forgot-password.html" style="font-family: var(--font-label, sans-serif); font-size: 11px; color: var(--gold-700, #8B6D18); font-weight: 600; text-decoration: none;">Forgot Password?</a>
+          </div>
+          <div class="input-wrapper">
+            <span class="material-symbols-outlined leading-icon">lock</span>
+            <input class="styled-input" type="password" id="password" required placeholder="••••••••" autocomplete="current-password" />
+            <button type="button" class="trailing-btn" id="togglePasswordBtn" title="Toggle password visibility">
+              <span class="material-symbols-outlined" id="eyeIcon" style="font-size: 18px;">visibility</span>
+            </button>
+          </div>
+        </div>
+
+        <button type="submit" id="submitBtn" class="submit-btn">
+          <span class="material-symbols-outlined" style="font-size: 18px;">key</span>
+          <span>Sign Into Chamber Diary</span>
+        </button>
+      </form>
+
+      <!-- 1-Click Chamber Demo Accounts -->
+      <div class="demo-box">
+        <div class="demo-box-header">
+          <span class="demo-box-title">Chamber Demo Accounts (1-Click Fill)</span>
+          <span class="material-symbols-outlined" style="font-size: 16px; color: var(--gold-600, #B08A1F);">touch_app</span>
+        </div>
+
+        <div class="demo-grid">
+          <button type="button" class="demo-btn" id="btnFillAdmin">
+            <div>
+              <div style="font-weight: 600;">rajesh@singhania.law</div>
+              <div style="font-size: 10px; color: #64748B;">Password: Advocate@2026</div>
+            </div>
+            <span class="demo-role-badge">SENIOR ADVOCATE</span>
+          </button>
+          <button type="button" class="demo-btn" id="btnFillAdvocate">
+            <div>
+              <div style="font-weight: 600;">ananya@singhania.law</div>
+              <div style="font-size: 10px; color: #64748B;">Password: Advocate@2026</div>
+            </div>
+            <span class="demo-role-badge">ASSOCIATE</span>
+          </button>
+          <button type="button" class="demo-btn" id="btnFillJunior">
+            <div>
+              <div style="font-weight: 600;">vikram@singhania.law</div>
+              <div style="font-size: 10px; color: #64748B;">Password: Advocate@2026</div>
+            </div>
+            <span class="demo-role-badge">JUNIOR COUNSEL</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="form-footer-link">
+        New legal practice chamber?
+        <a href="/register.html">Register Law Firm &rarr;</a>
+      </div>
+    </div>
+  </div>
+
+  <script src="/js/api.js"></script>
+  <script>
+    const form = document.getElementById('loginForm');
+    const emailInput = document.getElementById('email');
+    const passInput = document.getElementById('password');
+    const errorAlert = document.getElementById('errorAlert');
+    const submitBtn = document.getElementById('submitBtn');
+    const togglePasswordBtn = document.getElementById('togglePasswordBtn');
+    const eyeIcon = document.getElementById('eyeIcon');
+
+    // Password visibility toggle
+    togglePasswordBtn.addEventListener('click', () => {
+      if (passInput.type === 'password') {
+        passInput.type = 'text';
+        eyeIcon.textContent = 'visibility_off';
+      } else {
+        passInput.type = 'password';
+        eyeIcon.textContent = 'visibility';
+      }
+    });
+
+    // 1-Click quick fill buttons
+    const demoBtns = [
+      { id: 'btnFillAdmin', email: 'rajesh@singhania.law', pass: 'Advocate@2026' },
+      { id: 'btnFillAdvocate', email: 'ananya@singhania.law', pass: 'Advocate@2026' },
+      { id: 'btnFillJunior', email: 'vikram@singhania.law', pass: 'Advocate@2026' },
+    ];
+
+    demoBtns.forEach(({ id, email, pass }) => {
+      const btn = document.getElementById(id);
+      if (!btn) return;
+      btn.addEventListener('click', () => {
+        demoBtns.forEach(d => document.getElementById(d.id)?.classList.remove('active'));
+        btn.classList.add('active');
+        emailInput.value = email;
+        passInput.value = pass;
+        emailInput.focus();
+      });
+    });
+
+    // Form submission
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      errorAlert.style.display = 'none';
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = '<span class="material-symbols-outlined" style="animation: spin 1s infinite; font-size: 18px;">progress_activity</span> Authenticating Session...';
+
+      try {
+        const email = emailInput.value.trim();
+        const password = passInput.value;
+
+        const res = await api.post('/auth/login', { email, password });
+        if (res && res.success) {
+          const urlParams = new URLSearchParams(window.location.search);
+          const redirect = urlParams.get('redirect') || '/dashboard.html';
+          window.location.href = redirect;
+        }
+      } catch (err) {
+        errorAlert.textContent = err.message || 'Login failed. Please verify credentials.';
+        errorAlert.style.display = 'block';
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = '<span class="material-symbols-outlined" style="font-size: 18px;">key</span> <span>Sign Into Chamber Diary</span>';
+      }
+    });
+  </script>
+</body>
+</html>

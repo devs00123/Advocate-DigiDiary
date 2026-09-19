@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tasks & Deadlines — Advocate DigiDiary</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Plus+Jakarta+Sans:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+  <link rel="stylesheet" href="/css/variables.css">
+  <link rel="stylesheet" href="/css/global.css">
+  <link rel="stylesheet" href="/css/layout.css">
+  <link rel="stylesheet" href="/css/components.css">
+  <link rel="stylesheet" href="/css/responsive.css">
+</head>
+<body>
+
+  <div class="app-container">
+    <!-- Sidebar -->
+    <aside class="sidebar" id="appSidebar">
+      <div class="sidebar-header">
+        <div class="brand-badge">
+          <div class="brand-logo-icon">
+            <img src="/img/logo.svg" alt="Advocate DigiDiary" style="width: 22px; height: 22px;">
+          </div>
+          <div class="brand-titles">
+            <div class="title">ADVOCATE DIGIDIARY</div>
+            <div class="subtitle">CHAMBERS SUITE</div>
+          </div>
+        </div>
+      </div>
+
+      <nav class="sidebar-nav">
+        <div class="nav-section-label" style="padding: 6px 14px 2px; font-size: 10px; font-weight: 700; color: rgba(255,255,255,0.4); text-transform: uppercase; letter-spacing: 0.05em;">Chamber</div>
+        <a href="/dashboard.html" class="nav-link">
+          <span class="material-symbols-outlined">dashboard</span>
+          <span>Dashboard</span>
+        </a>
+        <a href="/cases.html" class="nav-link">
+          <span class="material-symbols-outlined">gavel</span>
+          <span>Case Portfolio</span>
+        </a>
+        <a href="/hearings.html" class="nav-link">
+          <span class="material-symbols-outlined">calendar_today</span>
+          <span>Hearing Diary</span>
+        </a>
+        <a href="/calendar.html" class="nav-link">
+          <span class="material-symbols-outlined">date_range</span>
+          <span>Court Calendar</span>
+        </a>
+        <a href="/notes.html" class="nav-link">
+          <span class="material-symbols-outlined">edit_note</span>
+          <span>Legal Notebook</span>
+        </a>
+
+        <div class="nav-section-label" style="padding: 12px 14px 2px; font-size: 10px; font-weight: 700; color: rgba(255,255,255,0.4); text-transform: uppercase; letter-spacing: 0.05em;">Practice</div>
+        <a href="/clients.html" class="nav-link">
+          <span class="material-symbols-outlined">group</span>
+          <span>Clients</span>
+        </a>
+        <a href="/tasks.html" class="nav-link active">
+          <span class="material-symbols-outlined">check_box</span>
+          <span>Tasks & Deadlines</span>
+        </a>
+        <a href="/fees.html" class="nav-link">
+          <span class="material-symbols-outlined">payments</span>
+          <span>Fees & Ledger</span>
+        </a>
+        <a href="/expenses.html" class="nav-link">
+          <span class="material-symbols-outlined">receipt_long</span>
+          <span>Expenses</span>
+        </a>
+        <a href="/reminders.html" class="nav-link">
+          <span class="material-symbols-outlined">notifications</span>
+          <span>Reminders</span>
+        </a>
+
+        <div class="nav-section-label" style="padding: 12px 14px 2px; font-size: 10px; font-weight: 700; color: rgba(255,255,255,0.4); text-transform: uppercase; letter-spacing: 0.05em;">Firm & Insights</div>
+        <a href="/analytics.html" class="nav-link">
+          <span class="material-symbols-outlined">insights</span>
+          <span>Analytics</span>
+        </a>
+        <a href="/reports.html" class="nav-link">
+          <span class="material-symbols-outlined">description</span>
+          <span>Reports</span>
+        </a>
+        <a href="/team.html" class="nav-link">
+          <span class="material-symbols-outlined">badge</span>
+          <span>Firm & Team</span>
+        </a>
+        <a href="/audit-logs.html" class="nav-link">
+          <span class="material-symbols-outlined">history</span>
+          <span>Audit Logs</span>
+        </a>
+        <a href="/settings.html" class="nav-link">
+          <span class="material-symbols-outlined">settings</span>
+          <span>Settings</span>
+        </a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="user-profile-card">
+          <div class="user-profile-info">
+            <div class="user-name" id="sidebarUserName">Advocate</div>
+            <div class="firm-name" id="sidebarFirmName">Chambers</div>
+            <div class="bar-enrollment" id="sidebarBarEnrollment">Advocate</div>
+          </div>
+          <button class="btn btn-icon btn-sm logout-btn" id="logoutBtn" title="Sign Out" style="background: none; border: none; cursor: pointer;">
+            <span class="material-symbols-outlined" style="font-size: 18px; color: var(--on-tertiary-container);">logout</span>
+          </button>
+        </div>
+        <div class="sidebar-status-row">
+          <div class="status-indicator">
+            <div class="status-dot"></div>
+            <span>Atlas Connected</span>
+          </div>
+          <span class="role-tag" id="sidebarUserRole">ADVOCATE</span>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content Wrapper -->
+    <div class="main-wrapper">
+      <!-- Top Header -->
+      <header class="top-header">
+        <div style="display: flex; align-items: center; gap: 1rem;">
+          <button class="btn btn-icon btn-sm d-md-none" id="mobileMenuToggle" style="border: none; background: none; cursor: pointer;">
+            <span class="material-symbols-outlined">menu</span>
+          </button>
+          <div class="header-search">
+            <div class="search-input-wrapper">
+              <span class="material-symbols-outlined">search</span>
+              <input type="text" class="search-input" id="globalSearchTrigger" placeholder="Search cases, clients, hearings, notes..." readonly>
+              <div class="search-shortcut">Ctrl+K</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="header-actions">
+          <button class="btn btn-sm btn-primary" id="openAddTaskBtn">
+            <span class="material-symbols-outlined" style="font-size: 16px;">add</span>
+            <span>Create Task</span>
+          </button>
+        </div>
+      </header>
+
+      <!-- Main Content -->
+      <main class="main-content">
+        <!-- Page Title & Header -->
+        <div class="page-header" style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1.5rem;">
+          <div>
+            <h1 class="page-title" style="font-family: var(--font-headline); font-size: 1.75rem; color: var(--navy-900); margin-bottom: 0.25rem;">
+              Chamber Tasks & Court Deadlines
+            </h1>
+            <p class="page-subtitle" style="color: var(--text-muted); font-size: 0.875rem;">
+              Drafting deadlines, court compliances, rejoinders, and research assignments
+            </p>
+          </div>
+        </div>
+
+        <!-- Filter Toolbar -->
+        <div class="card" style="padding: 1rem; margin-bottom: 1.5rem;">
+          <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+            <div class="tabs-pills" style="display: flex; gap: 0.5rem;" id="taskStatusTabs">
+              <button class="btn btn-sm btn-primary task-filter-btn" data-status="pending">Pending Tasks</button>
+              <button class="btn btn-sm btn-outline task-filter-btn" data-status="completed">Completed</button>
+              <button class="btn btn-sm btn-outline task-filter-btn" data-status="">All Tasks</button>
+            </div>
+
+            <div style="display: flex; align-items: center; gap: 0.5rem;">
+              <span style="font-size: 0.8125rem; color: var(--text-muted);">Priority:</span>
+              <select id="taskPriorityFilter" class="form-control" style="width: auto; padding: 4px 10px; font-size: 0.8125rem;">
+                <option value="">All Priorities</option>
+                <option value="urgent">Urgent</option>
+                <option value="high">High</option>
+                <option value="medium">Medium</option>
+                <option value="low">Low</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tasks Table Card -->
+        <div class="card" style="padding: 0; overflow: hidden;">
+          <div class="table-container" style="border: none;">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th style="width: 48px;">Done</th>
+                  <th>Task Title</th>
+                  <th>Associated Case</th>
+                  <th>Due Date</th>
+                  <th>Priority</th>
+                  <th>Assigned Counsel</th>
+                  <th style="text-align: right;">Action</th>
+                </tr>
+              </thead>
+              <tbody id="tasksTableBody">
+                <tr>
+                  <td colspan="7" style="text-align: center; padding: 2.5rem; color: var(--text-muted);">
+                    Loading chamber tasks...
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <!-- Create Task Modal -->
+  <div class="modal-backdrop" id="taskModal">
+    <div class="modal-dialog" style="max-width: 520px;">
+      <div class="modal-header">
+        <h3 class="modal-title" style="font-family: var(--font-headline); font-size: 1.25rem;" id="taskModalTitle">Create Chamber Task</h3>
+        <button class="modal-close" onclick="UI.closeModal('taskModal')">&times;</button>
+      </div>
+      <form id="taskForm">
+        <input type="hidden" id="editTaskId">
+        <div class="modal-body">
+          <div class="form-group">
+            <label class="form-label" for="tTitle">Task Title *</label>
+            <input type="text" id="tTitle" class="form-control" placeholder="e.g. File Counter Affidavit / Verify Vakalatnama" required>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="tCaseSelect">Associated Case (Optional)</label>
+            <select id="tCaseSelect" class="form-control">
+              <option value="">General Chamber Task</option>
+            </select>
+          </div>
+
+          <div class="grid grid-cols-2 gap-4">
+            <div class="form-group">
+              <label class="form-label" for="tDueDate">Due Date *</label>
+              <input type="date" id="tDueDate" class="form-control" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="tPriority">Priority</label>
+              <select id="tPriority" class="form-control">
+                <option value="medium">Medium</option>
+                <option value="high">High</option>
+                <option value="urgent">Urgent</option>
+                <option value="low">Low</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="tDesc">Task Details / Instructions</label>
+            <textarea id="tDesc" class="form-control" rows="2" placeholder="Include any specific compliance instructions..."></textarea>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline" onclick="UI.closeModal('taskModal')">Cancel</button>
+          <button type="submit" class="btn btn-primary" id="saveTaskBtn">Save Task</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="/js/ui.js"></script>
+  <script src="/js/api.js"></script>
+  <script src="/js/auth.js"></script>
+  <script src="/js/search.js"></script>
+  <script src="/js/tasks.js"></script>
+</body>
+</html>

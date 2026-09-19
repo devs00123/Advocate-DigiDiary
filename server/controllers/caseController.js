@@ -1,0 +1,420 @@
+const Case = require('../models/Case');
+const Client = require('../models/Client');
+const Hearing = require('../models/Hearing');
+const Task = require('../models/Task');
+const Note = require('../models/Note');
+const Payment = require('../models/Payment');
+const { logAudit } = require('../utils/auditLogger');
+
+exports.listCases = async (req, res, next) => {
+  try {
+    const { search, status, court, priority, caseType, sort = 'nextHearingDate', order = 'asc', page = 1, limit = 15 } = req.query;
+
+    const query = { lawFirmId: req.user.lawFirmId };
+
+    if (status && status !== 'All Statuses' && status !== 'All') {
+      query.status = status;
+    }
+    if (court && court !== 'All Courts' && court !== 'All') {
+      query.court = new RegExp(court, 'i');
+    }
+    if (priority && priority !== 'All') {
+      query.priority = priority.toLowerCase();
+    }
+    if (caseType && caseType !== 'All Types' && caseType !== 'All') {
+      query.caseType = new RegExp(caseType, 'i');
+    }
+
+    if (search && search.trim()) {
+      const s = search.trim();
+      query.$or = [
+        { title: new RegExp(s, 'i') },
+        { caseNumber: new RegExp(s, 'i') },
+        { cnrNumber: new RegExp(s, 'i') },
+        { court: new RegExp(s, 'i') },
+        { judge: new RegExp(s, 'i') },
+        { oppositeParty: new RegExp(s, 'i') },
+        { oppositeCounsel: new RegExp(s, 'i') },
+      ];
+    }
+
+    const sortOptions = {};
+    const sortField = sort === 'title' ? 'title' : sort === 'createdAt' ? 'createdAt' : 'nextHearingDate';
+    sortOptions[sortField] = order === 'desc' ? -1 : 1;
+
+    const pageNum = Math.max(1, parseInt(page, 10) || 1);
+    const limitNum = Math.min(100, Math.max(1, parseInt(limit, 10) || 15));
+    const skip = (pageNum - 1) * limitNum;
+
+    const [cases, total] = await Promise.all([
+      Case.find(query)
+        .populate('clientId', 'name phone email clientType')
+        .populate('assignedAdvocate', 'name email designation')
+        .sort(sortOptions)
+        .skip(skip)
+        .limit(limitNum),
+      Case.countDocuments(query),
+    ]);
+
+    res.status(200).json({
+      success: true,
+      data: cases,
+      pagination: {
+        page: pageNum,
+        limit: limitNum,
+        total,
+        totalPages: Math.ceil(total / limitNum) || 1,
+      },
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+
+exports.getCaseById = async (req, res, next) => {
+  try {
+    const foundCase = await Case.findOne({
+      _id: req.params.id,
+      lawFirmId: req.user.lawFirmId, // Strict tenant isolation
+    })
+      .populate('clientId')
+      .populate('assignedAdvocate', 'name email designation phone')
+      .populate('createdBy', 'name email');
+
+    if (!foundCase) {
+      return res.status(404).json({
+        success: false,
+        message: 'Case record not found or unauthorized.',
+      });
+    }
+
+    // Fetch related hearings, tasks, notes, payments
+    const [hearings, tasks, notes, payments] = await Promise.all([
+      Hearing.find({ caseId: foundCase._id, lawFirmId: req.user.lawFirmId }).sort({ date: -1 }),
+      Task.find({ caseId: foundCase._id, lawFirmId: req.user.lawFirmId }).sort({ dueDate: 1 }),
+      Note.find({ caseId: foundCase._id, lawFirmId: req.user.lawFirmId }).sort({ pinned: -1, updatedAt: -1 }),
+      Payment.find({ caseId: foundCase._id, lawFirmId: req.user.lawFirmId }).sort({ paymentDate: -1 }),
+    ]);
+
+    const totalPaid = payments
+      .filter((p) => p.status === 'Realized')
+      .reduce((sum, p) => sum + (p.amount || 0), 0);
+    const agreedFee = foundCase.agreedFee || 0;
+    const pendingBalance = Math.max(0, agreedFee - totalPaid);
+
+    const caseObj = foundCase.toObject();
+    res.status(200).json({
+      success: true,
+      data: {
+        ...caseObj,
+        case: foundCase,
+        hearings,
+        tasks,
+        notes,
+        payments,
+        financials: {
+          agreedFee,
+          totalPaid,
+          pendingBalance,
+        },
+      },
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+
+exports.getCaseTimeline = async (req, res, next) => {
+  try {
+    const foundCase = await Case.findOne({
+      _id: req.params.id,
+      lawFirmId: req.user.lawFirmId,
+    });
+
+    if (!foundCase) {
+      return res.status(404).json({ success: false, message: 'Case not found' });
+    }
+
+    const [hearings, tasks, notes, payments] = await Promise.all([
+      Hearing.find({ caseId: foundCase._id, lawFirmId: req.user.lawFirmId }),
+      Task.find({ caseId: foundCase._id, lawFirmId: req.user.lawFirmId }),
+      Note.find({ caseId: foundCase._id, lawFirmId: req.user.lawFirmId }),
+      Payment.find({ caseId: foundCase._id, lawFirmId: req.user.lawFirmId }),
+    ]);
+
+    const events = [];
+
+    // Case filing / creation
+    events.push({
+      date: foundCase.filingDate || foundCase.createdAt,
+      type: 'FILING',
+      title: 'Case Instituted & Registered',
+      description: `Suit registered under registration number ${foundCase.caseNumber} at ${foundCase.court}.`,
+      badge: 'Chamber Intake',
+    });
+
+    hearings.forEach((h) => {
+      events.push({
+        date: h.date,
+        type: 'HEARING',
+        title: `Hearing: ${h.purpose} (${h.status})`,
+        description: `${h.court}, ${h.courtroom || ''}. Bench: ${h.judge || 'Hon. Judge'}.${h.outcome ? ` Outcome: ${h.outcome}` : ''}${h.benchNotes ? ` Notes: ${h.benchNotes}` : ''}`,
+        badge: h.status,
+      });
+    });
+
+    tasks.forEach((t) => {
+      events.push({
+        date: t.completedAt || t.dueDate,
+        type: 'TASK',
+        title: `Task: ${t.title} [${t.status}]`,
+        description: t.description || `Category: ${t.category}. Priority: ${t.priority}`,
+        badge: t.status,
+      });
+    });
+
+    notes.forEach((n) => {
+      events.push({
+        date: n.createdAt,
+        type: 'NOTE',
+        title: `Legal Note: ${n.title}`,
+        description: n.citation ? `Citation: ${n.citation}` : `Category: ${n.category}`,
+        badge: n.category,
+      });
+    });
+
+    payments.forEach((p) => {
+      events.push({
+        date: p.paymentDate,
+        type: 'PAYMENT',
+        title: `Fee Payment Realized: ₹${p.amount.toLocaleString('en-IN')}`,
+        description: `Receipt: ${p.receiptNumber} (${p.paymentMethod}) - ${p.category}`,
+        badge: p.status,
+      });
+    });
+
+    events.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+    res.status(200).json({
+      success: true,
+      data: events,
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+
+exports.createCase = async (req, res, next) => {
+  try {
+    const {
+      caseNumber,
+      cnrNumber,
+      title,
+      clientId,
+      oppositeParty,
+      oppositeCounsel,
+      caseType,
+      court,
+      judge,
+      filingDate,
+      firstHearingDate,
+      nextHearingDate,
+      priority,
+      status,
+      description,
+      assignedAdvocate,
+    } = req.body;
+
+    const clientRepresentation = req.body.clientRepresentation || req.body.partyRole || 'Plaintiff';
+    const agreedFee = req.body.agreedFee !== undefined ? req.body.agreedFee : (req.body.totalAgreedFee || 0);
+    const courtroom = req.body.courtroom || req.body.courtRoom || '';
+    const currentStage = req.body.currentStage || req.body.stage || 'Preliminary Hearing';
+
+    if (!caseNumber || !title || !clientId || !court) {
+      return res.status(400).json({
+        success: false,
+        message: 'Case Number, Case Title, Client, and Court are required fields.',
+      });
+    }
+
+    // Verify client belongs to this tenant
+    const client = await Client.findOne({ _id: clientId, lawFirmId: req.user.lawFirmId });
+    if (!client) {
+      return res.status(400).json({
+        success: false,
+        message: 'Invalid Client: Client not found in your chamber directory.',
+      });
+    }
+
+    const newCase = await Case.create({
+      lawFirmId: req.user.lawFirmId,
+      caseNumber,
+      cnrNumber: cnrNumber ? cnrNumber.toUpperCase() : '',
+      title,
+      clientId: client._id,
+      clientRepresentation,
+      oppositeParty: oppositeParty || '',
+      oppositeCounsel: oppositeCounsel || '',
+      caseType: caseType || 'Civil Suit',
+      court,
+      judge: judge || '',
+      courtroom,
+      filingDate: filingDate || new Date(),
+      firstHearingDate: firstHearingDate || null,
+      nextHearingDate: nextHearingDate || null,
+      currentStage: currentStage || 'Notice / Summons',
+      priority: priority ? priority.toLowerCase() : 'standard',
+      status: status || 'Active',
+      description: description || '',
+      agreedFee: Number(agreedFee) || 0,
+      assignedAdvocate: assignedAdvocate || req.user._id,
+      createdBy: req.user._id,
+    });
+
+    // If nextHearingDate was provided, automatically create scheduled hearing record
+    if (nextHearingDate) {
+      await Hearing.create({
+        lawFirmId: req.user.lawFirmId,
+        caseId: newCase._id,
+        clientId: client._id,
+        date: new Date(nextHearingDate),
+        time: '10:00 AM',
+        court: newCase.court,
+        courtroom: newCase.courtroom,
+        judge: newCase.judge,
+        purpose: currentStage || 'Admission / Regular Hearing',
+        status: 'Scheduled',
+        createdBy: req.user._id,
+      });
+    }
+
+    await logAudit({
+      lawFirmId: req.user.lawFirmId,
+      userId: req.user._id,
+      userName: req.user.name,
+      userEmail: req.user.email,
+      action: 'CASE_CREATED',
+      entityType: 'Case',
+      entityId: newCase._id,
+      description: `New case docket created: ${newCase.title} (${newCase.caseNumber})`,
+      ipAddress: req.ip,
+    });
+
+    res.status(201).json({
+      success: true,
+      message: 'Case docket created successfully.',
+      data: newCase,
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+
+exports.updateCase = async (req, res, next) => {
+  try {
+    const foundCase = await Case.findOne({
+      _id: req.params.id,
+      lawFirmId: req.user.lawFirmId,
+    });
+
+    if (!foundCase) {
+      return res.status(404).json({
+        success: false,
+        message: 'Case not found or unauthorized.',
+      });
+    }
+
+    // Updatable fields
+    const fields = [
+      'caseNumber',
+      'cnrNumber',
+      'title',
+      'clientRepresentation',
+      'oppositeParty',
+      'oppositeCounsel',
+      'caseType',
+      'court',
+      'judge',
+      'courtroom',
+      'filingDate',
+      'firstHearingDate',
+      'nextHearingDate',
+      'currentStage',
+      'priority',
+      'status',
+      'description',
+      'agreedFee',
+      'assignedAdvocate',
+    ];
+
+    fields.forEach((f) => {
+      if (req.body[f] !== undefined) {
+        foundCase[f] = req.body[f];
+      }
+    });
+
+    await foundCase.save();
+
+    await logAudit({
+      lawFirmId: req.user.lawFirmId,
+      userId: req.user._id,
+      userName: req.user.name,
+      userEmail: req.user.email,
+      action: 'CASE_UPDATED',
+      entityType: 'Case',
+      entityId: foundCase._id,
+      description: `Updated case docket ${foundCase.caseNumber} (${foundCase.title})`,
+      ipAddress: req.ip,
+    });
+
+    res.status(200).json({
+      success: true,
+      message: 'Case docket updated successfully.',
+      data: foundCase,
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+
+exports.deleteCase = async (req, res, next) => {
+  try {
+    const foundCase = await Case.findOneAndDelete({
+      _id: req.params.id,
+      lawFirmId: req.user.lawFirmId,
+    });
+
+    if (!foundCase) {
+      return res.status(404).json({
+        success: false,
+        message: 'Case not found or unauthorized.',
+      });
+    }
+
+    // Clean up associated hearings, tasks, notes
+    await Promise.all([
+      Hearing.deleteMany({ caseId: foundCase._id, lawFirmId: req.user.lawFirmId }),
+      Task.deleteMany({ caseId: foundCase._id, lawFirmId: req.user.lawFirmId }),
+      Note.deleteMany({ caseId: foundCase._id, lawFirmId: req.user.lawFirmId }),
+    ]);
+
+    await logAudit({
+      lawFirmId: req.user.lawFirmId,
+      userId: req.user._id,
+      userName: req.user.name,
+      userEmail: req.user.email,
+      action: 'CASE_DELETED',
+      entityType: 'Case',
+      entityId: foundCase._id,
+      description: `Deleted case docket ${foundCase.caseNumber} (${foundCase.title})`,
+      ipAddress: req.ip,
+    });
+
+    res.status(200).json({
+      success: true,
+      message: 'Case docket removed successfully.',
+    });
+  } catch (err) {
+    next(err);
+  }
+};

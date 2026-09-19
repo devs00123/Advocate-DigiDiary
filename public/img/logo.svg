@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none">
+  <rect width="48" height="48" rx="10" fill="#0A1128"/>
+  <!-- Left diary cover / pillar base -->
+  <path d="M12 11C12 9.89543 12.8954 9 14 9H22V39H14C12.8954 39 12 38.1046 12 37V11Z" fill="#162447" stroke="#C59B27" stroke-width="1.5"/>
+  <!-- Right diary open page with digital spine -->
+  <path d="M26 9H34C35.1046 9 36 9.89543 36 11V37C36 38.1046 35.1046 39 34 39H26V9Z" fill="#101B3B" stroke="#C59B27" stroke-width="1.5"/>
+  <!-- Center legal pillar / digital column -->
+  <rect x="22" y="7" width="4" height="34" rx="2" fill="#D4AF37"/>
+  <circle cx="24" cy="14" r="1.5" fill="#0A1128"/>
+  <circle cx="24" cy="24" r="1.5" fill="#0A1128"/>
+  <circle cx="24" cy="34" r="1.5" fill="#0A1128"/>
+  <!-- Subtle gold diary ruled lines on right page -->
+  <line x1="28" y1="15" x2="33" y2="15" stroke="#C59B27" stroke-width="1.5" stroke-linecap="round"/>
+  <line x1="28" y1="21" x2="33" y2="21" stroke="#C59B27" stroke-width="1.5" stroke-linecap="round"/>
+  <line x1="28" y1="27" x2="33" y2="27" stroke="#C59B27" stroke-width="1.5" stroke-linecap="round"/>
+</svg>

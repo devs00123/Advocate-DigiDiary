@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard — Advocate DigiDiary</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Plus+Jakarta+Sans:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+  <link rel="stylesheet" href="/css/variables.css">
+  <link rel="stylesheet" href="/css/global.css">
+  <link rel="stylesheet" href="/css/layout.css">
+  <link rel="stylesheet" href="/css/components.css">
+  <link rel="stylesheet" href="/css/responsive.css">
+</head>
+<body>
+
+  <div class="app-container">
+    <!-- Sidebar -->
+    <aside class="sidebar" id="appSidebar">
+      <div class="sidebar-header">
+        <div class="brand-badge">
+          <div class="brand-logo-icon">
+            <img src="/img/logo.svg" alt="Advocate DigiDiary" style="width: 22px; height: 22px;">
+          </div>
+          <div class="brand-titles">
+            <div class="title">ADVOCATE DIGIDIARY</div>
+            <div class="subtitle">CHAMBERS SUITE</div>
+          </div>
+        </div>
+      </div>
+
+      <nav class="sidebar-nav">
+        <div class="nav-section-label" style="padding: 6px 14px 2px; font-size: 10px; font-weight: 700; color: rgba(255,255,255,0.4); text-transform: uppercase; letter-spacing: 0.05em;">Chamber</div>
+        <a href="/dashboard.html" class="nav-link active">
+          <span class="material-symbols-outlined">dashboard</span>
+          <span>Dashboard</span>
+        </a>
+        <a href="/cases.html" class="nav-link">
+          <span class="material-symbols-outlined">gavel</span>
+          <span>Case Portfolio</span>
+        </a>
+        <a href="/hearings.html" class="nav-link">
+          <span class="material-symbols-outlined">calendar_today</span>
+          <span>Hearing Diary</span>
+        </a>
+        <a href="/calendar.html" class="nav-link">
+          <span class="material-symbols-outlined">date_range</span>
+          <span>Court Calendar</span>
+        </a>
+        <a href="/notes.html" class="nav-link">
+          <span class="material-symbols-outlined">edit_note</span>
+          <span>Legal Notebook</span>
+        </a>
+
+        <div class="nav-section-label" style="padding: 12px 14px 2px; font-size: 10px; font-weight: 700; color: rgba(255,255,255,0.4); text-transform: uppercase; letter-spacing: 0.05em;">Practice</div>
+        <a href="/clients.html" class="nav-link">
+          <span class="material-symbols-outlined">group</span>
+          <span>Clients</span>
+        </a>
+        <a href="/tasks.html" class="nav-link">
+          <span class="material-symbols-outlined">check_box</span>
+          <span>Tasks & Deadlines</span>
+        </a>
+        <a href="/fees.html" class="nav-link">
+          <span class="material-symbols-outlined">payments</span>
+          <span>Fees & Ledger</span>
+        </a>
+        <a href="/expenses.html" class="nav-link">
+          <span class="material-symbols-outlined">receipt_long</span>
+          <span>Expenses</span>
+        </a>
+        <a href="/reminders.html" class="nav-link">
+          <span class="material-symbols-outlined">notifications</span>
+          <span>Reminders</span>
+        </a>
+
+        <div class="nav-section-label" style="padding: 12px 14px 2px; font-size: 10px; font-weight: 700; color: rgba(255,255,255,0.4); text-transform: uppercase; letter-spacing: 0.05em;">Firm & Insights</div>
+        <a href="/analytics.html" class="nav-link">
+          <span class="material-symbols-outlined">insights</span>
+          <span>Analytics</span>
+        </a>
+        <a href="/reports.html" class="nav-link">
+          <span class="material-symbols-outlined">description</span>
+          <span>Reports</span>
+        </a>
+        <a href="/team.html" class="nav-link">
+          <span class="material-symbols-outlined">badge</span>
+          <span>Firm & Team</span>
+        </a>
+        <a href="/audit-logs.html" class="nav-link">
+          <span class="material-symbols-outlined">history</span>
+          <span>Audit Logs</span>
+        </a>
+        <a href="/settings.html" class="nav-link">
+          <span class="material-symbols-outlined">settings</span>
+          <span>Settings</span>
+        </a>
+        <a href="/admin.html" class="nav-link admin-only" id="navAdminLink" style="display: none; color: var(--secondary);">
+          <span class="material-symbols-outlined" style="color: var(--secondary);">admin_panel_settings</span>
+          <span>Super Admin</span>
+        </a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="user-profile-card">
+          <div class="user-profile-info">
+            <div class="user-name" id="sidebarUserName">Advocate</div>
+            <div class="firm-name" id="sidebarFirmName">Chambers</div>
+            <div class="bar-enrollment" id="sidebarBarEnrollment">Advocate</div>
+          </div>
+          <button class="btn btn-icon btn-sm logout-btn" id="logoutBtn" title="Sign Out" style="background: none; border: none; cursor: pointer;">
+            <span class="material-symbols-outlined" style="font-size: 18px; color: var(--on-tertiary-container);">logout</span>
+          </button>
+        </div>
+        <div class="sidebar-status-row">
+          <div class="status-indicator">
+            <div class="status-dot"></div>
+            <span>Atlas Connected</span>
+          </div>
+          <span class="role-tag" id="sidebarUserRole">ADVOCATE</span>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content Wrapper -->
+    <div class="main-wrapper">
+      <!-- Top Sticky Header -->
+      <header class="top-header">
+        <div style="display: flex; align-items: center; gap: 1rem;">
+          <button class="btn btn-icon btn-sm d-md-none" id="mobileMenuToggle" style="border: none; background: none; cursor: pointer;">
+            <span class="material-symbols-outlined">menu</span>
+          </button>
+          <div class="header-search">
+            <div class="search-input-wrapper">
+              <span class="material-symbols-outlined">search</span>
+              <input type="text" class="search-input" id="globalSearchTrigger" placeholder="Search cases, clients, hearings, notes..." readonly>
+              <div class="search-shortcut">Ctrl+K</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="header-actions" style="display: flex; align-items: center; gap: 0.75rem;">
+          <button class="btn btn-sm btn-outline" id="quickAddHearingBtn">
+            <span class="material-symbols-outlined" style="font-size: 16px;">add_circle</span>
+            <span>New Hearing</span>
+          </button>
+          <button class="btn btn-sm btn-primary" id="quickAddCaseBtn">
+            <span class="material-symbols-outlined" style="font-size: 16px;">add</span>
+            <span>Add Case</span>
+          </button>
+        </div>
+      </header>
+
+      <!-- Main Content Area -->
+      <main class="main-content">
+        <!-- Page Header -->
+        <div class="page-header" style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1.5rem;">
+          <div>
+            <h1 class="page-title" style="font-family: var(--font-headline); font-size: 1.75rem; color: var(--navy-900); margin-bottom: 0.25rem;">
+              Chamber Dashboard
+            </h1>
+            <p class="page-subtitle" id="currentDateDisplay" style="color: var(--text-muted); font-size: 0.875rem;">
+              Loading court calendar...
+            </p>
+          </div>
+
+          <div style="display: flex; gap: 0.5rem;">
+            <a href="/api/reports/cause-list?format=pdf" target="_blank" class="btn btn-sm btn-outline" id="downloadCauseListPdf">
+              <span class="material-symbols-outlined" style="font-size: 16px;">print</span>
+              <span>Today's Cause List (PDF)</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- KPI Metrics Grid (4 Cards matching Stitch) -->
+        <div class="grid grid-cols-4 gap-4" style="margin-bottom: 1.5rem;" id="kpiContainer">
+          <!-- Active Cases -->
+          <div class="card kpi-card">
+            <div class="kpi-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+              <span class="kpi-title" style="font-size: 0.8125rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.03em;">Active Portfolio</span>
+              <div class="kpi-icon-badge" style="width: 32px; height: 32px; border-radius: 8px; background: rgba(10, 17, 40, 0.06); color: var(--navy-900); display: flex; align-items: center; justify-content: center;">
+                <span class="material-symbols-outlined" style="font-size: 18px;">gavel</span>
+              </div>
+            </div>
+            <div class="kpi-value" id="kpiActiveCases" style="font-family: var(--font-headline); font-size: 2rem; font-weight: 700; color: var(--navy-900); line-height: 1;">--</div>
+            <div class="kpi-subtext" id="kpiActiveCasesSub" style="margin-top: 0.5rem; font-size: 0.75rem; color: var(--text-muted);">
+              Loading cases...
+            </div>
+          </div>
+
+          <!-- Today's Hearings -->
+          <div class="card kpi-card" style="border-left: 3px solid var(--gold-500);">
+            <div class="kpi-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+              <span class="kpi-title" style="font-size: 0.8125rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.03em;">Today's Hearings</span>
+              <div class="kpi-icon-badge" style="width: 32px; height: 32px; border-radius: 8px; background: rgba(197, 155, 39, 0.12); color: var(--gold-700); display: flex; align-items: center; justify-content: center;">
+                <span class="material-symbols-outlined" style="font-size: 18px;">balance</span>
+              </div>
+            </div>
+            <div class="kpi-value" id="kpiTodayHearings" style="font-family: var(--font-headline); font-size: 2rem; font-weight: 700; color: var(--navy-900); line-height: 1;">--</div>
+            <div class="kpi-subtext" id="kpiTodayHearingsSub" style="margin-top: 0.5rem; font-size: 0.75rem; color: var(--gold-700); font-weight: 600;">
+              0 listed in cause lists
+            </div>
+          </div>
+
+          <!-- Pending Deadlines -->
+          <div class="card kpi-card">
+            <div class="kpi-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+              <span class="kpi-title" style="font-size: 0.8125rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.03em;">Pending Tasks</span>
+              <div class="kpi-icon-badge" style="width: 32px; height: 32px; border-radius: 8px; background: rgba(220, 38, 38, 0.08); color: var(--danger); display: flex; align-items: center; justify-content: center;">
+                <span class="material-symbols-outlined" style="font-size: 18px;">alarm</span>
+              </div>
+            </div>
+            <div class="kpi-value" id="kpiPendingTasks" style="font-family: var(--font-headline); font-size: 2rem; font-weight: 700; color: var(--navy-900); line-height: 1;">--</div>
+            <div class="kpi-subtext" id="kpiPendingTasksSub" style="margin-top: 0.5rem; font-size: 0.75rem; color: var(--text-muted);">
+              Loading deadlines...
+            </div>
+          </div>
+
+          <!-- Ledger & Recovery -->
+          <div class="card kpi-card">
+            <div class="kpi-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+              <span class="kpi-title" style="font-size: 0.8125rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.03em;">Fee Recovery</span>
+              <div class="kpi-icon-badge" style="width: 32px; height: 32px; border-radius: 8px; background: rgba(5, 150, 105, 0.08); color: var(--success); display: flex; align-items: center; justify-content: center;">
+                <span class="material-symbols-outlined" style="font-size: 18px;">account_balance_wallet</span>
+              </div>
+            </div>
+            <div class="kpi-value" id="kpiOutstandingFees" style="font-family: var(--font-headline); font-size: 1.75rem; font-weight: 700; color: var(--navy-900); line-height: 1;">₹0</div>
+            <div class="kpi-subtext" id="kpiCollectedFeesSub" style="margin-top: 0.5rem; font-size: 0.75rem; color: var(--success); font-weight: 600;">
+              Outstanding balance
+            </div>
+          </div>
+        </div>
+
+        <!-- Split Grid (8 cols / 4 cols) -->
+        <div class="grid grid-cols-12 gap-6">
+          <!-- Main Left Column (8 cols) -->
+          <div class="col-span-8" style="display: flex; flex-direction: column; gap: 1.5rem;">
+            
+            <!-- Today's Cause List Card -->
+            <div class="card" style="padding: 0; overflow: hidden;">
+              <div style="padding: 1.25rem 1.5rem; border-bottom: 1px solid var(--border-light); display: flex; justify-content: space-between; align-items: center; background: #FAFBFD;">
+                <div>
+                  <div style="display: flex; align-items: center; gap: 0.5rem;">
+                    <h2 style="font-family: var(--font-headline); font-size: 1.15rem; font-weight: 700; color: var(--navy-900);">Today's Daily Cause List</h2>
+                    <span class="badge badge-warning" style="font-size: 0.65rem; padding: 2px 6px;">COURT HEARINGS</span>
+                  </div>
+                  <p style="font-size: 0.8125rem; color: var(--text-muted); margin-top: 2px;">Supreme Court, High Court & District Court appearances</p>
+                </div>
+                <a href="/hearings.html" class="btn btn-sm btn-ghost" style="font-size: 0.8125rem;">View Hearing Diary &rarr;</a>
+              </div>
+
+              <div class="table-container" style="border: none;">
+                <table class="data-table">
+                  <thead>
+                    <tr>
+                      <th style="width: 70px;">Item #</th>
+                      <th>Case & Parties</th>
+                      <th>Court & Bench</th>
+                      <th>Purpose / Stage</th>
+                      <th>Status</th>
+                      <th style="text-align: right;">Action</th>
+                    </tr>
+                  </thead>
+                  <tbody id="todayHearingsTableBody">
+                    <tr>
+                      <td colspan="6" style="text-align: center; padding: 2rem; color: var(--text-muted);">
+                        <span class="material-symbols-outlined" style="font-size: 2rem; opacity: 0.4; display: block; margin-bottom: 0.5rem;">event_available</span>
+                        No hearings listed for today. All chambers clear.
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- Active Portfolio Pipeline Card -->
+            <div class="card" style="padding: 0; overflow: hidden;">
+              <div style="padding: 1.25rem 1.5rem; border-bottom: 1px solid var(--border-light); display: flex; justify-content: space-between; align-items: center; background: #FAFBFD;">
+                <div>
+                  <h2 style="font-family: var(--font-headline); font-size: 1.15rem; font-weight: 700; color: var(--navy-900);">Active Case Portfolio</h2>
+                  <p style="font-size: 0.8125rem; color: var(--text-muted); margin-top: 2px;">Recently updated litigation and corporate briefs</p>
+                </div>
+                <a href="/cases.html" class="btn btn-sm btn-ghost" style="font-size: 0.8125rem;">Browse All Cases &rarr;</a>
+              </div>
+
+              <div class="table-container" style="border: none;">
+                <table class="data-table">
+                  <thead>
+                    <tr>
+                      <th>Case Number</th>
+                      <th>Title & Parties</th>
+                      <th>Court</th>
+                      <th>Next Date</th>
+                      <th>Stage</th>
+                      <th style="text-align: right;">Details</th>
+                    </tr>
+                  </thead>
+                  <tbody id="recentCasesTableBody">
+                    <tr>
+                      <td colspan="6" style="text-align: center; padding: 2rem; color: var(--text-muted);">
+                        Loading active portfolio...
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Secondary Right Column (4 cols) -->
+          <div class="col-span-4" style="display: flex; flex-direction: column; gap: 1.5rem;">
+            
+            <!-- Immediate Chamber Deadlines -->
+            <div class="card">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                <h2 style="font-family: var(--font-headline); font-size: 1.1rem; font-weight: 700; color: var(--navy-900);">Immediate Deadlines</h2>
+                <a href="/tasks.html" style="font-size: 0.75rem; color: var(--gold-600); font-weight: 600; text-decoration: none;">View All</a>
+              </div>
+              <div id="urgentTasksList" style="display: flex; flex-direction: column; gap: 0.75rem;">
+                <div style="text-align: center; padding: 1.5rem; color: var(--text-muted); font-size: 0.8125rem;">
+                  Loading upcoming tasks...
+                </div>
+              </div>
+            </div>
+
+            <!-- Chamber Financial Quick View -->
+            <div class="card">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                <h2 style="font-family: var(--font-headline); font-size: 1.1rem; font-weight: 700; color: var(--navy-900);">Practice Ledger</h2>
+                <a href="/fees.html" style="font-size: 0.75rem; color: var(--gold-600); font-weight: 600; text-decoration: none;">Full Ledger</a>
+              </div>
+              <div style="background: var(--surface-low); border-radius: var(--radius-md); padding: 1rem; margin-bottom: 0.75rem;">
+                <div style="display: flex; justify-content: space-between; font-size: 0.8125rem; margin-bottom: 0.35rem;">
+                  <span style="color: var(--text-muted);">Total Fees Billed</span>
+                  <span style="font-weight: 600; color: var(--navy-900);" id="finBilled">₹0</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; font-size: 0.8125rem; margin-bottom: 0.35rem;">
+                  <span style="color: var(--text-muted);">Collected Fees</span>
+                  <span style="font-weight: 600; color: var(--success);" id="finCollected">₹0</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; font-size: 0.8125rem; border-top: 1px solid var(--border-light); padding-top: 0.5rem; margin-top: 0.5rem;">
+                  <span style="font-weight: 600; color: var(--navy-900);">Outstanding Dues</span>
+                  <span style="font-weight: 700; color: var(--danger);" id="finOutstanding">₹0</span>
+                </div>
+              </div>
+              <button class="btn btn-sm btn-outline" style="width: 100%; justify-content: center;" onclick="window.location.href='/fees.html?action=record'">
+                <span class="material-symbols-outlined" style="font-size: 16px;">receipt</span>
+                <span>Record Client Payment</span>
+              </button>
+            </div>
+
+            <!-- Pinned Legal Notes / Citations -->
+            <div class="card">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                <h2 style="font-family: var(--font-headline); font-size: 1.1rem; font-weight: 700; color: var(--navy-900);">Legal Notebook</h2>
+                <a href="/notes.html" style="font-size: 0.75rem; color: var(--gold-600); font-weight: 600; text-decoration: none;">Open Notes</a>
+              </div>
+              <div id="pinnedNotesList" style="display: flex; flex-direction: column; gap: 0.75rem;">
+                <div style="text-align: center; padding: 1.5rem; color: var(--text-muted); font-size: 0.8125rem;">
+                  Loading pinned notes...
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <!-- Global Quick Add Case Modal -->
+  <div class="modal-backdrop" id="caseModal">
+    <div class="modal-dialog" style="max-width: 600px;">
+      <div class="modal-header">
+        <h3 class="modal-title" style="font-family: var(--font-headline); font-size: 1.25rem;">Add New Legal Matter</h3>
+        <button class="modal-close" onclick="UI.closeModal('caseModal')">&times;</button>
+      </div>
+      <form id="quickCaseForm">
+        <div class="modal-body">
+          <div class="form-group">
+            <label class="form-label" for="caseTitle">Case Title / Cause Title *</label>
+            <input type="text" id="caseTitle" class="form-control" placeholder="e.g. Acme Corp vs. State of Delhi" required>
+          </div>
+
+          <div class="grid grid-cols-2 gap-4">
+            <div class="form-group">
+              <label class="form-label" for="caseNumber">Case / Petition No. *</label>
+              <input type="text" id="caseNumber" class="form-control" placeholder="WP(C) 12450/2024" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="caseCnr">CNR Number</label>
+              <input type="text" id="caseCnr" class="form-control" placeholder="DLDH010023452024">
+            </div>
+          </div>
+
+          <div class="grid grid-cols-2 gap-4">
+            <div class="form-group">
+              <label class="form-label" for="caseCourt">Court / Forum *</label>
+              <input type="text" id="caseCourt" class="form-control" placeholder="Delhi High Court" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="caseCourtRoom">Court Room No.</label>
+              <input type="text" id="caseCourtRoom" class="form-control" placeholder="Court No. 14">
+            </div>
+          </div>
+
+          <div class="grid grid-cols-2 gap-4">
+            <div class="form-group">
+              <label class="form-label" for="caseType">Matter Type *</label>
+              <select id="caseType" class="form-control" required>
+                <option value="Civil">Civil</option>
+                <option value="Criminal">Criminal</option>
+                <option value="Commercial">Commercial</option>
+                <option value="Arbitration">Arbitration</option>
+                <option value="Constitutional">Constitutional</option>
+                <option value="Taxation">Taxation</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="caseClientSelect">Client *</label>
+              <select id="caseClientSelect" class="form-control" required>
+                <option value="">Select client...</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-2 gap-4">
+            <div class="form-group">
+              <label class="form-label" for="casePartyRole">Representing *</label>
+              <select id="casePartyRole" class="form-control" required>
+                <option value="Petitioner">Petitioner / Plaintiff</option>
+                <option value="Respondent">Respondent / Defendant</option>
+                <option value="Appellant">Appellant</option>
+                <option value="Opposite Party">Opposite Party</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="caseAgreedFee">Agreed Professional Fee (₹)</label>
+              <input type="number" id="caseAgreedFee" class="form-control" placeholder="0" min="0">
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline" onclick="UI.closeModal('caseModal')">Cancel</button>
+          <button type="submit" class="btn btn-primary" id="saveCaseBtn">Create Case</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Global Quick Add Hearing Modal -->
+  <div class="modal-backdrop" id="hearingModal">
+    <div class="modal-dialog" style="max-width: 540px;">
+      <div class="modal-header">
+        <h3 class="modal-title" style="font-family: var(--font-headline); font-size: 1.25rem;">Schedule Hearing</h3>
+        <button class="modal-close" onclick="UI.closeModal('hearingModal')">&times;</button>
+      </div>
+      <form id="quickHearingForm">
+        <div class="modal-body">
+          <div class="form-group">
+            <label class="form-label" for="hearingCaseSelect">Select Case *</label>
+            <select id="hearingCaseSelect" class="form-control" required>
+              <option value="">Select case matter...</option>
+            </select>
+          </div>
+
+          <div class="grid grid-cols-2 gap-4">
+            <div class="form-group">
+              <label class="form-label" for="hearingDate">Hearing Date *</label>
+              <input type="date" id="hearingDate" class="form-control" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="hearingTime">Time / Session</label>
+              <input type="time" id="hearingTime" class="form-control" value="10:30">
+            </div>
+          </div>
+
+          <div class="grid grid-cols-2 gap-4">
+            <div class="form-group">
+              <label class="form-label" for="hearingItemNo">Item / Serial No.</label>
+              <input type="number" id="hearingItemNo" class="form-control" placeholder="e.g. 12" min="1">
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="hearingCourtNo">Court Room No.</label>
+              <input type="text" id="hearingCourtNo" class="form-control" placeholder="Court No. 14">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="hearingPurpose">Purpose of Hearing *</label>
+            <input type="text" id="hearingPurpose" class="form-control" placeholder="Arguments on Interim Relief / Framing Issues" required>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="hearingJudge">Presiding Judge / Bench</label>
+            <input type="text" id="hearingJudge" class="form-control" placeholder="Hon'ble Justice S. Muralidhar">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline" onclick="UI.closeModal('hearingModal')">Cancel</button>
+          <button type="submit" class="btn btn-primary" id="saveHearingBtn">Schedule Hearing</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="/js/ui.js"></script>
+  <script src="/js/api.js"></script>
+  <script src="/js/auth.js"></script>
+  <script src="/js/search.js"></script>
+  <script src="/js/dashboard.js"></script>
+</body>
+</html>
