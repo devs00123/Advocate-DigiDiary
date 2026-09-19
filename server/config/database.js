@@ -9,23 +9,71 @@ const connectDB = async () => {
 
   if (isProduction) {
     if (!uri) {
-      console.error('\n[FATAL DATABASE ERROR] MONGODB_URI environment variable is missing in production!');
-      console.error('Advocate DigiDiary strictly requires a configured MongoDB Atlas URI in production mode.\n');
+      console.error('\n=============================================================');
+      console.error('  [FATAL DATABASE ERROR] MONGODB_URI is missing in production!');
+      console.error('=============================================================');
+      console.error('  Please set the MONGODB_URI environment variable in your');
+      console.error('  Render Dashboard (Environment tab).');
+      console.error('  Example: mongodb+srv://user:pass@cluster.mongodb.net/advocate_digidiary?retryWrites=true&w=majority');
+      console.error('=============================================================\n');
+      if (process.env.ALLOW_FALLBACK_DB === 'true') {
+        return startFallbackDB();
+      }
       process.exit(1);
     }
 
-    try {
-      console.log('[DATABASE] Connecting to MongoDB Atlas in production mode...');
-      await mongoose.connect(uri, {
-        serverSelectionTimeoutMS: 10000,
-      });
-      console.log('[DATABASE] Successfully connected to production MongoDB Atlas.');
-      return mongoose.connection;
-    } catch (err) {
-      console.error('\n[FATAL DATABASE ERROR] Failed to connect to MongoDB Atlas in production:');
-      console.error(err.message);
-      console.error('Application cannot start without a healthy production database connection.\n');
-      process.exit(1);
+    // Check for common placeholder errors like <password>
+    if (uri.includes('<username>') || uri.includes('<password>') || uri.includes('<') || uri.includes('>')) {
+      console.error('\n=============================================================');
+      console.error('  [DATABASE CONFIGURATION WARNING] Unreplaced placeholders found in MONGODB_URI!');
+      console.error('  Your URI contains literal "<" or ">" characters.');
+      console.error('  Be sure to replace "<password>" with your real password,');
+      console.error('  without the angle brackets.');
+      console.error('=============================================================\n');
+    }
+
+    // Attempt connection with retries
+    const maxRetries = 3;
+    for (let attempt = 1; attempt <= maxRetries; attempt++) {
+      try {
+        console.log(`[DATABASE] Connecting to MongoDB Atlas (attempt ${attempt}/${maxRetries})...`);
+        await mongoose.connect(uri, {
+          serverSelectionTimeoutMS: 8000,
+          connectTimeoutMS: 10000,
+        });
+        console.log('[DATABASE] Successfully connected to production MongoDB Atlas.');
+        return mongoose.connection;
+      } catch (err) {
+        console.error(`[DATABASE] Attempt ${attempt}/${maxRetries} failed: ${err.message}`);
+        if (attempt < maxRetries) {
+          console.log('[DATABASE] Retrying in 3 seconds...');
+          await new Promise((r) => setTimeout(r, 3000));
+        } else {
+          console.error('\n=============================================================');
+          console.error('  [FATAL DATABASE ERROR] Failed to connect to MongoDB Atlas in production:');
+          console.error(`  ${err.message}`);
+          console.error('=============================================================');
+          console.error('  HOW TO FIX IN MONGODB ATLAS (Top 3 Causes):');
+          console.error('  1. IP WHITELIST (Most Common):');
+          console.error('     Render instances have dynamic outbound IPs.');
+          console.error('     In MongoDB Atlas -> Network Access -> "+ Add IP Address"');
+          console.error('     Click "ALLOW ACCESS FROM ANYWHERE" (0.0.0.0/0) -> Confirm.');
+          console.error('  2. SPECIAL CHARACTERS IN PASSWORD:');
+          console.error('     If your DB password has characters like @, #, :, /, %, ?');
+          console.error('     they MUST be URL-encoded (e.g. @ becomes %40).');
+          console.error('  3. REMOVE ANGLE BRACKETS:');
+          console.error('     Do not leave < > around the password or username.');
+          console.error('  4. EMERGENCY FALLBACK:');
+          console.error('     Set ALLOW_FALLBACK_DB=true in Render Environment variables');
+          console.error('     to keep the website online while fixing Atlas settings.');
+          console.error('=============================================================\n');
+
+          if (process.env.ALLOW_FALLBACK_DB === 'true') {
+            return startFallbackDB();
+          }
+          process.exit(1);
+        }
+      }
     }
   }
 
@@ -59,16 +107,22 @@ const connectDB = async () => {
     }
   }
 
-  // Fallback for development if local mongod is not installed/running
+  // Fallback for development or emergency production mode
+  return startFallbackDB();
+};
+
+const startFallbackDB = async () => {
   try {
     const { MongoMemoryServer } = require('mongodb-memory-server');
     mongoMemoryServer = await MongoMemoryServer.create();
     const fallbackUri = mongoMemoryServer.getUri();
     await mongoose.connect(fallbackUri);
-    console.log('[DATABASE NOTICE] Running on local development embedded database.');
+    console.log('\n=============================================================');
+    console.log('  [DATABASE NOTICE] Running on embedded database fallback.');
+    console.log('=============================================================\n');
     return mongoose.connection;
   } catch (err) {
-    console.error('[DATABASE ERROR] Failed to start embedded development database:', err.message);
+    console.error('[DATABASE ERROR] Failed to start embedded fallback database:', err.message);
     throw err;
   }
 };

@@ -13,5 +13,7 @@ services:
         generateValue: true
       - key: SEED_ON_EMPTY
         value: "true"
+      - key: ALLOW_FALLBACK_DB
+        value: "true"
       - key: MONGODB_URI
         sync: false
