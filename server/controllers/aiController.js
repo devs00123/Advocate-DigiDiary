@@ -102,24 +102,38 @@ Thank you for your query regarding: **"${query.length > 60 ? query.substring(0, 
 // Candidate models in order of priority (Google Gemini latest models)
 const CANDIDATE_MODELS = [
   process.env.GEMINI_MODEL,
-  'gemini-2.5-flash',
   'gemini-3.6-flash',
 ].filter(Boolean);
+
+async function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
 
 async function generateWithModelFallback(genAI, contentPayload) {
   let lastErr = null;
   for (const modelName of CANDIDATE_MODELS) {
-    try {
-      const model = genAI.getGenerativeModel({
-        model: modelName,
-        systemInstruction: SYSTEM_PROMPT,
-      });
-      const result = await model.generateContent(contentPayload);
-      const text = result.response.text();
-      return { text, modelName };
-    } catch (err) {
-      lastErr = err;
-      console.warn(`[AI CONTROLLER] Model ${modelName} failed (${err.message}). Trying next candidate...`);
+    const maxRetries = 2;
+    for (let attempt = 0; attempt <= maxRetries; attempt++) {
+      try {
+        const model = genAI.getGenerativeModel({
+          model: modelName,
+          systemInstruction: SYSTEM_PROMPT,
+        });
+        const result = await model.generateContent(contentPayload);
+        const text = result.response.text();
+        return { text, modelName };
+      } catch (err) {
+        lastErr = err;
+        const is503 = err.message && err.message.includes('503');
+        if (is503 && attempt < maxRetries) {
+          const delay = (attempt + 1) * 2000;
+          console.warn(`[AI CONTROLLER] Model ${modelName} overloaded (503). Retry ${attempt + 1}/${maxRetries} in ${delay}ms...`);
+          await sleep(delay);
+          continue;
+        }
+        console.warn(`[AI CONTROLLER] Model ${modelName} failed (${err.message}). Trying next candidate...`);
+        break;
+      }
     }
   }
   throw lastErr;
