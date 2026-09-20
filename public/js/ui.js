@@ -311,6 +311,200 @@ function confirmDialog(options = {}) {
 }
 window.confirmDialog = confirmDialog;
 
+// Executive Chamber Reminder Pop-up Alert
+function showReminderPopup(dueReminders = []) {
+  if (!dueReminders || dueReminders.length === 0) return;
+
+  let modal = document.getElementById('uiReminderAlertModal');
+  if (!modal) {
+    modal = document.createElement('div');
+    modal.id = 'uiReminderAlertModal';
+    modal.className = 'modal-backdrop';
+    modal.style.zIndex = '99998';
+    document.body.appendChild(modal);
+  }
+
+  modal.innerHTML = `
+    <div class="modal-dialog" style="max-width: 520px; border-radius: 12px; overflow: hidden; box-shadow: 0 24px 54px rgba(10, 17, 40, 0.4); border: 1px solid rgba(197, 155, 39, 0.3); background: #FFFFFF; padding: 0;">
+      <!-- Header -->
+      <div style="padding: 1.25rem 1.5rem; background: var(--navy-900, #0A1128); color: #FFFFFF; display: flex; align-items: center; justify-content: space-between; border-bottom: 2px solid var(--gold-600, #C59B27);">
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <div style="width: 40px; height: 40px; border-radius: 10px; background: rgba(197, 155, 39, 0.2); border: 1px solid rgba(197, 155, 39, 0.4); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+            <span class="material-symbols-outlined" style="color: var(--gold-500, #C59B27); font-size: 22px;">notifications_active</span>
+          </div>
+          <div>
+            <h3 style="margin: 0; font-family: var(--font-headline, 'Playfair Display', serif); font-size: 1.2rem; color: #FFFFFF; font-weight: 700;">Chamber Reminder Alert</h3>
+            <p style="margin: 2px 0 0; font-size: 0.75rem; color: rgba(255,255,255,0.75); letter-spacing: 0.03em;">
+              <span id="uiReminderPendingCount">${dueReminders.length}</span> pending alert${dueReminders.length > 1 ? 's' : ''} requiring chamber attention
+            </p>
+          </div>
+        </div>
+        <button type="button" id="uiReminderCloseX" style="background: none; border: none; color: rgba(255,255,255,0.7); cursor: pointer; font-size: 20px; line-height: 1; padding: 4px;" title="Dismiss">&times;</button>
+      </div>
+
+      <!-- Reminder Items Body -->
+      <div id="uiReminderListContainer" style="padding: 1.25rem 1.5rem; max-height: 380px; overflow-y: auto; display: flex; flex-direction: column; gap: 0.85rem; background: #FAFBFD;">
+        ${dueReminders.map(r => {
+          const relCase = r.relatedCase || r.caseId;
+          const caseNum = relCase ? (relCase.caseNumber || '') : '';
+          const caseTitle = relCase ? (relCase.title || '') : '';
+          const isUrgent = r.priority === 'Urgent' || r.priority === 'High' || r.priority === 'urgent' || r.priority === 'high';
+          const priorityColor = isUrgent ? '#BA1A1A' : '#C59B27';
+          const dateStr = formatDate(r.reminderDate || r.remindAt);
+          const timeStr = r.reminderTime || '09:00 AM';
+
+          return `
+            <div class="reminder-popup-item" id="reminder-pop-${r._id}" style="display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; padding: 12px 14px; background: #FFFFFF; border-radius: 8px; border: 1px solid #E2E8F0; border-left: 4px solid ${priorityColor}; box-shadow: 0 2px 4px rgba(0,0,0,0.03);">
+              <div style="flex: 1; min-width: 0;">
+                <div style="display: flex; align-items: center; gap: 6px; margin-bottom: 3px;">
+                  <span style="font-weight: 700; color: #0A1128; font-size: 0.875rem;">${escapeHTML(r.title)}</span>
+                  <span class="badge ${isUrgent ? 'badge-danger' : 'badge-gold'}" style="font-size: 0.65rem; padding: 1px 6px; text-transform: uppercase;">${escapeHTML(r.priority || 'Medium')}</span>
+                </div>
+                ${(r.description || r.message) ? `<p style="margin: 2px 0 6px; font-size: 0.78rem; color: #475569; line-height: 1.4;">${escapeHTML(r.description || r.message)}</p>` : ''}
+                <div style="display: flex; align-items: center; gap: 8px; font-size: 0.75rem; color: #64748B;">
+                  <span><strong style="color: #0A1128;">${dateStr}</strong> at ${escapeHTML(timeStr)}</span>
+                  ${relCase ? `<span>&bull;</span><span style="font-family: monospace; color: #C59B27; font-weight: 600;">${escapeHTML(caseNum || caseTitle)}</span>` : ''}
+                </div>
+              </div>
+              <button type="button" class="btn btn-sm btn-primary reminder-pop-done-btn" data-id="${r._id}" style="align-self: center; padding: 6px 12px; font-size: 0.78rem; display: flex; align-items: center; gap: 4px; border-radius: 6px; background: #0A1128; color: #FFFFFF; border: none; cursor: pointer; flex-shrink: 0;">
+                <span class="material-symbols-outlined" style="font-size: 14px;">check_circle</span>
+                <span>Done</span>
+              </button>
+            </div>
+          `;
+        }).join('')}
+      </div>
+
+      <!-- Footer -->
+      <div style="padding: 0.85rem 1.5rem; background: #F8FAFC; border-top: 1px solid #E2E8F0; display: flex; justify-content: space-between; align-items: center;">
+        <a href="/reminders.html" style="font-size: 0.8125rem; color: var(--gold-700, #C59B27); font-weight: 600; text-decoration: none; display: flex; align-items: center; gap: 4px;">
+          <span>Open Reminders Diary</span>
+          <span class="material-symbols-outlined" style="font-size: 16px;">arrow_forward</span>
+        </a>
+        <button type="button" id="uiReminderDismissBtn" class="btn btn-outline" style="padding: 6px 14px; font-size: 0.8125rem;">
+          Dismiss
+        </button>
+      </div>
+    </div>
+  `;
+
+  const closePopup = () => {
+    modal.classList.remove('active');
+    document.body.style.overflow = '';
+    // Snooze for 10 minutes in this session
+    sessionStorage.setItem('last_reminder_popup_dismissed', Date.now().toString());
+  };
+
+  const closeX = modal.querySelector('#uiReminderCloseX');
+  if (closeX) closeX.onclick = closePopup;
+
+  const dismissBtn = modal.querySelector('#uiReminderDismissBtn');
+  if (dismissBtn) dismissBtn.onclick = closePopup;
+
+  // Handle Mark Done clicks inside popup
+  const container = modal.querySelector('#uiReminderListContainer');
+  if (container) {
+    container.addEventListener('click', async (e) => {
+      const btn = e.target.closest('.reminder-pop-done-btn');
+      if (!btn) return;
+      const id = btn.getAttribute('data-id');
+      if (!id) return;
+
+      btn.disabled = true;
+      btn.innerHTML = '<span class="material-symbols-outlined" style="font-size: 14px;">hourglass_empty</span>';
+
+      try {
+        if (window.API && window.API.reminders && window.API.reminders.toggle) {
+          await window.API.reminders.toggle(id, { completed: true });
+        } else {
+          await fetch(`/api/reminders/${id}/toggle`, {
+            method: 'PATCH',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ completed: true }),
+            credentials: 'include'
+          });
+        }
+
+        showToast('Reminder marked as done!', 'success');
+
+        const itemEl = document.getElementById(`reminder-pop-${id}`);
+        if (itemEl) {
+          itemEl.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+          itemEl.style.opacity = '0';
+          itemEl.style.transform = 'translateX(20px)';
+          setTimeout(() => {
+            itemEl.remove();
+            const remaining = container.querySelectorAll('.reminder-popup-item');
+            const countEl = document.getElementById('uiReminderPendingCount');
+            if (countEl) countEl.innerText = remaining.length;
+            if (remaining.length === 0) {
+              container.innerHTML = `
+                <div style="text-align: center; padding: 2rem 1rem; color: #059669;">
+                  <span class="material-symbols-outlined" style="font-size: 2.5rem; display: block; margin-bottom: 0.5rem;">task_alt</span>
+                  <strong style="font-size: 1rem; color: #0A1128;">All Chamber Reminders Completed!</strong>
+                  <p style="font-size: 0.8125rem; color: #64748B; margin-top: 4px;">All dockets and chamber obligations are clear.</p>
+                </div>
+              `;
+              setTimeout(closePopup, 1600);
+            }
+          }, 300);
+        }
+      } catch (err) {
+        btn.disabled = false;
+        btn.innerHTML = '<span class="material-symbols-outlined" style="font-size: 14px;">check_circle</span><span>Done</span>';
+        showToast('Failed to complete reminder', 'danger');
+      }
+    });
+  }
+
+  modal.classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+
+async function checkRemindersAndShowPopup(force = false) {
+  if (!force) {
+    const lastDismissed = sessionStorage.getItem('last_reminder_popup_dismissed');
+    if (lastDismissed && Date.now() - Number(lastDismissed) < 10 * 60 * 1000) {
+      return;
+    }
+  }
+
+  const isAuthPage = window.location.pathname.includes('login') ||
+    window.location.pathname.includes('register') ||
+    window.location.pathname.includes('forgot') ||
+    window.location.pathname.includes('reset') ||
+    window.location.pathname === '/' ||
+    window.location.pathname.endsWith('index.html');
+  if (isAuthPage) return;
+
+  try {
+    let res = null;
+    if (window.API && window.API.reminders) {
+      res = await window.API.reminders.getAll({ completed: 'false' });
+    } else {
+      const resp = await fetch('/api/reminders?completed=false', { credentials: 'include' });
+      res = await resp.json();
+    }
+
+    if (res && res.success && res.data && res.data.length > 0) {
+      const now = new Date();
+      const dueThreshold = new Date(now.getTime() + 24 * 60 * 60 * 1000);
+
+      const pendingDue = res.data.filter(r => {
+        if (r.completed) return false;
+        const d = new Date(r.reminderDate || r.remindAt);
+        return isNaN(d.getTime()) || d <= dueThreshold;
+      });
+
+      if (pendingDue.length > 0) {
+        showReminderPopup(pendingDue);
+      }
+    }
+  } catch (err) {
+    console.debug('Reminder check skipped:', err.message);
+  }
+}
+
 const UI = {
   escapeHTML,
   formatINR,
@@ -322,7 +516,15 @@ const UI = {
   openModal,
   closeModal,
   confirm: confirmDialog,
+  showReminderPopup,
+  checkRemindersAndShowPopup,
 };
 window.UI = UI;
 
-document.addEventListener('DOMContentLoaded', initDrawersAndModals);
+document.addEventListener('DOMContentLoaded', () => {
+  initDrawersAndModals();
+  // Check reminders 1.5 seconds after page load for authenticated sessions
+  setTimeout(() => {
+    checkRemindersAndShowPopup();
+  }, 1500);
+});

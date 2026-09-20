@@ -28,46 +28,78 @@ async function loadDashboardData() {
     const summaryRes = await API.analytics.getSummary();
     if (summaryRes && summaryRes.success) {
       const data = summaryRes.data;
-      
+
       // Active Cases
-      document.getElementById('kpiActiveCases').innerText = data.totalActiveCases || 0;
-      document.getElementById('kpiActiveCasesSub').innerText = `${data.totalCases || 0} total matters in firm`;
+      const activeCasesCount = data.totalActiveCases ?? data.activeCases ?? data.summary?.activeCases ?? 0;
+      const totalCasesCount = data.totalCases ?? data.summary?.totalCases ?? activeCasesCount;
+      document.getElementById('kpiActiveCases').innerText = activeCasesCount;
+      document.getElementById('kpiActiveCasesSub').innerText = `${totalCasesCount} total matters in firm`;
 
       // Today's Hearings
-      document.getElementById('kpiTodayHearings').innerText = data.todayHearingsCount || 0;
-      document.getElementById('kpiTodayHearingsSub').innerText = `${data.todayHearingsCount || 0} cause list appearances`;
+      const todayCount = data.todayHearingsCount ?? data.summary?.todayHearingsCount ?? 0;
+      document.getElementById('kpiTodayHearings').innerText = todayCount;
+      document.getElementById('kpiTodayHearingsSub').innerText = todayCount > 0 
+        ? `${todayCount} cause list appearance${todayCount > 1 ? 's' : ''}`
+        : 'All chambers clear today';
 
       // Pending Tasks
-      document.getElementById('kpiPendingTasks').innerText = data.pendingTasksCount || 0;
-      document.getElementById('kpiPendingTasksSub').innerText = `${data.urgentTasksCount || 0} high priority`;
+      const pendingCount = data.pendingTasksCount ?? data.summary?.pendingTasksCount ?? 0;
+      const urgentCount = data.urgentTasksCount ?? data.summary?.urgentTasksCount ?? 0;
+      document.getElementById('kpiPendingTasks').innerText = pendingCount;
+      document.getElementById('kpiPendingTasksSub').innerText = `${urgentCount} high priority`;
 
       // Financials
-      document.getElementById('kpiOutstandingFees').innerText = UI.formatINR(data.totalOutstanding || 0);
-      document.getElementById('kpiCollectedFeesSub').innerText = `Collected: ${UI.formatINR(data.totalCollected || 0)}`;
+      const outstandingVal = data.totalOutstanding ?? data.pendingDues ?? data.summary?.totalOutstanding ?? 0;
+      const collectedVal = data.totalCollected ?? data.totalRevenue ?? data.summary?.totalCollected ?? 0;
+      const billedVal = data.totalBilled ?? data.totalAgreedFee ?? data.summary?.totalBilled ?? (collectedVal + outstandingVal);
+      document.getElementById('kpiOutstandingFees').innerText = UI.formatINR(outstandingVal);
+      document.getElementById('kpiCollectedFeesSub').innerText = `Collected: ${UI.formatINR(collectedVal)}`;
 
       // Financial Quick View card
-      document.getElementById('finBilled').innerText = UI.formatINR(data.totalBilled || 0);
-      document.getElementById('finCollected').innerText = UI.formatINR(data.totalCollected || 0);
-      document.getElementById('finOutstanding').innerText = UI.formatINR(data.totalOutstanding || 0);
+      document.getElementById('finBilled').innerText = UI.formatINR(billedVal);
+      document.getElementById('finCollected').innerText = UI.formatINR(collectedVal);
+      document.getElementById('finOutstanding').innerText = UI.formatINR(outstandingVal);
     }
   } catch (err) {
     console.error('Failed to load analytics summary:', err);
   }
 
-  // 2. Fetch Today's Cause List
+  // 2. Fetch Today's Cause List (with upcoming fallback so court appearances are never blank)
   try {
-    const causeListRes = await API.hearings.getDailyCauseList({ range: 'today' });
+    let causeListRes = await API.hearings.getDailyCauseList({ range: 'today' });
+    let hearings = (causeListRes && causeListRes.success && causeListRes.data) ? causeListRes.data : [];
+    let isUpcoming = false;
+
+    if (hearings.length === 0) {
+      const upcomingRes = await API.hearings.getDailyCauseList({ range: 'upcoming' });
+      if (upcomingRes && upcomingRes.success && upcomingRes.data && upcomingRes.data.length > 0) {
+        hearings = upcomingRes.data.slice(0, 5);
+        isUpcoming = true;
+      } else {
+        const allHearingsRes = await API.hearings.getAll({ limit: 5 });
+        if (allHearingsRes && allHearingsRes.success && allHearingsRes.data && allHearingsRes.data.length > 0) {
+          hearings = allHearingsRes.data;
+          isUpcoming = true;
+        }
+      }
+    }
+
     const tbody = document.getElementById('todayHearingsTableBody');
-    
-    if (causeListRes && causeListRes.success && causeListRes.data && causeListRes.data.length > 0) {
-      const hearings = causeListRes.data;
+    const badgeEl = document.querySelector('.card .badge-warning');
+    if (badgeEl && isUpcoming) {
+      badgeEl.className = 'badge badge-primary';
+      badgeEl.innerText = 'UPCOMING CAUSE LIST';
+    }
+
+    if (hearings.length > 0) {
       tbody.innerHTML = hearings.map(h => {
         const itemNo = h.itemNumber ? `<span class="badge badge-warning font-mono" style="font-size: 0.8125rem;">#${h.itemNumber}</span>` : '<span style="color: var(--text-muted);">-</span>';
-        const courtRoom = h.courtRoom ? ` (${UI.escapeHTML(h.courtRoom)})` : '';
+        const courtRoom = (h.courtroom || h.courtRoom) ? ` (${UI.escapeHTML(h.courtroom || h.courtRoom)})` : '';
         const courtName = (h.court || (h.caseId ? h.caseId.court : 'Court')) + courtRoom;
-        const caseTitle = h.caseId ? h.caseId.title : (h.title || 'Legal Hearing');
-        const caseNum = h.caseId ? h.caseId.caseNumber : '';
+        const caseTitle = h.caseId ? (h.caseId.title || 'Legal Matter') : (h.title || 'Legal Hearing');
+        const caseNum = h.caseId ? (h.caseId.caseNumber || '') : '';
         const caseId = h.caseId ? (h.caseId._id || h.caseId) : '';
+        const hDate = h.date ? UI.formatDate(h.date) : 'Scheduled';
 
         return `
           <tr>
@@ -78,7 +110,9 @@ async function loadDashboardData() {
                   ${UI.escapeHTML(caseTitle)}
                 </a>
               </div>
-              <div style="font-size: 0.75rem; color: var(--text-muted); font-family: monospace;">${UI.escapeHTML(caseNum)}</div>
+              <div style="font-size: 0.75rem; color: var(--text-muted); font-family: monospace;">
+                ${caseNum ? UI.escapeHTML(caseNum) + ' &bull; ' : ''}${hDate}
+              </div>
             </td>
             <td>
               <div style="font-size: 0.8125rem; font-weight: 500;">${UI.escapeHTML(courtName)}</div>
@@ -103,7 +137,7 @@ async function loadDashboardData() {
         <tr>
           <td colspan="6" style="text-align: center; padding: 2rem; color: var(--text-muted);">
             <span class="material-symbols-outlined" style="font-size: 2rem; opacity: 0.4; display: block; margin-bottom: 0.5rem;">event_available</span>
-            No court hearings scheduled for today.
+            No court hearings scheduled. Use "+ New Hearing" above to calendar a court date.
           </td>
         </tr>
       `;
@@ -114,7 +148,7 @@ async function loadDashboardData() {
 
   // 3. Fetch Recent Cases
   try {
-    const casesRes = await API.cases.getAll({ limit: 5, sort: '-updatedAt' });
+    const casesRes = await API.cases.getAll({ limit: 5 });
     const tbody = document.getElementById('recentCasesTableBody');
 
     if (casesRes && casesRes.success && casesRes.data && casesRes.data.length > 0) {
@@ -165,32 +199,40 @@ async function loadDashboardData() {
     console.error('Failed to load recent cases:', err);
   }
 
-  // 4. Fetch Urgent Tasks
+  // 4. Fetch Urgent Tasks (with fallback to recent tasks)
   try {
-    const tasksRes = await API.tasks.getAll({ status: 'pending', limit: 4 });
-    const container = document.getElementById('urgentTasksList');
+    let tasksRes = await API.tasks.getAll({ status: 'pending', limit: 4 });
+    let tasks = (tasksRes && tasksRes.success && tasksRes.data) ? tasksRes.data : [];
 
-    if (tasksRes && tasksRes.success && tasksRes.data && tasksRes.data.length > 0) {
-      container.innerHTML = tasksRes.data.map(t => {
+    if (tasks.length === 0) {
+      const allTasksRes = await API.tasks.getAll({ limit: 4 });
+      if (allTasksRes && allTasksRes.success && allTasksRes.data) {
+        tasks = allTasksRes.data;
+      }
+    }
+
+    const container = document.getElementById('urgentTasksList');
+    if (tasks.length > 0) {
+      container.innerHTML = tasks.map(t => {
         const due = t.dueDate ? UI.formatDate(t.dueDate) : 'No due date';
-        const isUrgent = t.priority === 'urgent' || t.priority === 'high';
+        const isUrgent = t.priority === 'Urgent' || t.priority === 'High' || t.priority === 'urgent' || t.priority === 'high';
         const badgeClass = isUrgent ? 'badge-danger' : 'badge-neutral';
         return `
           <div style="display: flex; align-items: flex-start; justify-content: space-between; padding: 8px 10px; border-radius: var(--radius-md); background: var(--surface-low); border-left: 3px solid ${isUrgent ? 'var(--danger)' : 'var(--border-medium)'};">
             <div style="min-width: 0; padding-right: 8px;">
               <div style="font-size: 0.8125rem; font-weight: 600; color: var(--navy-900);">${UI.escapeHTML(t.title)}</div>
               <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 2px;">
-                Due: ${due} ${t.caseId ? `&bull; ${UI.escapeHTML(t.caseId.caseNumber || '')}` : ''}
+                Due: ${due} ${t.caseId ? `&bull; ${UI.escapeHTML(t.caseId.caseNumber || t.caseId.title || '')}` : ''}
               </div>
             </div>
-            <span class="badge ${badgeClass}" style="font-size: 0.65rem; text-transform: uppercase;">${t.priority}</span>
+            <span class="badge ${badgeClass}" style="font-size: 0.65rem; text-transform: uppercase;">${UI.escapeHTML(t.priority || 'Medium')}</span>
           </div>
         `;
       }).join('');
     } else {
       container.innerHTML = `
         <div style="text-align: center; padding: 1.5rem; color: var(--text-muted); font-size: 0.8125rem;">
-          No pending tasks. Chamber work is up to date!
+          No tasks recorded. Open Tasks & Deadlines to add chamber tasks.
         </div>
       `;
     }
@@ -198,24 +240,33 @@ async function loadDashboardData() {
     console.error('Failed to load tasks:', err);
   }
 
-  // 5. Fetch Pinned Notes
+  // 5. Fetch Pinned Notes (with fallback to recent notes)
   try {
-    const notesRes = await API.notes.getAll({ isPinned: true, limit: 3 });
-    const container = document.getElementById('pinnedNotesList');
+    let notesRes = await API.notes.getAll({ pinned: true, limit: 3 });
+    let notes = (notesRes && notesRes.success && notesRes.data) ? notesRes.data : [];
 
-    if (notesRes && notesRes.success && notesRes.data && notesRes.data.length > 0) {
-      container.innerHTML = notesRes.data.map(n => {
-        const snippet = n.content.length > 100 ? n.content.substring(0, 100) + '...' : n.content;
+    if (notes.length === 0) {
+      const allNotesRes = await API.notes.getAll({ limit: 3 });
+      if (allNotesRes && allNotesRes.success && allNotesRes.data && allNotesRes.data.length > 0) {
+        notes = allNotesRes.data;
+      }
+    }
+
+    const container = document.getElementById('pinnedNotesList');
+    if (notes.length > 0) {
+      container.innerHTML = notes.map(n => {
+        const snippet = n.content && n.content.length > 100 ? n.content.substring(0, 100) + '...' : (n.content || 'No note details');
+        const citation = n.citation || (n.citations && n.citations[0]) || '';
         return `
           <div style="padding: 10px; border-radius: var(--radius-md); background: #FAFBFD; border: 1px solid var(--border-light);">
             <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 4px;">
               <div style="font-size: 0.8125rem; font-weight: 600; color: var(--navy-900);">${UI.escapeHTML(n.title)}</div>
-              <span class="material-symbols-outlined" style="font-size: 14px; color: var(--gold-600);">push_pin</span>
+              <span class="material-symbols-outlined" style="font-size: 14px; color: ${n.pinned ? 'var(--gold-600)' : 'var(--text-muted)'};">${n.pinned ? 'push_pin' : 'description'}</span>
             </div>
             <p style="font-size: 0.75rem; color: var(--text-muted); line-height: 1.4; margin-bottom: 6px;">${UI.escapeHTML(snippet)}</p>
-            ${n.citations && n.citations.length > 0 ? `
+            ${citation ? `
               <div style="font-size: 0.7rem; font-weight: 500; color: var(--gold-700); font-family: monospace;">
-                ${UI.escapeHTML(n.citations[0])}
+                ${UI.escapeHTML(citation)}
               </div>
             ` : ''}
           </div>
@@ -224,7 +275,7 @@ async function loadDashboardData() {
     } else {
       container.innerHTML = `
         <div style="text-align: center; padding: 1.5rem; color: var(--text-muted); font-size: 0.8125rem;">
-          No pinned notes. Star important research notes in the Legal Notebook.
+          No research notes recorded. Open Legal Notebook to add notes.
         </div>
       `;
     }

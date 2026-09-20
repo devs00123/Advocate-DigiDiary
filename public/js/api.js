@@ -166,6 +166,7 @@ const API = {
     getAll: (params) => api.get('/reminders', params),
     create: (data) => api.post('/reminders', data),
     update: (id, data) => api.put(`/reminders/${id}`, data),
+    toggle: (id, data) => api.patch(`/reminders/${id}/toggle`, data),
     dismiss: (id) => api.patch(`/reminders/${id}/dismiss`),
     delete: (id) => api.delete(`/reminders/${id}`)
   },

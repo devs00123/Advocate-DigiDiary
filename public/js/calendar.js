@@ -95,35 +95,53 @@ function renderCalendarGrid() {
   const startDate = new Date(firstDay);
   startDate.setDate(startDate.getDate() - startDate.getDay());
 
-  const todayStr = new Date().toISOString().split('T')[0];
+  const today = new Date();
+  const todayY = today.getFullYear();
+  const todayM = String(today.getMonth() + 1).padStart(2, '0');
+  const todayD = String(today.getDate()).padStart(2, '0');
+  const todayStr = `${todayY}-${todayM}-${todayD}`;
 
   // We generate up to 42 cells (6 rows)
   let cellDate = new Date(startDate);
   for (let i = 0; i < 42; i++) {
-    const dateStr = cellDate.toISOString().split('T')[0];
+    const y = cellDate.getFullYear();
+    const m = String(cellDate.getMonth() + 1).padStart(2, '0');
+    const d = String(cellDate.getDate()).padStart(2, '0');
+    const dateStr = `${y}-${m}-${d}`;
+
     const isCurrentMonth = cellDate.getMonth() === currentMonth;
     const isToday = dateStr === todayStr;
 
     // Filter events for this specific day
     const dayEvents = calendarEvents.filter(ev => {
-      const evDate = (ev.start || '').split('T')[0];
-      if (evDate !== dateStr) return false;
-      if (ev.type === 'hearing' && !showHearings) return false;
-      if (ev.type === 'task' && !showTasks) return false;
-      if (ev.type === 'reminder' && !showReminders) return false;
-      return true;
+      const type = (ev.type || '').toLowerCase();
+      if (type === 'hearing' && !showHearings) return false;
+      if (type === 'task' && !showTasks) return false;
+      if (type === 'reminder' && !showReminders) return false;
+
+      const raw = ev.start || ev.date || ev.reminderDate || ev.dueDate;
+      if (!raw) return false;
+
+      const isoKey = String(raw).split('T')[0];
+      const evObj = new Date(raw);
+      let localKey = '';
+      if (!isNaN(evObj.getTime())) {
+        const ey = evObj.getFullYear();
+        const em = String(evObj.getMonth() + 1).padStart(2, '0');
+        const ed = String(evObj.getDate()).padStart(2, '0');
+        localKey = `${ey}-${em}-${ed}`;
+      }
+
+      return isoKey === dateStr || localKey === dateStr;
     });
 
     const cell = document.createElement('div');
     cell.className = `calendar-day-cell ${!isCurrentMonth ? 'other-month' : ''} ${isToday ? 'today' : ''}`;
 
     let eventsHtml = dayEvents.slice(0, 4).map(ev => {
-      let icon = 'balance';
-      if (ev.type === 'task') icon = 'check_box';
-      if (ev.type === 'reminder') icon = 'notifications';
-
+      const normType = (ev.type || 'hearing').toLowerCase();
       return `
-        <div class="event-pill ${ev.type}" onclick="showEventDetails('${ev.id}', '${ev.type}')" title="${UI.escapeHTML(ev.title)}">
+        <div class="event-pill ${normType}" data-id="${ev.id || ev._id}" data-type="${normType}" title="${UI.escapeHTML(ev.title)}">
           <span>${UI.escapeHTML(ev.title)}</span>
         </div>
       `;
@@ -153,8 +171,23 @@ function renderCalendarGrid() {
   }
 }
 
+// Event delegation for calendar pills to prevent CSP inline issues
+document.addEventListener('DOMContentLoaded', () => {
+  const grid = document.getElementById('calendarDaysGrid');
+  if (grid) {
+    grid.addEventListener('click', (e) => {
+      const pill = e.target.closest('.event-pill');
+      if (pill) {
+        const id = pill.getAttribute('data-id');
+        const type = pill.getAttribute('data-type');
+        if (id) showEventDetails(id, type);
+      }
+    });
+  }
+});
+
 window.showEventDetails = (id, type) => {
-  const ev = calendarEvents.find(e => e.id === id);
+  const ev = calendarEvents.find(e => String(e.id || e._id) === String(id));
   if (!ev) return;
 
   const modalTitle = document.getElementById('eventModalTitle');

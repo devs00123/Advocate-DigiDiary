@@ -22,6 +22,9 @@ async function checkAuth(requiredRoles = []) {
       }
 
       updateUserUI(currentUser, currentLawFirm);
+      if (window.UI && window.UI.checkRemindersAndShowPopup) {
+        window.UI.checkRemindersAndShowPopup();
+      }
       return { user: currentUser, lawFirm: currentLawFirm };
     }
   } catch (err) {
