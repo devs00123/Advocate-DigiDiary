@@ -47,18 +47,6 @@
 }
 
 /* ==========================================================================
-   CALENDAR RESPONSIVE — Tablet & Small Laptop
-   ========================================================================== */
-@media (max-width: 1279px) and (min-width: 769px) {
-  .calendar-toolbar {
-    flex-wrap: wrap;
-  }
-  .calendar-toolbar-right {
-    gap: 1rem;
-  }
-}
-
-/* ==========================================================================
    TABLET PORTRAIT & MOBILE OVERLAY (Under 1024px)
    ========================================================================== */
 @media (max-width: 1023px) {
@@ -101,40 +89,6 @@
 
   .grid-12 {
     gap: 16px;
-  }
-
-  .calendar-toolbar {
-    flex-wrap: wrap;
-    gap: 0.75rem;
-  }
-  .calendar-toolbar-left {
-    width: 100%;
-    justify-content: space-between;
-  }
-  .calendar-toolbar-right {
-    width: 100%;
-    gap: 1rem;
-  }
-}
-
-/* ==========================================================================
-   CALENDAR RESPONSIVE — Mobile Tablet
-   ========================================================================== */
-@media (max-width: 820px) and (min-width: 769px) {
-  .calendar-responsive-inner {
-    min-width: 840px;
-  }
-  .calendar-header-cell {
-    padding: 8px 4px;
-    font-size: 10px;
-  }
-  .calendar-day-cell {
-    min-height: 90px;
-    padding: 5px;
-  }
-  .event-pill {
-    font-size: 9px;
-    padding: 2px 3px;
   }
 }
 
@@ -353,56 +307,6 @@
     width: 100%;
     max-width: 100%;
   }
-
-  /* Calendar Mobile Overrides */
-  .calendar-toolbar {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 0.75rem;
-  }
-  .calendar-toolbar-left {
-    width: 100%;
-    justify-content: space-between;
-    align-items: center;
-  }
-  .calendar-toolbar-left .page-title {
-    font-size: 1.15rem;
-  }
-  .calendar-toolbar-right {
-    width: 100%;
-    justify-content: flex-start;
-    gap: 0.75rem;
-    flex-wrap: wrap;
-  }
-  .calendar-day-cell {
-    min-height: 70px;
-    padding: 4px;
-  }
-  .day-number {
-    font-size: 11px;
-  }
-  .event-pill {
-    font-size: 9px;
-    padding: 2px 3px;
-    margin-bottom: 2px;
-  }
-  .calendar-header-cell {
-    padding: 8px 4px;
-    font-size: 10px;
-  }
-  .calendar-scroll-wrapper {
-    padding-bottom: 10px;
-  }
-  .mobile-scroll-hint {
-    display: flex;
-  }
-  .hearing-dates-timeline {
-    grid-template-columns: 1fr !important;
-    gap: 0.75rem !important;
-  }
-  .hearing-core-grid {
-    grid-template-columns: 1fr !important;
-  }
 }
 
 /* ==========================================================================
@@ -448,34 +352,6 @@
   .mobile-header-title {
     max-width: 120px;
     font-size: 13px;
-  }
-
-  /* Calendar Extra Small Overrides */
-  .calendar-responsive-inner {
-    min-width: 720px;
-  }
-  .calendar-header-cell {
-    padding: 6px 2px;
-    font-size: 9px;
-    letter-spacing: 0;
-  }
-  .calendar-day-cell {
-    min-height: 55px;
-    padding: 3px;
-  }
-  .day-number {
-    font-size: 10px;
-  }
-  .event-pill {
-    font-size: 8px;
-    padding: 1px 2px;
-    margin-bottom: 1px;
-  }
-  .day-header {
-    margin-bottom: 2px;
-  }
-  .calendar-toolbar-left .page-title {
-    font-size: 1rem;
   }
 }
 
