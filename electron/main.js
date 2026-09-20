@@ -1,11 +1,32 @@
 const { app, BrowserWindow, shell } = require('electron');
 const path = require('path');
+const http = require('http');
 
 let mainWindow;
 let serverProcess;
 
 const PORT = parseInt(process.env.PORT, 10) || 5050;
 const SERVER_URL = `http://localhost:${PORT}`;
+
+function waitForServer(url, maxAttempts = 60, interval = 1000) {
+  return new Promise((resolve) => {
+    let attempts = 0;
+    const check = () => {
+      attempts++;
+      http.get(url, (res) => {
+        res.resume();
+        resolve();
+      }).on('error', () => {
+        if (attempts < maxAttempts) {
+          setTimeout(check, interval);
+        } else {
+          resolve();
+        }
+      });
+    };
+    check();
+  });
+}
 
 function createWindow() {
   mainWindow = new BrowserWindow({
@@ -50,9 +71,6 @@ function startServer() {
     serverProcess.stdout.on('data', (data) => {
       const output = data.toString();
       console.log(`[Server] ${output.trim()}`);
-      if (output.includes('Server URL:')) {
-        resolve();
-      }
     });
 
     serverProcess.stderr.on('data', (data) => {
@@ -69,12 +87,13 @@ function startServer() {
       if (mainWindow) mainWindow.close();
     });
 
-    setTimeout(resolve, 5000);
+    resolve();
   });
 }
 
 app.whenReady().then(async () => {
   await startServer();
+  await waitForServer(SERVER_URL);
   createWindow();
   app.on('activate', () => {
     if (BrowserWindow.getAllWindows().length === 0) createWindow();
