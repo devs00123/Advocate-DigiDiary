@@ -219,7 +219,7 @@ window.showEventDetails = (id, type) => {
 
       <!-- Core Hearing Docket Details -->
       <div style="background: #FAFBFD; border: 1px solid var(--border-light); border-radius: var(--radius-md); padding: 1rem; margin-bottom: 1rem;">
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 0.75rem; font-size: 0.875rem;">
+        <div class="hearing-core-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 0.75rem; font-size: 0.875rem;">
           <div>
             <span style="font-size: 0.725rem; color: var(--text-muted); text-transform: uppercase; font-weight: 600; display: block;">Case Title</span>
             <strong style="color: var(--navy-900);">${UI.escapeHTML(ev.caseTitle || ev.title)}</strong>
@@ -245,7 +245,7 @@ window.showEventDetails = (id, type) => {
       </div>
 
       <!-- Hearing Dates Timeline Details -->
-      <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.5rem; text-align: center; margin-bottom: 1.25rem;">
+      <div class="hearing-dates-timeline" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.5rem; text-align: center; margin-bottom: 1.25rem;">
         <div style="padding: 0.625rem; background: #F8FAFC; border: 1px solid var(--border-light); border-radius: var(--radius-sm);">
           <span style="font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700; display: block;">Last Date of Hearing</span>
           <div style="font-size: 0.8125rem; font-weight: 600; color: var(--text-dark); margin-top: 2px;">${lastDateDisplay}</div>

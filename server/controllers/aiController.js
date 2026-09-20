@@ -99,13 +99,11 @@ Thank you for your query regarding: **"${query.length > 60 ? query.substring(0, 
 *(Disclaimer: For chamber research and drafting assistance only. Not a substitute for formal legal opinion.)*`;
 }
 
-// Candidate models in order of priority (supporting latest gemini-3.6-flash with fallbacks)
+// Candidate models in order of priority (only verified working Gemini models)
 const CANDIDATE_MODELS = [
   process.env.GEMINI_MODEL,
-  'gemini-3.6-flash',
-  'gemini-2.5-flash',
-  'gemini-1.5-flash',
   'gemini-2.0-flash',
+  'gemini-1.5-flash',
 ].filter(Boolean);
 
 async function generateWithModelFallback(genAI, contentPayload) {
@@ -143,6 +141,7 @@ exports.chatWithAI = async (req, res) => {
 
     if (isKeyConfigured(apiKey)) {
       try {
+        console.log('[AI CONTROLLER] Gemini API key detected. Attempting live AI generation...');
         const genAI = new GoogleGenerativeAI(apiKey.trim());
 
         // Format history for Gemini API
@@ -178,13 +177,14 @@ exports.chatWithAI = async (req, res) => {
       }
     }
 
-    // Chamber knowledge fallback
+    // Chamber knowledge fallback (only reached if API key is missing or all models failed)
     const fallbackReply = getChamberLegalResponse(prompt);
+    const fallbackSource = isKeyConfigured(apiKey) ? 'chamber-engine-fallback' : 'chamber-engine';
     return res.json({
       success: true,
       data: {
         reply: fallbackReply,
-        source: 'chamber-engine',
+        source: fallbackSource,
       },
     });
   } catch (err) {
