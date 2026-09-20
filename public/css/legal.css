@@ -1,0 +1,150 @@
+/* Advocate DigiDiary — Legal Pages Shared Styles */
+
+/* ── Base Legal Page Layout ── */
+.legal-page {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 48px 24px 80px;
+}
+
+.legal-page h1 {
+  font-family: var(--font-headline);
+  font-size: 2.25rem;
+  color: var(--navy-900);
+  margin-bottom: 0.5rem;
+}
+
+.legal-page .meta {
+  color: var(--text-muted);
+  font-size: 0.875rem;
+  margin-bottom: 2rem;
+  border-bottom: 1px solid var(--border-light);
+  padding-bottom: 1.5rem;
+}
+
+.legal-page h2 {
+  font-family: var(--font-headline);
+  font-size: 1.35rem;
+  color: var(--navy-900);
+  margin: 2rem 0 0.75rem;
+}
+
+.legal-page p,
+.legal-page li {
+  font-size: 0.9375rem;
+  line-height: 1.75;
+  color: #334155;
+}
+
+.legal-page ul,
+.legal-page ol {
+  margin: 0.5rem 0 1rem 1.5rem;
+}
+
+.legal-page li {
+  margin-bottom: 0.5rem;
+}
+
+.legal-page a {
+  color: var(--gold-700);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.legal-page a:hover {
+  text-decoration: underline;
+}
+
+/* ── Back Link ── */
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--gold-700);
+  font-weight: 600;
+  font-size: 0.875rem;
+  text-decoration: none;
+  margin-bottom: 1.5rem;
+}
+
+.back-link:hover {
+  text-decoration: underline;
+}
+
+/* ── Disclaimer Page Extras ── */
+.disclaimer-box {
+  background: #FFF3CD;
+  border: 1px solid #FFC107;
+  border-radius: var(--radius-lg);
+  padding: 1.25rem 1.5rem;
+  margin: 1.5rem 0;
+  font-size: 0.9375rem;
+  color: #856404;
+  line-height: 1.6;
+}
+
+.disclaimer-box strong {
+  color: #664D03;
+}
+
+/* ── Contact Page Extras ── */
+.contact-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1.5rem;
+  margin: 1.5rem 0;
+}
+
+.contact-card {
+  padding: 1.5rem;
+  background: var(--surface-lowest);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-lg);
+}
+
+.contact-card h3 {
+  font-family: var(--font-headline);
+  font-size: 1.1rem;
+  color: var(--navy-900);
+  margin-bottom: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.contact-card p {
+  font-size: 0.875rem;
+  line-height: 1.6;
+}
+
+.contact-card .icon-circle {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(197, 155, 39, 0.12);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--gold-600);
+  flex-shrink: 0;
+}
+
+/* ── Responsive ── */
+@media (max-width: 767px) {
+  .legal-page {
+    padding: 24px 16px 60px;
+  }
+
+  .legal-page h1 {
+    font-size: 1.75rem;
+  }
+
+  .legal-page h2 {
+    font-size: 1.15rem;
+  }
+
+  .contact-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+}
