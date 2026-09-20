@@ -43,15 +43,19 @@ function setupRangeButtons() {
 }
 
 async function loadCasesDropdown() {
+  const select = document.getElementById('hCaseSelect');
+  if (!select) return;
   try {
-    const res = await API.cases.getAll({ limit: 100, status: 'active' });
-    const select = document.getElementById('hCaseSelect');
-    if (res.success && res.data) {
-      select.innerHTML = '<option value="">Select case...</option>' +
-        res.data.map(c => `<option value="${c._id}">${UI.escapeHTML(c.caseNumber)} — ${UI.escapeHTML(c.title)}</option>`).join('');
+    const res = await API.cases.getAll({ limit: 100 });
+    if (res.success && res.data && res.data.length > 0) {
+      select.innerHTML = '<option value="">Select case matter...</option>' +
+        res.data.map(c => `<option value="${c._id}">${UI.escapeHTML(c.caseNumber || 'MATTER')} — ${UI.escapeHTML(c.title || 'Untitled Case')}</option>`).join('');
+    } else {
+      select.innerHTML = '<option value="">No cases found (Register a case first)</option>';
     }
   } catch (err) {
     console.error('Failed to load cases:', err);
+    select.innerHTML = '<option value="">Error loading cases</option>';
   }
 }
 
@@ -103,7 +107,7 @@ function renderHearings(hearings) {
     const caseTitle = h.caseId ? (h.caseId.title || '') : (h.title || 'Legal Matter');
     const clientName = (h.caseId && h.caseId.clientId) ? (h.caseId.clientId.name || '') : '';
     const courtName = h.court || (h.caseId ? h.caseId.court : 'Court');
-    const courtRoom = h.courtRoom ? ` (${UI.escapeHTML(h.courtRoom)})` : '';
+    const courtRoom = (h.courtroom || h.courtRoom) ? ` (${UI.escapeHTML(h.courtroom || h.courtRoom)})` : '';
     const outcomeText = h.outcome 
       ? `<div style="font-size: 0.8125rem; color: var(--navy-900); font-weight: 500;">${UI.escapeHTML(h.outcome)}</div>`
       : '<span style="font-size: 0.75rem; color: var(--text-muted);">Pending appearance</span>';
@@ -113,7 +117,7 @@ function renderHearings(hearings) {
         <td>${itemNo}</td>
         <td>
           <div style="font-weight: 700; color: var(--navy-900); font-size: 0.8125rem;">
-            ${UI.formatDate(h.hearingDate)}
+            ${UI.formatDate(h.date || h.hearingDate)}
           </div>
           <div style="font-size: 0.75rem; color: var(--text-muted);">${UI.escapeHTML(h.time || '10:30 AM')}</div>
         </td>
@@ -157,6 +161,7 @@ function setupModals() {
   const openBtn = document.getElementById('openScheduleHearingModalBtn');
   if (openBtn) {
     openBtn.addEventListener('click', () => {
+      loadCasesDropdown();
       document.getElementById('hDate').value = new Date().toISOString().split('T')[0];
       UI.openModal('scheduleModal');
     });

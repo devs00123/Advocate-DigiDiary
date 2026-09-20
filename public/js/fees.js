@@ -172,6 +172,7 @@ function setupModals() {
 }
 
 function openRecordPaymentModal() {
+  loadCasesForPayment();
   document.getElementById('payDateInput').value = new Date().toISOString().split('T')[0];
   document.getElementById('caseBalanceHint').innerText = '';
   UI.openModal('paymentModal');

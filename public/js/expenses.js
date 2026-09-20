@@ -129,6 +129,7 @@ function setupEventListeners() {
   });
 
   document.getElementById('openAddExpenseBtn').addEventListener('click', () => {
+    loadCasesDropdown();
     document.getElementById('expenseForm').reset();
     document.getElementById('expDate').value = new Date().toISOString().split('T')[0];
     UI.openModal('expenseModal');

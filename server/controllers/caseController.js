@@ -14,7 +14,8 @@ exports.listCases = async (req, res, next) => {
     const query = { lawFirmId: req.user.lawFirmId };
 
     if (status && status !== 'All Statuses' && status !== 'All') {
-      query.status = status;
+      // Match status case-insensitively (e.g. 'active', 'Active')
+      query.status = new RegExp('^' + status + '$', 'i');
     }
     if (court && court !== 'All Courts' && court !== 'All') {
       query.court = new RegExp(court, 'i');

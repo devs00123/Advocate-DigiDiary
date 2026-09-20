@@ -352,9 +352,11 @@ function setupQuickActionModals() {
       try {
         const casesRes = await API.cases.getAll({ limit: 100, status: 'active' });
         const select = document.getElementById('hearingCaseSelect');
-        if (casesRes.success && casesRes.data) {
+        if (casesRes.success && casesRes.data && casesRes.data.length > 0) {
           select.innerHTML = '<option value="">Select case matter...</option>' +
-            casesRes.data.map(c => `<option value="${c._id}">${UI.escapeHTML(c.caseNumber)} — ${UI.escapeHTML(c.title)}</option>`).join('');
+            casesRes.data.map(c => `<option value="${c._id}">${UI.escapeHTML(c.caseNumber || 'MATTER')} — ${UI.escapeHTML(c.title || 'Untitled Case')}</option>`).join('');
+        } else {
+          select.innerHTML = '<option value="">No cases found (Register a case first)</option>';
         }
       } catch (err) {
         console.error(err);

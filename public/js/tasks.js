@@ -137,6 +137,7 @@ function setupEventListeners() {
   document.getElementById('taskPriorityFilter').addEventListener('change', fetchTasks);
 
   document.getElementById('openAddTaskBtn').addEventListener('click', () => {
+    loadCasesDropdown();
     document.getElementById('editTaskId').value = '';
     document.getElementById('taskModalTitle').innerText = 'Create Chamber Task';
     document.getElementById('taskForm').reset();

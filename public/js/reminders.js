@@ -103,6 +103,7 @@ function setupEventListeners() {
   const openBtn = document.getElementById('openAddReminderBtn');
   if (openBtn) {
     openBtn.addEventListener('click', () => {
+      loadCasesDropdown();
       document.getElementById('reminderForm').reset();
       document.getElementById('rDate').value = new Date().toISOString().split('T')[0];
       UI.openModal('reminderModal');
