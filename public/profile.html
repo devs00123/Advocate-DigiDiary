@@ -22,7 +22,7 @@
       <div class="sidebar-header">
         <div class="brand-badge">
           <div class="brand-logo-icon">
-            <img src="/img/logo.svg" alt="Advocate DigiDiary" style="width: 22px; height: 22px;">
+            <img src="/img/logo.svg" alt="Advocate DigiDiary">
           </div>
           <div class="brand-titles">
             <div class="title">ADVOCATE DIGIDIARY</div>
@@ -32,7 +32,7 @@
       </div>
 
       <nav class="sidebar-nav">
-        <div class="nav-section-label" style="padding: 6px 14px 2px; font-size: 10px; font-weight: 700; color: rgba(255,255,255,0.4); text-transform: uppercase; letter-spacing: 0.05em;">Chamber</div>
+        <div class="nav-section-label">Chamber</div>
         <a href="/dashboard.html" class="nav-link">
           <span class="material-symbols-outlined">dashboard</span>
           <span>Dashboard</span>
@@ -66,7 +66,7 @@
           <span>Legal Notes</span>
         </a>
 
-        <div class="nav-section-label" style="padding: 12px 14px 2px; font-size: 10px; font-weight: 700; color: rgba(255,255,255,0.4); text-transform: uppercase; letter-spacing: 0.05em;">Management</div>
+        <div class="nav-section-label spaced">Management</div>
         <a href="/fees.html" class="nav-link">
           <span class="material-symbols-outlined">account_balance_wallet</span>
           <span>Fee Ledger</span>
@@ -100,8 +100,8 @@
             <div class="firm-name" id="sidebarFirmName">Chambers</div>
             <div class="bar-enrollment" id="sidebarBarEnrollment">Advocate</div>
           </div>
-          <button class="btn btn-icon btn-sm logout-btn" id="logoutBtn" title="Sign Out" style="background: none; border: none; cursor: pointer;" onclick="event.stopPropagation();">
-            <span class="material-symbols-outlined" style="font-size: 18px; color: var(--on-tertiary-container);">logout</span>
+          <button class="btn btn-icon btn-sm logout-btn" id="logoutBtn" title="Sign Out" onclick="event.stopPropagation();">
+            <span class="material-symbols-outlined">logout</span>
           </button>
         </div>
         <div class="sidebar-status-row">
@@ -118,8 +118,8 @@
     <div class="main-wrapper">
       <!-- Top Header -->
       <header class="top-header">
-        <div style="display: flex; align-items: center; gap: 1rem;">
-          <button class="btn btn-icon btn-sm d-md-none" id="mobileMenuToggle" style="border: none; background: none; cursor: pointer;">
+        <div class="header-left-group">
+          <button class="btn btn-icon btn-sm d-md-none" id="mobileMenuToggle">
             <span class="material-symbols-outlined">menu</span>
           </button>
           <div class="header-search">
@@ -133,7 +133,7 @@
 
         <div class="header-actions">
           <a href="/settings.html" class="btn btn-sm btn-outline">
-            <span class="material-symbols-outlined" style="font-size: 16px;">lock_reset</span>
+                <span class="material-symbols-outlined icon-sm">lock_reset</span>
             <span>Security & Password</span>
           </a>
         </div>
@@ -142,11 +142,11 @@
       <!-- Main Content -->
       <main class="main-content">
         <!-- Page Title & Header -->
-        <div class="page-header" style="margin-bottom: 1.5rem;">
-          <h1 class="page-title" style="font-family: var(--font-headline); font-size: 1.75rem; color: var(--navy-900); margin-bottom: 0.25rem;">
+        <div class="page-header">
+          <h1 class="page-title">
             Practitioner Profile & Credentials
           </h1>
-          <p class="page-subtitle" style="color: var(--text-muted); font-size: 0.875rem;">
+          <p class="page-subtitle">
             Your personal verified credentials, bar council record, chamber role, and practice affiliations
           </p>
         </div>
@@ -232,7 +232,7 @@
 
                 <div style="display: flex; justify-content: flex-end; margin-top: 1rem;">
                   <button type="submit" class="btn btn-primary" id="btnSaveProfile">
-                    <span class="material-symbols-outlined" style="font-size: 16px;">save</span>
+                    <span class="material-symbols-outlined icon-sm">save</span>
                     <span>Save Profile Changes</span>
                   </button>
                 </div>
@@ -281,7 +281,7 @@
                 Manage your chamber password, credentials, and authentication preferences in the Settings console.
               </p>
               <a href="/settings.html" class="btn btn-outline btn-sm" style="width: 100%; justify-content: center;">
-                <span class="material-symbols-outlined" style="font-size: 16px;">lock_reset</span>
+            <span class="material-symbols-outlined icon-sm">lock_reset</span>
                 <span>Change Password in Settings</span>
               </a>
             </div>
@@ -298,7 +298,7 @@
                 Permanently delete your account and all associated data including cases, hearings, tasks, notes, clients, financial records, and audit logs. This action cannot be undone.
               </p>
               <button type="button" class="btn btn-sm" id="btnDeleteAccount" style="width: 100%; justify-content: center; background: #DC2626; color: white; border: none;">
-                <span class="material-symbols-outlined" style="font-size: 16px;">delete_forever</span>
+                <span class="material-symbols-outlined icon-sm">delete_forever</span>
                 <span>Delete My Account & All Data</span>
               </button>
             </div>

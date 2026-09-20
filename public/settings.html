@@ -22,7 +22,7 @@
       <div class="sidebar-header">
         <div class="brand-badge">
           <div class="brand-logo-icon">
-            <img src="/img/logo.svg" alt="Advocate DigiDiary" style="width: 22px; height: 22px;">
+            <img src="/img/logo.svg" alt="Advocate DigiDiary">
           </div>
           <div class="brand-titles">
             <div class="title">ADVOCATE DIGIDIARY</div>
@@ -32,7 +32,7 @@
       </div>
 
       <nav class="sidebar-nav">
-        <div class="nav-section-label" style="padding: 6px 14px 2px; font-size: 10px; font-weight: 700; color: rgba(255,255,255,0.4); text-transform: uppercase; letter-spacing: 0.05em;">Chamber</div>
+        <div class="nav-section-label">Chamber</div>
         <a href="/dashboard.html" class="nav-link">
           <span class="material-symbols-outlined">dashboard</span>
           <span>Dashboard</span>
@@ -54,7 +54,7 @@
           <span>Legal Notebook</span>
         </a>
 
-        <div class="nav-section-label" style="padding: 12px 14px 2px; font-size: 10px; font-weight: 700; color: rgba(255,255,255,0.4); text-transform: uppercase; letter-spacing: 0.05em;">Practice</div>
+        <div class="nav-section-label spaced">Practice</div>
         <a href="/clients.html" class="nav-link">
           <span class="material-symbols-outlined">group</span>
           <span>Clients</span>
@@ -76,7 +76,7 @@
           <span>Reminders</span>
         </a>
 
-        <div class="nav-section-label" style="padding: 12px 14px 2px; font-size: 10px; font-weight: 700; color: rgba(255,255,255,0.4); text-transform: uppercase; letter-spacing: 0.05em;">Firm & Insights</div>
+        <div class="nav-section-label spaced">Firm & Insights</div>
         <a href="/analytics.html" class="nav-link">
           <span class="material-symbols-outlined">insights</span>
           <span>Analytics</span>
@@ -110,8 +110,8 @@
             <div class="firm-name" id="sidebarFirmName">Chambers</div>
             <div class="bar-enrollment" id="sidebarBarEnrollment">Advocate</div>
           </div>
-          <button class="btn btn-icon btn-sm logout-btn" id="logoutBtn" title="Sign Out" style="background: none; border: none; cursor: pointer;">
-            <span class="material-symbols-outlined" style="font-size: 18px; color: var(--on-tertiary-container);">logout</span>
+          <button class="btn btn-icon btn-sm logout-btn" id="logoutBtn" title="Sign Out">
+            <span class="material-symbols-outlined">logout</span>
           </button>
         </div>
         <div class="sidebar-status-row">
@@ -128,8 +128,8 @@
     <div class="main-wrapper">
       <!-- Top Header -->
       <header class="top-header">
-        <div style="display: flex; align-items: center; gap: 1rem;">
-          <button class="btn btn-icon btn-sm d-md-none" id="mobileMenuToggle" style="border: none; background: none; cursor: pointer;">
+        <div class="header-left-group">
+          <button class="btn btn-icon btn-sm d-md-none" id="mobileMenuToggle">
             <span class="material-symbols-outlined">menu</span>
           </button>
           <div class="header-search">
@@ -145,21 +145,21 @@
       <!-- Main Content -->
       <main class="main-content">
         <!-- Page Title & Header -->
-        <div class="page-header" style="margin-bottom: 1.5rem;">
-          <h1 class="page-title" style="font-family: var(--font-headline); font-size: 1.75rem; color: var(--navy-900); margin-bottom: 0.25rem;">
+        <div class="page-header">
+          <h1 class="page-title">
             Chamber Settings & Preferences
           </h1>
-          <p class="page-subtitle" style="color: var(--text-muted); font-size: 0.875rem;">
+          <p class="page-subtitle">
             Chamber practice details, practitioner credentials, tenant isolation status and system health
           </p>
         </div>
 
         <div class="grid grid-cols-12 gap-6">
           <!-- Left Column (8 cols): Chamber Info & User Info -->
-          <div class="col-span-8" style="display: flex; flex-direction: column; gap: 1.5rem;">
+          <div class="col-span-8 flex flex-col gap-6">
             <!-- Chamber Profile Card -->
             <div class="card">
-              <h3 style="font-family: var(--font-headline); font-size: 1.15rem; color: var(--navy-900); margin-bottom: 1.25rem;">
+              <h3 class="modal-title" style="color: var(--navy-900); margin-bottom: 1.25rem;">
                 Law Firm / Chamber Profile
               </h3>
               <form id="firmProfileForm">
@@ -189,7 +189,7 @@
 
             <!-- User Practitioner Profile -->
             <div class="card">
-              <h3 style="font-family: var(--font-headline); font-size: 1.15rem; color: var(--navy-900); margin-bottom: 1.25rem;">
+              <h3 class="modal-title" style="color: var(--navy-900); margin-bottom: 1.25rem;">
                 Practitioner Profile
               </h3>
               <form id="userProfileForm">
@@ -215,7 +215,7 @@
                   </div>
                 </div>
 
-                <div style="text-align: right; margin-top: 1rem;">
+                <div class="text-right mt-4">
                   <button type="submit" class="btn btn-primary btn-sm" id="saveProfBtn">Update Profile</button>
                 </div>
               </form>
@@ -223,9 +223,9 @@
 
             <!-- Security & Change Password Card -->
             <div class="card" id="changePasswordCard">
-              <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 1rem;">
+              <div class="flex items-center gap-2 mb-4">
                 <span class="material-symbols-outlined" style="color: var(--gold-600); font-size: 24px;">lock_reset</span>
-                <h3 style="font-family: var(--font-headline); font-size: 1.15rem; color: var(--navy-900); margin: 0;">
+                <h3 class="modal-title" style="color: var(--navy-900); margin: 0;">
                   Security & Change Password
                 </h3>
               </div>
@@ -233,11 +233,11 @@
                 Keep your chamber account secure. All members can update their own login password at any time.
               </p>
               <form id="changePasswordForm">
-                <div class="form-group" style="margin-bottom: 1rem;">
+                <div class="form-group mb-4">
                   <label class="form-label" for="currentPasswordInput">Current Password</label>
                   <input type="password" id="currentPasswordInput" class="form-control" placeholder="Enter your current password">
                 </div>
-                <div class="grid grid-cols-2 gap-4" style="margin-bottom: 1rem;">
+                <div class="grid grid-cols-2 gap-4 mb-4">
                   <div class="form-group">
                     <label class="form-label" for="newPasswordInput">New Password</label>
                     <input type="password" id="newPasswordInput" class="form-control" placeholder="Minimum 6 characters">
@@ -247,9 +247,9 @@
                     <input type="password" id="confirmPasswordInput" class="form-control" placeholder="Re-enter new password">
                   </div>
                 </div>
-                <div style="display: flex; justify-content: flex-end;">
+                <div class="flex justify-end">
                   <button type="submit" class="btn btn-primary btn-sm" id="btnChangePassword">
-                    <span class="material-symbols-outlined" style="font-size: 16px;">key</span>
+                    <span class="material-symbols-outlined icon-sm">key</span>
                     <span>Update Password</span>
                   </button>
                 </div>
@@ -258,47 +258,47 @@
           </div>
 
           <!-- Right Column (4 cols): System Status -->
-          <div class="col-span-4" style="display: flex; flex-direction: column; gap: 1.5rem;">
+          <div class="col-span-4 flex flex-col gap-6">
             <!-- Health Card -->
             <div class="card">
-              <h3 style="font-family: var(--font-headline); font-size: 1.1rem; color: var(--navy-900); margin-bottom: 1rem;">
+              <h3 class="modal-title mb-4" style="color: var(--navy-900);">
                 Security & Isolation Status
               </h3>
-              <div style="display: flex; flex-direction: column; gap: 0.75rem; font-size: 0.8125rem;">
-                <div style="display: flex; justify-content: space-between; border-bottom: 1px solid var(--border-light); padding-bottom: 6px;">
-                  <span style="color: var(--text-muted);">Database</span>
-                  <span style="font-weight: 600; color: var(--success); display: flex; align-items: center; gap: 4px;">
+              <div class="flex flex-col gap-3" style="font-size: 0.8125rem;">
+                <div class="flex justify-between" style="border-bottom: 1px solid var(--border-light); padding-bottom: 6px;">
+                  <span class="text-muted">Database</span>
+                  <span class="font-semibold text-success flex items-center gap-1">
                     <span class="status-dot"></span> MongoDB Atlas
                   </span>
                 </div>
-                <div style="display: flex; justify-content: space-between; border-bottom: 1px solid var(--border-light); padding-bottom: 6px;">
-                  <span style="color: var(--text-muted);">Tenant Isolation</span>
-                  <span style="font-weight: 600; color: var(--navy-900);">Multi-Tenant Scoped</span>
+                <div class="flex justify-between" style="border-bottom: 1px solid var(--border-light); padding-bottom: 6px;">
+                  <span class="text-muted">Tenant Isolation</span>
+                  <span class="font-semibold" style="color: var(--navy-900);">Multi-Tenant Scoped</span>
                 </div>
-                <div style="display: flex; justify-content: space-between; border-bottom: 1px solid var(--border-light); padding-bottom: 6px;">
-                  <span style="color: var(--text-muted);">Document Vault</span>
-                  <span style="font-weight: 600; color: var(--navy-900);">Disabled (Strict No-Storage)</span>
+                <div class="flex justify-between" style="border-bottom: 1px solid var(--border-light); padding-bottom: 6px;">
+                  <span class="text-muted">Document Vault</span>
+                  <span class="font-semibold" style="color: var(--navy-900);">Disabled (Strict No-Storage)</span>
                 </div>
-                <div style="display: flex; justify-content: space-between; border-bottom: 1px solid var(--border-light); padding-bottom: 6px;">
-                  <span style="color: var(--text-muted);">HTTP-Only Session</span>
-                  <span style="font-weight: 600; color: var(--success);">Active (JWT Cookie)</span>
+                <div class="flex justify-between" style="border-bottom: 1px solid var(--border-light); padding-bottom: 6px;">
+                  <span class="text-muted">HTTP-Only Session</span>
+                  <span class="font-semibold text-success">Active (JWT Cookie)</span>
                 </div>
-                <div style="display: flex; justify-content: space-between; padding-top: 4px;">
-                  <span style="color: var(--text-muted);">Server Health</span>
-                  <span style="font-weight: 600; color: var(--success);" id="healthStatusIndicator">Checking...</span>
+                <div class="flex justify-between pt-space-xs">
+                  <span class="text-muted">Server Health</span>
+                  <span class="font-semibold text-success" id="healthStatusIndicator">Checking...</span>
                 </div>
               </div>
             </div>
 
             <!-- Chamber ID -->
             <div class="card">
-              <h3 style="font-family: var(--font-headline); font-size: 1.1rem; color: var(--navy-900); margin-bottom: 0.5rem;">
+              <h3 class="modal-title mb-space-sm" style="color: var(--navy-900);">
                 Chamber UID
               </h3>
-              <p style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 0.5rem;">
+              <p class="text-xs text-muted mb-space-sm">
                 Your unique cryptographic law firm tenant ID:
               </p>
-              <div class="font-mono" style="font-size: 0.75rem; word-break: break-all; background: var(--surface-low); padding: 8px; border-radius: var(--radius-md); border: 1px solid var(--border-light);" id="settingFirmId">
+              <div class="font-mono text-xs bg-surface-container-low p-2 rounded" style="word-break: break-all; border: 1px solid var(--border-light);" id="settingFirmId">
                 Loading...
               </div>
             </div>

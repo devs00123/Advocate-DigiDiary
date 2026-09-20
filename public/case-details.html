@@ -12,6 +12,7 @@
   <link rel="stylesheet" href="/css/global.css">
   <link rel="stylesheet" href="/css/layout.css">
   <link rel="stylesheet" href="/css/components.css">
+  <link rel="stylesheet" href="/css/case-details.css">
   <link rel="stylesheet" href="/css/responsive.css">
 </head>
 <body>
@@ -22,7 +23,7 @@
       <div class="sidebar-header">
         <div class="brand-badge">
           <div class="brand-logo-icon">
-            <img src="/img/logo.svg" alt="Advocate DigiDiary" style="width: 22px; height: 22px;">
+            <img src="/img/logo.svg" alt="Advocate DigiDiary">
           </div>
           <div class="brand-titles">
             <div class="title">ADVOCATE DIGIDIARY</div>
@@ -32,7 +33,7 @@
       </div>
 
       <nav class="sidebar-nav">
-        <div class="nav-section-label" style="padding: 6px 14px 2px; font-size: 10px; font-weight: 700; color: rgba(255,255,255,0.4); text-transform: uppercase; letter-spacing: 0.05em;">Chamber</div>
+        <div class="nav-section-label">Chamber</div>
         <a href="/dashboard.html" class="nav-link">
           <span class="material-symbols-outlined">dashboard</span>
           <span>Dashboard</span>
@@ -54,7 +55,7 @@
           <span>Legal Notebook</span>
         </a>
 
-        <div class="nav-section-label" style="padding: 12px 14px 2px; font-size: 10px; font-weight: 700; color: rgba(255,255,255,0.4); text-transform: uppercase; letter-spacing: 0.05em;">Practice</div>
+        <div class="nav-section-label spaced">Practice</div>
         <a href="/clients.html" class="nav-link">
           <span class="material-symbols-outlined">group</span>
           <span>Clients</span>
@@ -76,7 +77,7 @@
           <span>Reminders</span>
         </a>
 
-        <div class="nav-section-label" style="padding: 12px 14px 2px; font-size: 10px; font-weight: 700; color: rgba(255,255,255,0.4); text-transform: uppercase; letter-spacing: 0.05em;">Firm & Insights</div>
+        <div class="nav-section-label spaced">Firm & Insights</div>
         <a href="/analytics.html" class="nav-link">
           <span class="material-symbols-outlined">insights</span>
           <span>Analytics</span>
@@ -106,8 +107,8 @@
             <div class="firm-name" id="sidebarFirmName">Chambers</div>
             <div class="bar-enrollment" id="sidebarBarEnrollment">Advocate</div>
           </div>
-          <button class="btn btn-icon btn-sm logout-btn" id="logoutBtn" title="Sign Out" style="background: none; border: none; cursor: pointer;">
-            <span class="material-symbols-outlined" style="font-size: 18px; color: var(--on-tertiary-container);">logout</span>
+          <button class="btn btn-icon btn-sm logout-btn" id="logoutBtn" title="Sign Out">
+            <span class="material-symbols-outlined">logout</span>
           </button>
         </div>
         <div class="sidebar-status-row">
@@ -124,9 +125,9 @@
     <div class="main-wrapper">
       <!-- Top Header -->
       <header class="top-header">
-        <div style="display: flex; align-items: center; gap: 1rem;">
-          <a href="/cases.html" class="btn btn-sm btn-ghost" style="padding: 4px 8px;">
-            <span class="material-symbols-outlined" style="font-size: 18px;">arrow_back</span>
+        <div class="header-left-group">
+          <a href="/cases.html" class="btn btn-sm btn-ghost">
+            <span class="material-symbols-outlined icon-md">arrow_back</span>
             <span>Back to Cases</span>
           </a>
           <div class="header-search">
@@ -140,11 +141,11 @@
 
         <div class="header-actions">
           <button class="btn btn-sm btn-outline" id="scheduleHearingActionBtn">
-            <span class="material-symbols-outlined" style="font-size: 16px;">event</span>
+            <span class="material-symbols-outlined icon-sm">event</span>
             <span>Schedule Hearing</span>
           </button>
           <button class="btn btn-sm btn-primary" id="recordPaymentActionBtn">
-            <span class="material-symbols-outlined" style="font-size: 16px;">receipt</span>
+            <span class="material-symbols-outlined icon-sm">receipt</span>
             <span>Record Payment</span>
           </button>
         </div>
@@ -153,65 +154,65 @@
       <!-- Main Content -->
       <main class="main-content">
         <!-- Case Banner Card -->
-        <div class="card" style="margin-bottom: 1.5rem; padding: 1.5rem; background: linear-gradient(135deg, #FFFFFF 0%, #FAFBFD 100%);">
-          <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 1rem;">
+        <div class="card case-banner">
+          <div class="case-banner-row">
             <div>
-              <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
+              <div class="case-badges">
                 <span class="badge badge-primary font-mono" id="caseNumberBadge" style="font-size: 0.8125rem;">WP(C) ...</span>
                 <span class="badge badge-neutral font-mono" id="caseCnrBadge" style="display: none; font-size: 0.8125rem;"></span>
                 <span class="badge badge-warning" id="caseTypeBadge">Civil</span>
                 <span id="caseStatusBadge"></span>
               </div>
-              <h1 class="page-title" id="caseTitleDisplay" style="font-family: var(--font-headline); font-size: 1.65rem; color: var(--navy-900); margin-bottom: 0.5rem;">
+              <h1 class="page-title case-title" id="caseTitleDisplay">
                 Loading case details...
               </h1>
-              <div style="display: flex; flex-wrap: wrap; gap: 1.5rem; font-size: 0.8125rem; color: var(--text-muted);">
-                <div>Court: <strong style="color: var(--navy-900);" id="caseCourtDisplay">-</strong></div>
-                <div>Court Room: <strong style="color: var(--navy-900);" id="caseCourtRoomDisplay">-</strong></div>
-                <div>Client: <strong style="color: var(--navy-900);" id="caseClientDisplay">-</strong></div>
-                <div>Representing: <strong style="color: var(--navy-900);" id="caseRoleDisplay">-</strong></div>
-                <div>Stage: <strong style="color: var(--navy-900);" id="caseStageDisplay">-</strong></div>
+              <div class="case-meta-row">
+                <div>Court: <strong id="caseCourtDisplay">-</strong></div>
+                <div>Court Room: <strong id="caseCourtRoomDisplay">-</strong></div>
+                <div>Client: <strong id="caseClientDisplay">-</strong></div>
+                <div>Representing: <strong id="caseRoleDisplay">-</strong></div>
+                <div>Stage: <strong id="caseStageDisplay">-</strong></div>
               </div>
             </div>
 
-            <div style="text-align: right;">
-              <div style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.04em;">Next Hearing</div>
-              <div style="font-family: var(--font-headline); font-size: 1.25rem; font-weight: 700; color: var(--navy-900); margin-top: 2px;" id="caseNextHearingDisplay">
+            <div class="case-hearing-widget">
+              <div class="case-hearing-label">Next Hearing</div>
+              <div class="case-hearing-date" id="caseNextHearingDisplay">
                 Not scheduled
               </div>
-              <div style="font-size: 0.75rem; color: var(--gold-700); font-weight: 600;" id="caseNextHearingSub"></div>
+              <div class="case-hearing-sub" id="caseNextHearingSub"></div>
             </div>
           </div>
         </div>
 
         <!-- Strict 7 Sections Tabs (Zero Document Storage!) -->
-        <div class="tabs-header" style="display: flex; gap: 0.5rem; border-bottom: 1px solid var(--border-light); margin-bottom: 1.5rem; overflow-x: auto;">
+        <div class="case-tabs-header">
           <button class="tab-btn active" data-tab="tabOverview">
-            <span class="material-symbols-outlined" style="font-size: 18px;">info</span>
+            <span class="material-symbols-outlined icon-md">info</span>
             <span>Overview</span>
           </button>
           <button class="tab-btn" data-tab="tabTimeline">
-            <span class="material-symbols-outlined" style="font-size: 18px;">timeline</span>
+            <span class="material-symbols-outlined icon-md">timeline</span>
             <span>Timeline</span>
           </button>
           <button class="tab-btn" data-tab="tabHearings">
-            <span class="material-symbols-outlined" style="font-size: 18px;">balance</span>
+            <span class="material-symbols-outlined icon-md">balance</span>
             <span>Hearings</span>
           </button>
           <button class="tab-btn" data-tab="tabTasks">
-            <span class="material-symbols-outlined" style="font-size: 18px;">check_box</span>
+            <span class="material-symbols-outlined icon-md">check_box</span>
             <span>Tasks</span>
           </button>
           <button class="tab-btn" data-tab="tabNotes">
-            <span class="material-symbols-outlined" style="font-size: 18px;">edit_note</span>
+            <span class="material-symbols-outlined icon-md">edit_note</span>
             <span>Notes</span>
           </button>
           <button class="tab-btn" data-tab="tabFinancials">
-            <span class="material-symbols-outlined" style="font-size: 18px;">payments</span>
+            <span class="material-symbols-outlined icon-md">payments</span>
             <span>Financial Summary</span>
           </button>
           <button class="tab-btn" data-tab="tabActivity">
-            <span class="material-symbols-outlined" style="font-size: 18px;">history</span>
+            <span class="material-symbols-outlined icon-md">history</span>
             <span>Activity</span>
           </button>
         </div>
@@ -219,50 +220,50 @@
         <!-- Tab 1: Overview -->
         <div class="tab-pane active" id="tabOverview">
           <div class="grid grid-cols-12 gap-6">
-            <div class="col-span-8" style="display: flex; flex-direction: column; gap: 1.5rem;">
+            <div class="col-span-8 case-overview-stack">
               <div class="card">
-                <h3 style="font-family: var(--font-headline); font-size: 1.1rem; color: var(--navy-900); margin-bottom: 1rem;">Case Synopsis & Chamber Notes</h3>
-                <p id="caseDescriptionText" style="font-size: 0.875rem; color: var(--text-color); line-height: 1.6; white-space: pre-wrap;">
+                <h3 class="case-section-heading">Case Synopsis & Chamber Notes</h3>
+                <p id="caseDescriptionText" class="case-description">
                   No description provided for this matter.
                 </p>
               </div>
 
               <div class="card">
-                <h3 style="font-family: var(--font-headline); font-size: 1.1rem; color: var(--navy-900); margin-bottom: 1rem;">Parties & Opposite Counsel</h3>
+                <h3 class="case-section-heading">Parties & Opposite Counsel</h3>
                 <div class="grid grid-cols-2 gap-4">
-                  <div style="padding: 1rem; border-radius: var(--radius-md); background: var(--surface-low);">
-                    <div style="font-size: 0.75rem; text-transform: uppercase; color: var(--text-muted); font-weight: 600;">Client & Representation</div>
-                    <div style="font-size: 1rem; font-weight: 600; color: var(--navy-900); margin-top: 4px;" id="overviewClientName">-</div>
-                    <div style="font-size: 0.8125rem; color: var(--text-muted);" id="overviewClientRole">-</div>
+                  <div class="party-info-card">
+                    <div class="party-info-label">Client & Representation</div>
+                    <div class="party-info-name" id="overviewClientName">-</div>
+                    <div class="party-info-detail" id="overviewClientRole">-</div>
                   </div>
-                  <div style="padding: 1rem; border-radius: var(--radius-md); background: var(--surface-low);">
-                    <div style="font-size: 0.75rem; text-transform: uppercase; color: var(--text-muted); font-weight: 600;">Opposite Party & Counsel</div>
-                    <div style="font-size: 1rem; font-weight: 600; color: var(--navy-900); margin-top: 4px;" id="overviewOpponentName">-</div>
-                    <div style="font-size: 0.8125rem; color: var(--text-muted);" id="overviewOpponentCounsel">-</div>
+                  <div class="party-info-card">
+                    <div class="party-info-label">Opposite Party & Counsel</div>
+                    <div class="party-info-name" id="overviewOpponentName">-</div>
+                    <div class="party-info-detail" id="overviewOpponentCounsel">-</div>
                   </div>
                 </div>
               </div>
             </div>
 
-            <div class="col-span-4" style="display: flex; flex-direction: column; gap: 1.5rem;">
+            <div class="col-span-4 case-overview-stack">
               <div class="card">
-                <h3 style="font-family: var(--font-headline); font-size: 1.1rem; color: var(--navy-900); margin-bottom: 1rem;">Forum Details</h3>
-                <div style="display: flex; flex-direction: column; gap: 0.75rem; font-size: 0.8125rem;">
-                  <div style="display: flex; justify-content: space-between; border-bottom: 1px solid var(--border-light); padding-bottom: 6px;">
-                    <span style="color: var(--text-muted);">Court</span>
-                    <span style="font-weight: 600; color: var(--navy-900);" id="overviewCourt">-</span>
+                <h3 class="case-section-heading">Forum Details</h3>
+                <div class="case-stack">
+                  <div class="forum-detail-row">
+                    <span class="forum-detail-label">Court</span>
+                    <span class="forum-detail-value" id="overviewCourt">-</span>
                   </div>
-                  <div style="display: flex; justify-content: space-between; border-bottom: 1px solid var(--border-light); padding-bottom: 6px;">
-                    <span style="color: var(--text-muted);">Court Room</span>
-                    <span style="font-weight: 600; color: var(--navy-900);" id="overviewCourtRoom">-</span>
+                  <div class="forum-detail-row">
+                    <span class="forum-detail-label">Court Room</span>
+                    <span class="forum-detail-value" id="overviewCourtRoom">-</span>
                   </div>
-                  <div style="display: flex; justify-content: space-between; border-bottom: 1px solid var(--border-light); padding-bottom: 6px;">
-                    <span style="color: var(--text-muted);">CNR Number</span>
-                    <span style="font-weight: 600; font-family: monospace; color: var(--navy-900);" id="overviewCnr">-</span>
+                  <div class="forum-detail-row">
+                    <span class="forum-detail-label">CNR Number</span>
+                    <span class="forum-detail-value mono" id="overviewCnr">-</span>
                   </div>
-                  <div style="display: flex; justify-content: space-between; border-bottom: 1px solid var(--border-light); padding-bottom: 6px;">
-                    <span style="color: var(--text-muted);">Filing Date</span>
-                    <span style="font-weight: 600; color: var(--navy-900);" id="overviewFilingDate">-</span>
+                  <div class="forum-detail-row">
+                    <span class="forum-detail-label">Filing Date</span>
+                    <span class="forum-detail-value" id="overviewFilingDate">-</span>
                   </div>
                 </div>
               </div>
@@ -273,24 +274,24 @@
         <!-- Tab 2: Timeline -->
         <div class="tab-pane" id="tabTimeline" style="display: none;">
           <div class="card">
-            <h3 style="font-family: var(--font-headline); font-size: 1.15rem; color: var(--navy-900); margin-bottom: 1.5rem;">Case Procedural Timeline</h3>
-            <div id="timelineContainer" style="position: relative; padding-left: 1.5rem;">
-              <p style="color: var(--text-muted);">Loading procedural history...</p>
+            <h3 class="case-section-heading-lg">Case Procedural Timeline</h3>
+            <div id="timelineContainer" class="case-timeline">
+              <p class="case-empty">Loading procedural history...</p>
             </div>
           </div>
         </div>
 
         <!-- Tab 3: Hearings -->
         <div class="tab-pane" id="tabHearings" style="display: none;">
-          <div class="card" style="padding: 0; overflow: hidden;">
-            <div style="padding: 1rem 1.5rem; border-bottom: 1px solid var(--border-light); display: flex; justify-content: space-between; align-items: center;">
-              <h3 style="font-family: var(--font-headline); font-size: 1.15rem; color: var(--navy-900);">Hearings & Orders History</h3>
+          <div class="card tab-card">
+            <div class="tab-card-header">
+              <h3 class="case-section-heading-lg">Hearings & Orders History</h3>
               <button class="btn btn-sm btn-primary" id="addHearingTabBtn">
-                <span class="material-symbols-outlined" style="font-size: 16px;">add</span>
+                <span class="material-symbols-outlined icon-sm">add</span>
                 <span>Schedule Hearing</span>
               </button>
             </div>
-            <div class="table-container" style="border: none;">
+            <div class="table-container">
               <table class="data-table">
                 <thead>
                   <tr>
@@ -300,11 +301,11 @@
                     <th>Purpose / Stage</th>
                     <th>Outcome / Orders</th>
                     <th>Status</th>
-                    <th style="text-align: right;">Action</th>
+                    <th class="table-action-th">Action</th>
                   </tr>
                 </thead>
                 <tbody id="caseHearingsTableBody">
-                  <tr><td colspan="7" style="text-align: center; padding: 2rem; color: var(--text-muted);">Loading hearings...</td></tr>
+                  <tr>                  <td colspan="7" class="case-empty td-loading">Loading hearings...</td></tr>
                 </tbody>
               </table>
             </div>
@@ -314,15 +315,15 @@
         <!-- Tab 4: Tasks -->
         <div class="tab-pane" id="tabTasks" style="display: none;">
           <div class="card">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-              <h3 style="font-family: var(--font-headline); font-size: 1.15rem; color: var(--navy-900);">Case Tasks & Chamber Action Items</h3>
+            <div class="tab-card-header">
+              <h3 class="case-section-heading-lg">Case Tasks & Chamber Action Items</h3>
               <button class="btn btn-sm btn-primary" id="addTaskTabBtn">
-                <span class="material-symbols-outlined" style="font-size: 16px;">add</span>
+                <span class="material-symbols-outlined icon-sm">add</span>
                 <span>Add Task</span>
               </button>
             </div>
-            <div id="caseTasksContainer" style="display: flex; flex-direction: column; gap: 0.75rem;">
-              <p style="color: var(--text-muted);">Loading tasks...</p>
+            <div id="caseTasksContainer" class="case-stack">
+              <p class="case-empty">Loading tasks...</p>
             </div>
           </div>
         </div>
@@ -330,48 +331,48 @@
         <!-- Tab 5: Notes -->
         <div class="tab-pane" id="tabNotes" style="display: none;">
           <div class="card">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem;">
+            <div class="tab-card-header">
               <div>
-                <h3 style="font-family: var(--font-headline); font-size: 1.15rem; color: var(--navy-900);">Legal Research & Chamber Notes</h3>
+                <h3 class="case-section-heading-lg">Legal Research & Chamber Notes</h3>
                 <p style="font-size: 0.8125rem; color: var(--text-muted);">Structured arguments, statutory citations, and hearing preparation (Text-only)</p>
               </div>
               <button class="btn btn-sm btn-primary" id="addNoteTabBtn">
-                <span class="material-symbols-outlined" style="font-size: 16px;">note_add</span>
+                <span class="material-symbols-outlined icon-sm">note_add</span>
                 <span>Add Research Note</span>
               </button>
             </div>
-            <div id="caseNotesContainer" style="display: flex; flex-direction: column; gap: 1rem;">
-              <p style="color: var(--text-muted);">Loading notes...</p>
+            <div id="caseNotesContainer" class="case-stack-lg">
+              <p class="case-empty">Loading notes...</p>
             </div>
           </div>
         </div>
 
         <!-- Tab 6: Financial Summary -->
         <div class="tab-pane" id="tabFinancials" style="display: none;">
-          <div class="grid grid-cols-3 gap-4" style="margin-bottom: 1.5rem;">
+          <div class="fin-kpi-grid">
             <div class="card kpi-card">
-              <span class="kpi-title" style="font-size: 0.8125rem; color: var(--text-muted); text-transform: uppercase;">Total Agreed Fee</span>
-              <div class="kpi-value" id="finTotalAgreed" style="font-family: var(--font-headline); font-size: 1.75rem; color: var(--navy-900); line-height: 1.2; margin-top: 4px;">₹0</div>
+              <span class="kpi-title">Total Agreed Fee</span>
+              <div class="kpi-value" id="finTotalAgreed">₹0</div>
             </div>
             <div class="card kpi-card">
-              <span class="kpi-title" style="font-size: 0.8125rem; color: var(--text-muted); text-transform: uppercase;">Total Received</span>
-              <div class="kpi-value" id="finTotalPaid" style="font-family: var(--font-headline); font-size: 1.75rem; color: var(--success); line-height: 1.2; margin-top: 4px;">₹0</div>
+              <span class="kpi-title">Total Received</span>
+              <div class="kpi-value text-success" id="finTotalPaid">₹0</div>
             </div>
             <div class="card kpi-card">
-              <span class="kpi-title" style="font-size: 0.8125rem; color: var(--text-muted); text-transform: uppercase;">Outstanding Balance</span>
-              <div class="kpi-value" id="finBalanceDue" style="font-family: var(--font-headline); font-size: 1.75rem; color: var(--danger); line-height: 1.2; margin-top: 4px;">₹0</div>
+              <span class="kpi-title">Outstanding Balance</span>
+              <div class="kpi-value text-danger" id="finBalanceDue">₹0</div>
             </div>
           </div>
 
-          <div class="card" style="padding: 0; overflow: hidden;">
-            <div style="padding: 1rem 1.5rem; border-bottom: 1px solid var(--border-light); display: flex; justify-content: space-between; align-items: center;">
-              <h3 style="font-family: var(--font-headline); font-size: 1.15rem; color: var(--navy-900);">Payments Ledger</h3>
+          <div class="card tab-card">
+            <div class="tab-card-header">
+              <h3 class="case-section-heading-lg">Payments Ledger</h3>
               <button class="btn btn-sm btn-primary" id="addPaymentTabBtn">
-                <span class="material-symbols-outlined" style="font-size: 16px;">add</span>
+                <span class="material-symbols-outlined icon-sm">add</span>
                 <span>Record Client Payment</span>
               </button>
             </div>
-            <div class="table-container" style="border: none;">
+            <div class="table-container">
               <table class="data-table">
                 <thead>
                   <tr>
@@ -384,7 +385,7 @@
                   </tr>
                 </thead>
                 <tbody id="casePaymentsTableBody">
-                  <tr><td colspan="6" style="text-align: center; padding: 2rem; color: var(--text-muted);">Loading payments...</td></tr>
+                  <tr>                  <td colspan="6" class="case-empty td-loading">Loading payments...</td></tr>
                 </tbody>
               </table>
             </div>
@@ -394,9 +395,9 @@
         <!-- Tab 7: Activity -->
         <div class="tab-pane" id="tabActivity" style="display: none;">
           <div class="card">
-            <h3 style="font-family: var(--font-headline); font-size: 1.15rem; color: var(--navy-900); margin-bottom: 1rem;">Case Activity & Audit Trail</h3>
-            <div id="caseActivityContainer" style="display: flex; flex-direction: column; gap: 0.75rem;">
-              <p style="color: var(--text-muted);">Loading activity logs...</p>
+            <h3 class="case-section-heading-lg">Case Activity & Audit Trail</h3>
+            <div id="caseActivityContainer" class="case-stack">
+              <p class="case-empty">Loading activity logs...</p>
             </div>
           </div>
         </div>
@@ -407,9 +408,9 @@
 
   <!-- Schedule Hearing Modal -->
   <div class="modal-backdrop" id="caseHearingModal">
-    <div class="modal-dialog" style="max-width: 520px;">
+    <div class="modal-dialog">
       <div class="modal-header">
-        <h3 class="modal-title" style="font-family: var(--font-headline); font-size: 1.25rem;">Schedule Court Hearing</h3>
+        <h3 class="modal-title">Schedule Court Hearing</h3>
         <button class="modal-close" onclick="UI.closeModal('caseHearingModal')">&times;</button>
       </div>
       <form id="caseHearingForm">
@@ -453,9 +454,9 @@
 
   <!-- Record Outcome Modal -->
   <div class="modal-backdrop" id="hearingOutcomeModal">
-    <div class="modal-dialog" style="max-width: 520px;">
+    <div class="modal-dialog">
       <div class="modal-header">
-        <h3 class="modal-title" style="font-family: var(--font-headline); font-size: 1.25rem;">Record Hearing Outcome</h3>
+        <h3 class="modal-title">Record Hearing Outcome</h3>
         <button class="modal-close" onclick="UI.closeModal('hearingOutcomeModal')">&times;</button>
       </div>
       <form id="hearingOutcomeForm">
@@ -494,9 +495,9 @@
 
   <!-- Add Task Modal -->
   <div class="modal-backdrop" id="caseTaskModal">
-    <div class="modal-dialog" style="max-width: 500px;">
+    <div class="modal-dialog">
       <div class="modal-header">
-        <h3 class="modal-title" style="font-family: var(--font-headline); font-size: 1.25rem;">Add Case Task</h3>
+        <h3 class="modal-title">Add Case Task</h3>
         <button class="modal-close" onclick="UI.closeModal('caseTaskModal')">&times;</button>
       </div>
       <form id="caseTaskForm">
@@ -531,9 +532,9 @@
 
   <!-- Add Note Modal (Text only) -->
   <div class="modal-backdrop" id="caseNoteModal">
-    <div class="modal-dialog" style="max-width: 560px;">
+    <div class="modal-dialog">
       <div class="modal-header">
-        <h3 class="modal-title" style="font-family: var(--font-headline); font-size: 1.25rem;">Add Legal Research Note</h3>
+        <h3 class="modal-title">Add Legal Research Note</h3>
         <button class="modal-close" onclick="UI.closeModal('caseNoteModal')">&times;</button>
       </div>
       <form id="caseNoteForm">
@@ -561,9 +562,9 @@
 
   <!-- Record Payment Modal -->
   <div class="modal-backdrop" id="casePaymentModal">
-    <div class="modal-dialog" style="max-width: 520px;">
+    <div class="modal-dialog">
       <div class="modal-header">
-        <h3 class="modal-title" style="font-family: var(--font-headline); font-size: 1.25rem;">Record Client Fee Payment</h3>
+        <h3 class="modal-title">Record Client Fee Payment</h3>
         <button class="modal-close" onclick="UI.closeModal('casePaymentModal')">&times;</button>
       </div>
       <form id="casePaymentForm">

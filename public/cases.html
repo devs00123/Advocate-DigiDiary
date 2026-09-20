@@ -22,7 +22,7 @@
       <div class="sidebar-header">
         <div class="brand-badge">
           <div class="brand-logo-icon">
-            <img src="/img/logo.svg" alt="Advocate DigiDiary" style="width: 22px; height: 22px;">
+            <img src="/img/logo.svg" alt="Advocate DigiDiary">
           </div>
           <div class="brand-titles">
             <div class="title">ADVOCATE DIGIDIARY</div>
@@ -32,7 +32,7 @@
       </div>
 
       <nav class="sidebar-nav">
-        <div class="nav-section-label" style="padding: 6px 14px 2px; font-size: 10px; font-weight: 700; color: rgba(255,255,255,0.4); text-transform: uppercase; letter-spacing: 0.05em;">Chamber</div>
+        <div class="nav-section-label">Chamber</div>
         <a href="/dashboard.html" class="nav-link">
           <span class="material-symbols-outlined">dashboard</span>
           <span>Dashboard</span>
@@ -54,7 +54,7 @@
           <span>Legal Notebook</span>
         </a>
 
-        <div class="nav-section-label" style="padding: 12px 14px 2px; font-size: 10px; font-weight: 700; color: rgba(255,255,255,0.4); text-transform: uppercase; letter-spacing: 0.05em;">Practice</div>
+        <div class="nav-section-label spaced">Practice</div>
         <a href="/clients.html" class="nav-link">
           <span class="material-symbols-outlined">group</span>
           <span>Clients</span>
@@ -76,7 +76,7 @@
           <span>Reminders</span>
         </a>
 
-        <div class="nav-section-label" style="padding: 12px 14px 2px; font-size: 10px; font-weight: 700; color: rgba(255,255,255,0.4); text-transform: uppercase; letter-spacing: 0.05em;">Firm & Insights</div>
+        <div class="nav-section-label spaced">Firm & Insights</div>
         <a href="/analytics.html" class="nav-link">
           <span class="material-symbols-outlined">insights</span>
           <span>Analytics</span>
@@ -110,8 +110,8 @@
             <div class="firm-name" id="sidebarFirmName">Chambers</div>
             <div class="bar-enrollment" id="sidebarBarEnrollment">Advocate</div>
           </div>
-          <button class="btn btn-icon btn-sm logout-btn" id="logoutBtn" title="Sign Out" style="background: none; border: none; cursor: pointer;">
-            <span class="material-symbols-outlined" style="font-size: 18px; color: var(--on-tertiary-container);">logout</span>
+          <button class="btn btn-icon btn-sm logout-btn" id="logoutBtn" title="Sign Out">
+            <span class="material-symbols-outlined">logout</span>
           </button>
         </div>
         <div class="sidebar-status-row">
@@ -128,8 +128,8 @@
     <div class="main-wrapper">
       <!-- Top Header -->
       <header class="top-header">
-        <div style="display: flex; align-items: center; gap: 1rem;">
-          <button class="btn btn-icon btn-sm d-md-none" id="mobileMenuToggle" style="border: none; background: none; cursor: pointer;">
+        <div class="header-left-group">
+          <button class="btn btn-icon btn-sm d-md-none" id="mobileMenuToggle">
             <span class="material-symbols-outlined">menu</span>
           </button>
           <div class="header-search">
@@ -143,7 +143,7 @@
 
         <div class="header-actions">
           <button class="btn btn-sm btn-primary" id="openAddCaseBtn">
-            <span class="material-symbols-outlined" style="font-size: 16px;">add</span>
+            <span class="material-symbols-outlined icon-sm">add</span>
             <span>Register New Case</span>
           </button>
         </div>
@@ -152,23 +152,23 @@
       <!-- Main Content -->
       <main class="main-content">
         <!-- Page Title & Header -->
-        <div class="page-header" style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1.5rem;">
+        <div class="page-header" style="display: flex; justify-content: space-between; align-items: flex-start;">
           <div>
-            <h1 class="page-title" style="font-family: var(--font-headline); font-size: 1.75rem; color: var(--navy-900); margin-bottom: 0.25rem;">
+            <h1 class="page-title">
               Case Portfolio & Briefs
             </h1>
-            <p class="page-subtitle" style="color: var(--text-muted); font-size: 0.875rem;">
+            <p class="page-subtitle">
               Manage active litigation, arbitration matters, appellate briefs and forums
             </p>
           </div>
 
           <div style="display: flex; gap: 0.5rem;">
             <a href="/api/reports/case-summary?format=excel" target="_blank" class="btn btn-sm btn-outline">
-              <span class="material-symbols-outlined" style="font-size: 16px;">table_view</span>
+              <span class="material-symbols-outlined icon-sm">table_view</span>
               <span>Export Excel</span>
             </a>
             <a href="/api/reports/case-summary?format=csv" target="_blank" class="btn btn-sm btn-outline">
-              <span class="material-symbols-outlined" style="font-size: 16px;">download</span>
+              <span class="material-symbols-outlined icon-sm">download</span>
               <span>CSV</span>
             </a>
           </div>
@@ -216,8 +216,8 @@
         </div>
 
         <!-- Case Portfolio Table Card -->
-        <div class="card" style="padding: 0; overflow: hidden;">
-          <div class="table-container" style="border: none;">
+        <div class="card card--flush">
+          <div class="table-container table-container--flush">
             <table class="data-table">
               <thead>
                 <tr>
@@ -227,12 +227,12 @@
                   <th>Stage</th>
                   <th>Next Hearing</th>
                   <th>Fee Status</th>
-                  <th style="text-align: right;">Action</th>
+                  <th class="table-action-th">Action</th>
                 </tr>
               </thead>
               <tbody id="caseTableBody">
                 <tr>
-                  <td colspan="7" style="text-align: center; padding: 2.5rem; color: var(--text-muted);">
+                  <td colspan="7" class="td-loading">
                     Loading cases portfolio...
                   </td>
                 </tr>
@@ -259,7 +259,7 @@
   <div class="modal-backdrop" id="caseModal">
     <div class="modal-dialog" style="max-width: 680px;">
       <div class="modal-header">
-        <h3 class="modal-title" style="font-family: var(--font-headline); font-size: 1.25rem;" id="modalCaseTitleText">Register New Matter</h3>
+        <h3 class="modal-title" id="modalCaseTitleText">Register New Matter</h3>
         <button class="modal-close" onclick="UI.closeModal('caseModal')">&times;</button>
       </div>
       <form id="caseForm">

@@ -1,0 +1,78 @@
+/* Advocate DigiDiary — Analytics Page */
+
+/* KPI Grid */
+.analytics-kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+/* KPI Card Styles */
+.analytics-kpi-grid .kpi-title {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+}
+
+.analytics-kpi-grid .kpi-value {
+  font-family: var(--font-headline);
+  font-size: 2rem;
+  color: var(--navy-900);
+  margin-top: 4px;
+}
+
+.analytics-kpi-grid .kpi-sub {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin-top: 4px;
+}
+
+/* Value color variants */
+.kpi-value.text-success { color: var(--success); }
+.kpi-value.text-danger { color: var(--danger); }
+
+/* Charts Grid */
+.analytics-charts-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px;
+  margin-bottom: 24px;
+}
+
+/* Chart Card */
+.chart-card-header {
+  font-family: var(--font-headline);
+  font-size: 1.1rem;
+  color: var(--navy-900);
+  margin-bottom: 1rem;
+}
+
+.chart-container {
+  height: 260px;
+  position: relative;
+}
+
+/* Responsive */
+@media (max-width: 767px) {
+  .analytics-kpi-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .analytics-charts-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .chart-container {
+    height: 220px;
+  }
+}
+
+@media (max-width: 479px) {
+  .analytics-kpi-grid .kpi-value {
+    font-size: 1.5rem;
+  }
+}

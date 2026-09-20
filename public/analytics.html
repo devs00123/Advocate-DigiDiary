@@ -12,6 +12,7 @@
   <link rel="stylesheet" href="/css/global.css">
   <link rel="stylesheet" href="/css/layout.css">
   <link rel="stylesheet" href="/css/components.css">
+  <link rel="stylesheet" href="/css/analytics.css">
   <link rel="stylesheet" href="/css/responsive.css">
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 </head>
@@ -23,7 +24,7 @@
       <div class="sidebar-header">
         <div class="brand-badge">
           <div class="brand-logo-icon">
-            <img src="/img/logo.svg" alt="Advocate DigiDiary" style="width: 22px; height: 22px;">
+            <img src="/img/logo.svg" alt="Advocate DigiDiary">
           </div>
           <div class="brand-titles">
             <div class="title">ADVOCATE DIGIDIARY</div>
@@ -33,7 +34,7 @@
       </div>
 
       <nav class="sidebar-nav">
-        <div class="nav-section-label" style="padding: 6px 14px 2px; font-size: 10px; font-weight: 700; color: rgba(255,255,255,0.4); text-transform: uppercase; letter-spacing: 0.05em;">Chamber</div>
+        <div class="nav-section-label">Chamber</div>
         <a href="/dashboard.html" class="nav-link">
           <span class="material-symbols-outlined">dashboard</span>
           <span>Dashboard</span>
@@ -55,7 +56,7 @@
           <span>Legal Notebook</span>
         </a>
 
-        <div class="nav-section-label" style="padding: 12px 14px 2px; font-size: 10px; font-weight: 700; color: rgba(255,255,255,0.4); text-transform: uppercase; letter-spacing: 0.05em;">Practice</div>
+        <div class="nav-section-label spaced">Practice</div>
         <a href="/clients.html" class="nav-link">
           <span class="material-symbols-outlined">group</span>
           <span>Clients</span>
@@ -77,7 +78,7 @@
           <span>Reminders</span>
         </a>
 
-        <div class="nav-section-label" style="padding: 12px 14px 2px; font-size: 10px; font-weight: 700; color: rgba(255,255,255,0.4); text-transform: uppercase; letter-spacing: 0.05em;">Firm & Insights</div>
+        <div class="nav-section-label spaced">Firm & Insights</div>
         <a href="/analytics.html" class="nav-link active">
           <span class="material-symbols-outlined">insights</span>
           <span>Analytics</span>
@@ -102,8 +103,8 @@
           <span class="material-symbols-outlined">settings</span>
           <span>Settings</span>
         </a>
-        <a href="/admin.html" class="nav-link admin-only" id="navAdminLink" style="display: none; color: var(--secondary);">
-          <span class="material-symbols-outlined" style="color: var(--secondary);">admin_panel_settings</span>
+        <a href="/admin.html" class="nav-link admin-only" id="navAdminLink">
+          <span class="material-symbols-outlined">admin_panel_settings</span>
           <span>Super Admin</span>
         </a>
       </nav>
@@ -115,8 +116,8 @@
             <div class="firm-name" id="sidebarFirmName">Chambers</div>
             <div class="bar-enrollment" id="sidebarBarEnrollment">Advocate</div>
           </div>
-          <button class="btn btn-icon btn-sm logout-btn" id="logoutBtn" title="Sign Out" style="background: none; border: none; cursor: pointer;">
-            <span class="material-symbols-outlined" style="font-size: 18px; color: var(--on-tertiary-container);">logout</span>
+          <button class="btn btn-icon btn-sm logout-btn" id="logoutBtn" title="Sign Out">
+            <span class="material-symbols-outlined">logout</span>
           </button>
         </div>
         <div class="sidebar-status-row">
@@ -133,8 +134,8 @@
     <div class="main-wrapper">
       <!-- Top Header -->
       <header class="top-header">
-        <div style="display: flex; align-items: center; gap: 1rem;">
-          <button class="btn btn-icon btn-sm d-md-none" id="mobileMenuToggle" style="border: none; background: none; cursor: pointer;">
+        <div class="header-left-group">
+          <button class="btn btn-icon btn-sm d-md-none" id="mobileMenuToggle">
             <span class="material-symbols-outlined">menu</span>
           </button>
           <div class="header-search">
@@ -148,7 +149,7 @@
 
         <div class="header-actions">
           <a href="/reports.html" class="btn btn-sm btn-primary">
-            <span class="material-symbols-outlined" style="font-size: 16px;">description</span>
+            <span class="material-symbols-outlined icon-sm">description</span>
             <span>Practice Reports</span>
           </a>
         </div>
@@ -157,84 +158,72 @@
       <!-- Main Content -->
       <main class="main-content">
         <!-- Page Title & Header -->
-        <div class="page-header" style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1.5rem;">
+        <div class="page-header">
           <div>
-            <h1 class="page-title" style="font-family: var(--font-headline); font-size: 1.75rem; color: var(--navy-900); margin-bottom: 0.25rem;">
-              Chamber Practice Analytics
-            </h1>
-            <p class="page-subtitle" style="color: var(--text-muted); font-size: 0.875rem;">
-              Data-driven insights into litigation volume, forum performance, hearing disposal and fee realization
-            </p>
+            <h1 class="page-title">Chamber Practice Analytics</h1>
+            <p class="page-subtitle">Data-driven insights into litigation volume, forum performance, hearing disposal and fee realization</p>
           </div>
         </div>
 
         <!-- 4 KPI Summary Cards -->
-        <div class="grid grid-cols-4 gap-4" style="margin-bottom: 1.5rem;">
+        <div class="analytics-kpi-grid">
           <div class="card kpi-card">
-            <span class="kpi-title" style="font-size: 0.8125rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase;">Total Cases</span>
-            <div class="kpi-value" id="anTotalCases" style="font-family: var(--font-headline); font-size: 2rem; color: var(--navy-900); margin-top: 4px;">--</div>
-            <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 4px;" id="anActiveCasesSub">-- active</div>
+            <span class="kpi-title">Total Cases</span>
+            <div class="kpi-value" id="anTotalCases">--</div>
+            <div class="kpi-sub" id="anActiveCasesSub">-- active</div>
           </div>
 
           <div class="card kpi-card">
-            <span class="kpi-title" style="font-size: 0.8125rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase;">Total Billed</span>
-            <div class="kpi-value" id="anTotalBilled" style="font-family: var(--font-headline); font-size: 1.75rem; color: var(--navy-900); margin-top: 4px;">₹0</div>
-            <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 4px;">Gross matter retainers</div>
+            <span class="kpi-title">Total Billed</span>
+            <div class="kpi-value" id="anTotalBilled">₹0</div>
+            <div class="kpi-sub">Gross matter retainers</div>
           </div>
 
           <div class="card kpi-card">
-            <span class="kpi-title" style="font-size: 0.8125rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase;">Realized Revenue</span>
-            <div class="kpi-value" id="anTotalRevenue" style="font-family: var(--font-headline); font-size: 1.75rem; color: var(--success); margin-top: 4px;">₹0</div>
-            <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 4px;">Collected fee receipts</div>
+            <span class="kpi-title">Realized Revenue</span>
+            <div class="kpi-value text-success" id="anTotalRevenue">₹0</div>
+            <div class="kpi-sub">Collected fee receipts</div>
           </div>
 
           <div class="card kpi-card">
-            <span class="kpi-title" style="font-size: 0.8125rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase;">Total Expenses</span>
-            <div class="kpi-value" id="anTotalExpenses" style="font-family: var(--font-headline); font-size: 1.75rem; color: var(--danger); margin-top: 4px;">₹0</div>
-            <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 4px;">Disbursements & filings</div>
+            <span class="kpi-title">Total Expenses</span>
+            <div class="kpi-value text-danger" id="anTotalExpenses">₹0</div>
+            <div class="kpi-sub">Disbursements & filings</div>
           </div>
         </div>
 
         <!-- Charts Grid 2x2 -->
-        <div class="grid grid-cols-2 gap-6" style="margin-bottom: 1.5rem;">
+        <div class="analytics-charts-grid">
           <!-- Chart 1: Case Distribution by Court -->
           <div class="card">
-            <h3 style="font-family: var(--font-headline); font-size: 1.1rem; color: var(--navy-900); margin-bottom: 1rem;">
-              Matter Distribution by Court / Forum
-            </h3>
-            <div style="height: 260px; position: relative;">
+            <h3 class="chart-card-header">Matter Distribution by Court / Forum</h3>
+            <div class="chart-container">
               <canvas id="courtChart"></canvas>
             </div>
           </div>
 
           <!-- Chart 2: Case Distribution by Type -->
           <div class="card">
-            <h3 style="font-family: var(--font-headline); font-size: 1.1rem; color: var(--navy-900); margin-bottom: 1rem;">
-              Matter Distribution by Practice Area
-            </h3>
-            <div style="height: 260px; position: relative;">
+            <h3 class="chart-card-header">Matter Distribution by Practice Area</h3>
+            <div class="chart-container">
               <canvas id="caseTypeChart"></canvas>
             </div>
           </div>
         </div>
 
-        <div class="grid grid-cols-2 gap-6">
+        <div class="analytics-charts-grid">
           <!-- Chart 3: Hearing Outcomes -->
           <div class="card">
-            <h3 style="font-family: var(--font-headline); font-size: 1.1rem; color: var(--navy-900); margin-bottom: 1rem;">
-              Hearing Outcomes & Disposal Rate
-            </h3>
-            <div style="height: 260px; position: relative;">
+            <h3 class="chart-card-header">Hearing Outcomes & Disposal Rate</h3>
+            <div class="chart-container">
               <canvas id="outcomesChart"></canvas>
             </div>
           </div>
 
           <!-- Chart 4: Monthly Financial Trend -->
           <div class="card">
-            <h3 style="font-family: var(--font-headline); font-size: 1.1rem; color: var(--navy-900); margin-bottom: 1rem;">
-              Monthly Revenue vs Expenses
-            </h3>
-            <div style="height: 260px; position: relative;">
+            <h3 class="chart-card-header">Monthly Revenue vs Expenses</h3>
+            <div class="chart-container">
               <canvas id="revenueChart"></canvas>
             </div>
           </div>

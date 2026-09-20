@@ -22,7 +22,7 @@
       <div class="sidebar-header">
         <div class="brand-badge">
           <div class="brand-logo-icon">
-            <img src="/img/logo.svg" alt="Advocate DigiDiary" style="width: 22px; height: 22px;">
+            <img src="/img/logo.svg" alt="Advocate DigiDiary">
           </div>
           <div class="brand-titles">
             <div class="title">ADVOCATE DIGIDIARY</div>
@@ -32,7 +32,7 @@
       </div>
 
       <nav class="sidebar-nav">
-        <div class="nav-section-label" style="padding: 6px 14px 2px; font-size: 10px; font-weight: 700; color: rgba(255,255,255,0.4); text-transform: uppercase; letter-spacing: 0.05em;">Chamber</div>
+        <div class="nav-section-label">Chamber</div>
         <a href="/dashboard.html" class="nav-link">
           <span class="material-symbols-outlined">dashboard</span>
           <span>Dashboard</span>
@@ -54,7 +54,7 @@
           <span>Legal Notebook</span>
         </a>
 
-        <div class="nav-section-label" style="padding: 12px 14px 2px; font-size: 10px; font-weight: 700; color: rgba(255,255,255,0.4); text-transform: uppercase; letter-spacing: 0.05em;">Practice</div>
+        <div class="nav-section-label spaced">Practice</div>
         <a href="/clients.html" class="nav-link">
           <span class="material-symbols-outlined">group</span>
           <span>Clients</span>
@@ -76,7 +76,7 @@
           <span>Reminders</span>
         </a>
 
-        <div class="nav-section-label" style="padding: 12px 14px 2px; font-size: 10px; font-weight: 700; color: rgba(255,255,255,0.4); text-transform: uppercase; letter-spacing: 0.05em;">Firm & Insights</div>
+        <div class="nav-section-label spaced">Firm & Insights</div>
         <a href="/analytics.html" class="nav-link">
           <span class="material-symbols-outlined">insights</span>
           <span>Analytics</span>
@@ -101,8 +101,8 @@
           <span class="material-symbols-outlined">settings</span>
           <span>Settings</span>
         </a>
-        <a href="/admin.html" class="nav-link admin-only" id="navAdminLink" style="display: none; color: var(--secondary);">
-          <span class="material-symbols-outlined" style="color: var(--secondary);">admin_panel_settings</span>
+        <a href="/admin.html" class="nav-link admin-only" id="navAdminLink">
+          <span class="material-symbols-outlined">admin_panel_settings</span>
           <span>Super Admin</span>
         </a>
       </nav>
@@ -114,8 +114,8 @@
             <div class="firm-name" id="sidebarFirmName">Chambers</div>
             <div class="bar-enrollment" id="sidebarBarEnrollment">Advocate</div>
           </div>
-          <button class="btn btn-icon btn-sm logout-btn" id="logoutBtn" title="Sign Out" style="background: none; border: none; cursor: pointer;">
-            <span class="material-symbols-outlined" style="font-size: 18px; color: var(--on-tertiary-container);">logout</span>
+          <button class="btn btn-icon btn-sm logout-btn" id="logoutBtn" title="Sign Out">
+            <span class="material-symbols-outlined">logout</span>
           </button>
         </div>
         <div class="sidebar-status-row">
@@ -132,8 +132,8 @@
     <div class="main-wrapper">
       <!-- Top Header -->
       <header class="top-header">
-        <div style="display: flex; align-items: center; gap: 1rem;">
-          <button class="btn btn-icon btn-sm d-md-none" id="mobileMenuToggle" style="border: none; background: none; cursor: pointer;">
+        <div class="header-left-group">
+          <button class="btn btn-icon btn-sm d-md-none" id="mobileMenuToggle">
             <span class="material-symbols-outlined">menu</span>
           </button>
           <div class="header-search">
@@ -147,7 +147,7 @@
 
         <div class="header-actions">
           <button class="btn btn-sm btn-primary" id="createNewNoteBtn">
-            <span class="material-symbols-outlined" style="font-size: 16px;">add</span>
+            <span class="material-symbols-outlined icon-sm">add</span>
             <span>New Research Note</span>
           </button>
         </div>
@@ -188,11 +188,11 @@
 
               <div style="display: flex; gap: 0.5rem;">
                 <button class="btn btn-sm btn-outline text-danger" id="deleteNoteBtn" style="display: none;">
-                  <span class="material-symbols-outlined" style="font-size: 16px; color: var(--danger);">delete</span>
+                  <span class="material-symbols-outlined" style="color: var(--danger);">delete</span>
                   <span>Delete</span>
                 </button>
                 <button class="btn btn-sm btn-primary" id="saveNoteBtn">
-                  <span class="material-symbols-outlined" style="font-size: 16px;">save</span>
+                  <span class="material-symbols-outlined icon-sm">save</span>
                   <span>Save Note</span>
                 </button>
               </div>

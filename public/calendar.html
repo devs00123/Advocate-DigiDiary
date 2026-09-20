@@ -22,7 +22,7 @@
       <div class="sidebar-header">
         <div class="brand-badge">
           <div class="brand-logo-icon">
-            <img src="/img/logo.svg" alt="Advocate DigiDiary" style="width: 22px; height: 22px;">
+            <img src="/img/logo.svg" alt="Advocate DigiDiary">
           </div>
           <div class="brand-titles">
             <div class="title">ADVOCATE DIGIDIARY</div>
@@ -31,26 +31,26 @@
         </div>
       </div>
       <nav class="sidebar-nav">
-        <div class="nav-section-label" style="padding: 6px 14px 2px; font-size: 10px; font-weight: 700; color: rgba(255,255,255,0.4); text-transform: uppercase; letter-spacing: 0.05em;">Chamber</div>
+        <div class="nav-section-label">Chamber</div>
         <a href="/dashboard.html" class="nav-link"><span class="material-symbols-outlined">dashboard</span><span>Dashboard</span></a>
         <a href="/cases.html" class="nav-link"><span class="material-symbols-outlined">gavel</span><span>Case Portfolio</span></a>
         <a href="/hearings.html" class="nav-link"><span class="material-symbols-outlined">calendar_today</span><span>Hearing Diary</span></a>
         <a href="/calendar.html" class="nav-link active"><span class="material-symbols-outlined">date_range</span><span>Court Calendar</span></a>
         <a href="/notes.html" class="nav-link"><span class="material-symbols-outlined">edit_note</span><span>Legal Notebook</span></a>
-        <div class="nav-section-label" style="padding: 12px 14px 2px; font-size: 10px; font-weight: 700; color: rgba(255,255,255,0.4); text-transform: uppercase; letter-spacing: 0.05em;">Practice</div>
+        <div class="nav-section-label spaced">Practice</div>
         <a href="/clients.html" class="nav-link"><span class="material-symbols-outlined">group</span><span>Clients</span></a>
         <a href="/tasks.html" class="nav-link"><span class="material-symbols-outlined">check_box</span><span>Tasks & Deadlines</span></a>
         <a href="/fees.html" class="nav-link"><span class="material-symbols-outlined">payments</span><span>Fees & Ledger</span></a>
         <a href="/expenses.html" class="nav-link"><span class="material-symbols-outlined">receipt_long</span><span>Expenses</span></a>
         <a href="/reminders.html" class="nav-link"><span class="material-symbols-outlined">notifications</span><span>Reminders</span></a>
-        <div class="nav-section-label" style="padding: 12px 14px 2px; font-size: 10px; font-weight: 700; color: rgba(255,255,255,0.4); text-transform: uppercase; letter-spacing: 0.05em;">Firm & Insights</div>
+        <div class="nav-section-label spaced">Firm & Insights</div>
         <a href="/analytics.html" class="nav-link"><span class="material-symbols-outlined">insights</span><span>Analytics</span></a>
         <a href="/reports.html" class="nav-link"><span class="material-symbols-outlined">description</span><span>Reports</span></a>
         <a href="/team.html" class="nav-link"><span class="material-symbols-outlined">badge</span><span>Firm & Team</span></a>
         <a href="/audit-logs.html" class="nav-link"><span class="material-symbols-outlined">history</span><span>Audit Logs</span></a>
         <a href="/profile.html" class="nav-link"><span class="material-symbols-outlined">account_circle</span><span>My Profile</span></a>
         <a href="/settings.html" class="nav-link"><span class="material-symbols-outlined">settings</span><span>Settings</span></a>
-        <a href="/admin.html" class="nav-link admin-only" id="navAdminLink" style="display: none; color: var(--secondary);"><span class="material-symbols-outlined" style="color: var(--secondary);">admin_panel_settings</span><span>Super Admin</span></a>
+        <a href="/admin.html" class="nav-link admin-only" id="navAdminLink"><span class="material-symbols-outlined">admin_panel_settings</span><span>Super Admin</span></a>
       </nav>
       <div class="sidebar-footer">
         <div class="user-profile-card">
@@ -59,8 +59,8 @@
             <div class="firm-name" id="sidebarFirmName">Chambers</div>
             <div class="bar-enrollment" id="sidebarBarEnrollment">Advocate</div>
           </div>
-          <button class="btn btn-icon btn-sm logout-btn" id="logoutBtn" title="Sign Out" style="background: none; border: none; cursor: pointer;">
-            <span class="material-symbols-outlined" style="font-size: 18px; color: var(--on-tertiary-container);">logout</span>
+          <button class="btn btn-icon btn-sm logout-btn" id="logoutBtn" title="Sign Out">
+            <span class="material-symbols-outlined">logout</span>
           </button>
         </div>
         <div class="sidebar-status-row">
@@ -72,8 +72,8 @@
 
     <div class="main-wrapper">
       <header class="top-header">
-        <div style="display: flex; align-items: center; gap: 1rem;">
-          <button class="btn btn-icon btn-sm d-md-none" id="mobileMenuToggle" style="border: none; background: none; cursor: pointer;">
+        <div class="header-left-group">
+          <button class="btn btn-icon btn-sm d-md-none" id="mobileMenuToggle">
             <span class="material-symbols-outlined">menu</span>
           </button>
           <div class="header-search">
@@ -86,7 +86,7 @@
         </div>
         <div class="header-actions">
           <button class="btn btn-sm btn-primary" onclick="window.location.href='/hearings.html'">
-            <span class="material-symbols-outlined" style="font-size: 16px;">add</span>
+            <span class="material-symbols-outlined icon-sm">add</span>
             <span>Schedule Hearing</span>
           </button>
         </div>

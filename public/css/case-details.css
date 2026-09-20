@@ -1,0 +1,270 @@
+/* Advocate DigiDiary — Case Details Page */
+
+/* Case Banner Card */
+.case-banner {
+  margin-bottom: 1.5rem;
+  padding: 1.5rem;
+  background: linear-gradient(135deg, #FFFFFF 0%, #FAFBFD 100%);
+}
+
+.case-banner-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.case-badges {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.case-title {
+  font-family: var(--font-headline);
+  font-size: 1.65rem;
+  color: var(--navy-900);
+  margin-bottom: 0.5rem;
+}
+
+.case-meta-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  font-size: 0.8125rem;
+  color: var(--text-muted);
+}
+
+.case-meta-row strong {
+  color: var(--navy-900);
+}
+
+/* Next Hearing Widget */
+.case-hearing-widget {
+  text-align: right;
+}
+
+.case-hearing-label {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.case-hearing-date {
+  font-family: var(--font-headline);
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--navy-900);
+  margin-top: 2px;
+}
+
+.case-hearing-sub {
+  font-size: 0.75rem;
+  color: var(--gold-700);
+  font-weight: 600;
+}
+
+/* Tab Header */
+.case-tabs-header {
+  display: flex;
+  gap: 0.5rem;
+  border-bottom: 1px solid var(--border-light);
+  margin-bottom: 1.5rem;
+  overflow-x: auto;
+}
+
+/* Tab Content */
+.case-overview-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 24px;
+}
+
+.case-overview-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* Section Heading */
+.case-section-heading {
+  font-family: var(--font-headline);
+  font-size: 1.1rem;
+  color: var(--navy-900);
+  margin-bottom: 1rem;
+}
+
+.case-section-heading-lg {
+  font-family: var(--font-headline);
+  font-size: 1.15rem;
+  color: var(--navy-900);
+  margin-bottom: 1.5rem;
+}
+
+/* Case Description */
+.case-description {
+  font-size: 0.875rem;
+  color: var(--text-color);
+  line-height: 1.6;
+  white-space: pre-wrap;
+}
+
+/* Party Info Cards */
+.party-info-card {
+  padding: 1rem;
+  border-radius: var(--radius-md);
+  background: var(--surface-low);
+}
+
+.party-info-label {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+.party-info-name {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--navy-900);
+  margin-top: 4px;
+}
+
+.party-info-detail {
+  font-size: 0.8125rem;
+  color: var(--text-muted);
+}
+
+/* Forum Detail Row */
+.forum-detail-row {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--border-light);
+  padding-bottom: 6px;
+  font-size: 0.8125rem;
+}
+
+.forum-detail-label {
+  color: var(--text-muted);
+}
+
+.forum-detail-value {
+  font-weight: 600;
+  color: var(--navy-900);
+}
+
+.forum-detail-value.mono {
+  font-family: monospace;
+}
+
+/* Tab Section Card with Header */
+.tab-card {
+  padding: 0;
+  overflow: hidden;
+}
+
+.tab-card-header {
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid var(--border-light);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Financial KPI Row */
+.fin-kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+  margin-bottom: 1.5rem;
+}
+
+.fin-kpi-grid .kpi-title {
+  font-size: 0.8125rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+}
+
+.fin-kpi-grid .kpi-value {
+  font-family: var(--font-headline);
+  font-size: 1.75rem;
+  line-height: 1.2;
+  margin-top: 4px;
+}
+
+/* Timeline */
+.case-timeline {
+  position: relative;
+  padding-left: 1.5rem;
+}
+
+/* Tasks & Notes Container */
+.case-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.case-stack-lg {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* Empty state */
+.case-empty {
+  color: var(--text-muted);
+}
+
+/* Responsive */
+@media (max-width: 767px) {
+  .case-overview-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .fin-kpi-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .case-banner {
+    padding: 1rem;
+  }
+
+  .case-title {
+    font-size: 1.35rem;
+  }
+
+  .case-hearing-widget {
+    text-align: left;
+    margin-top: 0.5rem;
+  }
+
+  .case-tabs-header {
+    gap: 4px;
+  }
+
+  .tab-card-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 1rem;
+  }
+}
+
+@media (max-width: 479px) {
+  .case-banner {
+    padding: 0.75rem;
+  }
+
+  .case-title {
+    font-size: 1.2rem;
+  }
+
+  .fin-kpi-grid .kpi-value {
+    font-size: 1.5rem;
+  }
+}

@@ -23,7 +23,7 @@
       <div class="sidebar-header">
         <div class="brand-badge">
           <div class="brand-logo-icon">
-            <img src="/img/logo.svg" alt="Advocate DigiDiary" style="width: 22px; height: 22px;">
+            <img src="/img/logo.svg" alt="Advocate DigiDiary">
           </div>
           <div class="brand-titles">
             <div class="title">ADVOCATE DIGIDIARY</div>
@@ -102,8 +102,8 @@
           <span class="material-symbols-outlined">settings</span>
           <span>Settings</span>
         </a>
-        <a href="/admin.html" class="nav-link admin-only" id="navAdminLink" style="display: none; color: var(--secondary);">
-          <span class="material-symbols-outlined" style="color: var(--secondary);">admin_panel_settings</span>
+        <a href="/admin.html" class="nav-link admin-only" id="navAdminLink">
+          <span class="material-symbols-outlined">admin_panel_settings</span>
           <span>Super Admin</span>
         </a>
       </nav>
@@ -116,7 +116,7 @@
             <div class="bar-enrollment" id="sidebarBarEnrollment">Advocate</div>
           </div>
           <button class="btn btn-icon btn-sm logout-btn" id="logoutBtn" title="Sign Out">
-            <span class="material-symbols-outlined" style="font-size: 18px; color: var(--on-tertiary-container);">logout</span>
+            <span class="material-symbols-outlined">logout</span>
           </button>
         </div>
         <div class="sidebar-status-row">
@@ -148,11 +148,11 @@
 
         <div class="header-actions flex-center">
           <button class="btn btn-sm btn-outline" id="quickAddHearingBtn">
-            <span class="material-symbols-outlined" style="font-size: 16px;">add_circle</span>
+            <span class="material-symbols-outlined icon-sm">add_circle</span>
             <span>New Hearing</span>
           </button>
           <button class="btn btn-sm btn-primary" id="quickAddCaseBtn">
-            <span class="material-symbols-outlined" style="font-size: 16px;">add</span>
+            <span class="material-symbols-outlined icon-sm">add</span>
             <span>Add Case</span>
           </button>
         </div>
@@ -173,7 +173,7 @@
 
           <div class="dash-page-actions">
             <a href="/api/reports/cause-list?format=pdf" target="_blank" class="btn btn-sm btn-outline" id="downloadCauseListPdf">
-              <span class="material-symbols-outlined" style="font-size: 16px;">print</span>
+              <span class="material-symbols-outlined icon-sm">print</span>
               <span>Today's Cause List (PDF)</span>
             </a>
           </div>
@@ -186,7 +186,7 @@
             <div class="kpi-header-row">
               <span class="kpi-title">Active Portfolio</span>
               <div class="kpi-icon-badge-sm navy">
-                <span class="material-symbols-outlined" style="font-size: 18px;">gavel</span>
+                <span class="material-symbols-outlined icon-md">gavel</span>
               </div>
             </div>
             <div class="kpi-value-lg" id="kpiActiveCases">--</div>
@@ -200,7 +200,7 @@
             <div class="kpi-header-row">
               <span class="kpi-title">Today's Hearings</span>
               <div class="kpi-icon-badge-sm gold">
-                <span class="material-symbols-outlined" style="font-size: 18px;">balance</span>
+                <span class="material-symbols-outlined icon-md">balance</span>
               </div>
             </div>
             <div class="kpi-value-lg" id="kpiTodayHearings">--</div>
@@ -214,7 +214,7 @@
             <div class="kpi-header-row">
               <span class="kpi-title">Pending Tasks</span>
               <div class="kpi-icon-badge-sm red">
-                <span class="material-symbols-outlined" style="font-size: 18px;">alarm</span>
+                <span class="material-symbols-outlined icon-md">alarm</span>
               </div>
             </div>
             <div class="kpi-value-lg" id="kpiPendingTasks">--</div>
@@ -228,7 +228,7 @@
             <div class="kpi-header-row">
               <span class="kpi-title">Fee Recovery</span>
               <div class="kpi-icon-badge-sm green">
-                <span class="material-symbols-outlined" style="font-size: 18px;">account_balance_wallet</span>
+                <span class="material-symbols-outlined icon-md">account_balance_wallet</span>
               </div>
             </div>
             <div class="kpi-value-lg" id="kpiOutstandingFees" style="font-size: 1.75rem;">₹0</div>
@@ -256,16 +256,16 @@
                 <a href="/hearings.html" class="btn btn-sm btn-ghost" style="font-size: 0.8125rem;">View Hearing Diary &rarr;</a>
               </div>
 
-              <div class="table-container" style="border: none;">
-                <table class="data-table">
-                  <thead>
-                    <tr>
-                      <th style="width: 70px;">Item #</th>
-                      <th>Case & Parties</th>
-                      <th>Court & Bench</th>
-                      <th>Purpose / Stage</th>
-                      <th>Status</th>
-                      <th style="text-align: right;">Action</th>
+            <div class="table-container table-container--flush">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th style="width: 70px;">Item #</th>
+                    <th>Case & Parties</th>
+                    <th>Court & Bench</th>
+                    <th>Purpose / Stage</th>
+                    <th>Status</th>
+                    <th class="table-action-th">Action</th>
                     </tr>
                   </thead>
                   <tbody id="todayHearingsTableBody">
@@ -290,7 +290,7 @@
                 <a href="/cases.html" class="btn btn-sm btn-ghost" style="font-size: 0.8125rem;">Browse All Cases &rarr;</a>
               </div>
 
-              <div class="table-container" style="border: none;">
+              <div class="table-container table-container--flush">
                 <table class="data-table">
                   <thead>
                     <tr>
@@ -299,7 +299,7 @@
                       <th>Court</th>
                       <th>Next Date</th>
                       <th>Stage</th>
-                      <th style="text-align: right;">Details</th>
+                      <th class="table-action-th">Details</th>
                     </tr>
                   </thead>
                   <tbody id="recentCasesTableBody">
@@ -352,7 +352,7 @@
                 </div>
               </div>
               <button class="btn btn-sm btn-outline" style="width: 100%; justify-content: center;" onclick="window.location.href='/fees.html?action=record'">
-                <span class="material-symbols-outlined" style="font-size: 16px;">receipt</span>
+                <span class="material-symbols-outlined icon-sm">receipt</span>
                 <span>Record Client Payment</span>
               </button>
             </div>

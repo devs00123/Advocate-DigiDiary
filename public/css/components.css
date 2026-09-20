@@ -1459,3 +1459,148 @@
   gap: 0.5rem;
   flex-wrap: wrap;
 }
+
+/* 18. Shared Layout Utilities */
+.header-left-group {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.brand-logo-icon img {
+  width: 22px;
+  height: 22px;
+}
+
+/* Logout Button Reset */
+.logout-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.logout-btn .material-symbols-outlined {
+  font-size: 18px;
+  color: var(--on-tertiary-container);
+}
+
+/* Mobile Menu Toggle Reset */
+.mobile-menu-toggle {
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+
+/* Icon Sizes */
+.icon-sm {
+  font-size: 16px;
+}
+
+.icon-md {
+  font-size: 18px;
+}
+
+.icon-lg {
+  font-size: 26px;
+}
+
+/* Card Flush (for tables) */
+.card--flush {
+  padding: 0;
+  overflow: hidden;
+}
+
+/* Table Container Flush */
+.table-container--flush {
+  border: none;
+}
+
+/* Table Action Column */
+.table-action-th {
+  text-align: right;
+}
+
+/* Loading/Empty Table Cell */
+.td-loading {
+  text-align: center;
+  padding: 2.5rem;
+  color: var(--text-muted);
+}
+
+/* Admin Nav Link */
+.nav-link.admin-only {
+  display: none;
+  color: var(--secondary);
+}
+
+.nav-link.admin-only .material-symbols-outlined {
+  color: var(--secondary);
+}
+
+/* Modal Size Variants */
+.modal-dialog--sm {
+  max-width: 480px;
+}
+
+.modal-dialog--md {
+  max-width: 560px;
+}
+
+.modal-dialog--lg {
+  max-width: 680px;
+}
+
+/* Button Group */
+.btn-group {
+  display: flex;
+  gap: 0.5rem;
+}
+
+/* Page Header Row (with export buttons) */
+.page-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+/* Modal Title */
+.modal-title {
+  font-family: var(--font-headline);
+  font-size: 1.25rem;
+}
+
+/* Tabs Header */
+.tabs-header {
+  display: flex;
+  gap: 0.5rem;
+  border-bottom: 1px solid var(--border-light);
+  margin-bottom: 1.5rem;
+  overflow-x: auto;
+}
+
+/* Tab Button */
+.tab-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 16px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-family: var(--font-label);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-muted);
+  border-bottom: 2px solid transparent;
+  transition: all var(--transition-fast);
+}
+
+.tab-btn:hover {
+  color: var(--navy-900);
+  background: var(--surface-low);
+}
+
+.tab-btn.active {
+  color: var(--primary);
+  border-bottom-color: var(--primary);
+}
