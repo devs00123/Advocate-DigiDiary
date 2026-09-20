@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Advocate DigiDiary — Register Chamber Practice</title>
+  <title>Advocate DigiDiary — Sign Up</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,600&family=Plus+Jakarta+Sans:wght@500;600;700&display=swap" rel="stylesheet" />
@@ -473,8 +473,8 @@
     <!-- Right Form Column -->
     <div class="form-pane">
       <div class="form-header">
-        <h2 class="form-title">Register Chamber Practice</h2>
-        <p class="form-subtitle">Establish your law firm workspace and senior counsel administration in 60 seconds.</p>
+        <h2 class="form-title">Sign Up</h2>
+        <p class="form-subtitle">Create your Advocate DigiDiary account to manage your legal practice.</p>
       </div>
 
       <div id="errorAlert" class="alert-banner"></div>
@@ -522,7 +522,7 @@
             <label class="form-label" for="email">Chamber Email Address</label>
             <div class="input-wrapper">
               <span class="material-symbols-outlined leading-icon">alternate_email</span>
-              <input class="styled-input" type="email" id="email" placeholder="rajesh@singhania.law" autocomplete="email" />
+              <input class="styled-input" type="email" id="email" placeholder="rajesh@singhania.law" autocomplete="email" required />
             </div>
           </div>
           <div class="form-group">
@@ -546,7 +546,7 @@
             <label class="form-label" for="password">Account Password</label>
             <div class="input-wrapper">
               <span class="material-symbols-outlined leading-icon">lock</span>
-              <input class="styled-input" type="password" id="password" placeholder="Min 6 characters" autocomplete="new-password" />
+              <input class="styled-input" type="password" id="password" placeholder="Min 6 characters" autocomplete="new-password" required minlength="6" />
               <button type="button" class="trailing-btn" id="togglePasswordBtn" title="Toggle password visibility">
                 <span class="material-symbols-outlined" id="eyeIcon" style="font-size: 18px;">visibility</span>
               </button>
@@ -564,12 +564,12 @@
 
         <button type="submit" id="submitBtn" class="submit-btn">
           <span class="material-symbols-outlined" style="font-size: 20px;">how_to_reg</span>
-          <span>Establish Practice Workspace</span>
+          <span>Create Account</span>
         </button>
       </form>
 
       <div class="form-footer-link">
-        Already have an active chamber diary?
+        Already have an active account?
         <a href="/login.html">Log In &rarr;</a>
       </div>
     </div>
@@ -608,8 +608,24 @@
       const chamberNumber = document.getElementById('chamberNumber').value.trim();
       const address = document.getElementById('address').value.trim();
 
+      if (!email) {
+        errorAlert.textContent = 'Email address is required.';
+        errorAlert.style.display = 'block';
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = '<span class="material-symbols-outlined" style="font-size: 20px;">how_to_reg</span> <span>Create Account</span>';
+        return;
+      }
+
+      if (!password || password.length < 6) {
+        errorAlert.textContent = 'Password must be at least 6 characters long.';
+        errorAlert.style.display = 'block';
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = '<span class="material-symbols-outlined" style="font-size: 20px;">how_to_reg</span> <span>Create Account</span>';
+        return;
+      }
+
       submitBtn.disabled = true;
-      submitBtn.innerHTML = '<span class="material-symbols-outlined" style="animation: spin 1s infinite; font-size: 18px;">progress_activity</span> Establishing Firm Workspace...';
+      submitBtn.innerHTML = '<span class="material-symbols-outlined" style="animation: spin 1s infinite; font-size: 18px;">progress_activity</span> Creating Account...';
 
       try {
         const payload = {
@@ -632,7 +648,7 @@
         errorAlert.style.display = 'block';
       } finally {
         submitBtn.disabled = false;
-        submitBtn.innerHTML = '<span class="material-symbols-outlined" style="font-size: 20px;">how_to_reg</span> <span>Establish Practice Workspace</span>';
+        submitBtn.innerHTML = '<span class="material-symbols-outlined" style="font-size: 20px;">how_to_reg</span> <span>Create Account</span>';
       }
     });
   </script>

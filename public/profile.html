@@ -338,6 +338,23 @@
                 <span>Change Password in Settings</span>
               </a>
             </div>
+
+            <!-- Danger Zone: Account Deletion -->
+            <div class="card" style="border: 1px solid rgba(220, 38, 38, 0.3); background: rgba(220, 38, 38, 0.03);">
+              <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 0.75rem;">
+                <span class="material-symbols-outlined" style="font-size: 20px; color: #DC2626;">warning</span>
+                <h3 style="font-family: var(--font-headline); font-size: 1.05rem; color: #DC2626; margin: 0;">
+                  Danger Zone
+                </h3>
+              </div>
+              <p style="font-size: 0.8125rem; color: var(--text-muted); line-height: 1.45; margin-bottom: 1rem;">
+                Permanently delete your account and all associated data including cases, hearings, tasks, notes, clients, financial records, and audit logs. This action cannot be undone.
+              </p>
+              <button type="button" class="btn btn-sm" id="btnDeleteAccount" style="width: 100%; justify-content: center; background: #DC2626; color: white; border: none;">
+                <span class="material-symbols-outlined" style="font-size: 16px;">delete_forever</span>
+                <span>Delete My Account & All Data</span>
+              </button>
+            </div>
           </div>
         </div>
       </main>

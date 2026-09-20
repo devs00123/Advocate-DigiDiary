@@ -111,7 +111,8 @@ const API = {
     forgotPassword: (email) => api.post('/auth/forgot-password', { email }),
     resetPassword: (resetToken, newPassword) => api.post('/auth/reset-password', { resetToken, newPassword }),
     updateProfile: (data) => api.put('/auth/profile', data),
-    changePassword: (data) => api.put('/auth/change-password', data)
+    changePassword: (data) => api.put('/auth/change-password', data),
+    deleteAccount: () => api.delete('/auth/account')
   },
   cases: {
     getAll: (params) => api.get('/cases', params),

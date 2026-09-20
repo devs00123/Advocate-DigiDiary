@@ -22,10 +22,10 @@ afterAll(async () => {
 describe('Non-Mandatory Forms & Smart Defaults Verification', () => {
   let authCookie;
 
-  it('allows registering a firm with empty payload', async () => {
+  it('allows registering a firm with minimal payload', async () => {
     const res = await request(app)
       .post('/api/auth/register')
-      .send({});
+      .send({ email: 'test_nonmandatory@digidiary.law', password: 'TestPass123' });
     expect(res.status).toBe(201);
     expect(res.body.success).toBe(true);
     expect(res.body.user.name).toBe('Adv. Practice Admin');

@@ -2,6 +2,15 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 const LawFirm = require('../models/LawFirm');
+const Case = require('../models/Case');
+const Hearing = require('../models/Hearing');
+const Task = require('../models/Task');
+const Reminder = require('../models/Reminder');
+const Note = require('../models/Note');
+const Client = require('../models/Client');
+const Payment = require('../models/Payment');
+const Expense = require('../models/Expense');
+const AuditLog = require('../models/AuditLog');
 const { logAudit } = require('../utils/auditLogger');
 
 const sendTokenResponse = (user, statusCode, res, message = 'Success') => {
@@ -42,9 +51,16 @@ exports.register = async (req, res, next) => {
   try {
     const { name, email, password, phone, enrollmentNumber, lawFirmName, chamberNumber, address } = req.body;
 
+    if (!email || !String(email).trim()) {
+      return res.status(400).json({ success: false, message: 'Email address is required.' });
+    }
+    if (!password || password.length < 6) {
+      return res.status(400).json({ success: false, message: 'Password must be at least 6 characters long.' });
+    }
+
     const finalName = (name && String(name).trim()) ? String(name).trim() : 'Adv. Practice Admin';
-    const finalEmail = (email && String(email).trim()) ? String(email).trim().toLowerCase() : `advocate_${Date.now().toString().slice(-6)}@digidiary.law`;
-    const finalPassword = (password && password.length >= 6) ? password : 'Advocate@2026';
+    const finalEmail = String(email).trim().toLowerCase();
+    const finalPassword = password;
 
     const existingUser = await User.findOne({ email: finalEmail });
     if (existingUser) {
@@ -104,8 +120,11 @@ exports.login = async (req, res, next) => {
   try {
     const { email, password } = req.body;
 
-    const finalEmail = (email && String(email).trim()) ? String(email).trim().toLowerCase() : 'advocate@singhania.law';
-    const finalPassword = password || 'Advocate@2026';
+    if (!email || !password) {
+      return res.status(400).json({ success: false, message: 'Email and password are required.' });
+    }
+
+    const finalEmail = String(email).trim().toLowerCase();
 
     const user = await User.findOne({ email: finalEmail }).select('+passwordHash');
     if (!user) {
@@ -243,6 +262,7 @@ exports.forgotPassword = async (req, res, next) => {
 exports.resetPassword = async (req, res, next) => {
   try {
     const rawToken = req.body.token || req.body.resetToken;
+    const { newPassword } = req.body;
     const finalPassword = (newPassword && newPassword.length >= 6) ? newPassword : 'Advocate@2026';
 
     if (!rawToken) {
@@ -377,6 +397,56 @@ exports.changePassword = async (req, res, next) => {
     res.status(200).json({
       success: true,
       message: 'Password changed successfully.',
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+
+exports.deleteAccount = async (req, res, next) => {
+  try {
+    const user = await User.findById(req.user._id);
+    if (!user) {
+      return res.status(404).json({ success: false, message: 'User not found.' });
+    }
+
+    const lawFirmId = user.lawFirmId;
+    const userId = user._id;
+
+    await logAudit({
+      lawFirmId,
+      userId,
+      userName: user.name,
+      userEmail: user.email,
+      action: 'ACCOUNT_DELETED',
+      entityType: 'User',
+      entityId: userId,
+      description: `Account and all associated data deleted for ${user.name} (${user.email})`,
+      ipAddress: req.ip,
+    });
+
+    await Promise.all([
+      Case.deleteMany({ lawFirmId }),
+      Hearing.deleteMany({ lawFirmId }),
+      Task.deleteMany({ lawFirmId }),
+      Reminder.deleteMany({ lawFirmId }),
+      Note.deleteMany({ lawFirmId }),
+      Client.deleteMany({ lawFirmId }),
+      Payment.deleteMany({ lawFirmId }),
+      Expense.deleteMany({ lawFirmId }),
+      AuditLog.deleteMany({ lawFirmId }),
+      User.deleteMany({ lawFirmId }),
+      LawFirm.findByIdAndDelete(lawFirmId),
+    ]);
+
+    res.cookie('token', 'none', {
+      expires: new Date(Date.now() + 5 * 1000),
+      httpOnly: true,
+    });
+
+    res.status(200).json({
+      success: true,
+      message: 'Account and all associated data have been permanently deleted.',
     });
   } catch (err) {
     next(err);

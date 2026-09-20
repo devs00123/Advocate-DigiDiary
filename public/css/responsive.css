@@ -393,6 +393,16 @@
   .calendar-scroll-wrapper {
     padding-bottom: 10px;
   }
+  .mobile-scroll-hint {
+    display: flex;
+  }
+  .hearing-dates-timeline {
+    grid-template-columns: 1fr !important;
+    gap: 0.75rem !important;
+  }
+  .hearing-core-grid {
+    grid-template-columns: 1fr !important;
+  }
 }
 
 /* ==========================================================================
@@ -466,190 +476,6 @@
   }
   .calendar-toolbar-left .page-title {
     font-size: 1rem;
-  }
-}
-
-@media (min-width: 768px) {
-  .mobile-header-brand,
-  .mobile-user-avatar {
-    display: none !important;
-  }
-}height: 32px;
-    border-radius: 50%;
-    background: var(--navy-900);
-    color: #ffffff;
-    font-weight: 700;
-    font-size: 11px;
-    border: 1.5px solid var(--gold-500);
-    text-decoration: none;
-    box-shadow: var(--shadow-sm);
-    flex-shrink: 0;
-    transition: transform var(--transition-fast);
-  }
-
-  .mobile-user-avatar:hover {
-    background: var(--navy-800);
-    transform: scale(1.05);
-  }
-
-  .header-search {
-    display: none;
-  }
-
-  .search-shortcut {
-    display: none;
-  }
-
-  .card {
-    padding: 16px;
-    border-radius: var(--radius-lg);
-  }
-
-  .table-container {
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    border-radius: var(--radius-lg);
-    margin-left: -2px;
-    margin-right: -2px;
-  }
-
-  .data-table th, .data-table td {
-    padding: 9px 10px;
-    font-size: 12px;
-    white-space: nowrap;
-  }
-
-  .drawer {
-    max-width: 100%;
-    width: 100%;
-  }
-
-  .modal-dialog {
-    width: 95%;
-    max-width: 95%;
-    max-height: 92vh;
-    border-radius: var(--radius-lg);
-  }
-
-  .modal-header {
-    padding: 12px 16px;
-  }
-
-  .modal-body {
-    padding: 16px;
-  }
-
-  .modal-footer {
-    padding: 12px 16px;
-    flex-wrap: wrap;
-    gap: 8px;
-  }
-
-  .btn {
-    padding: 7px 14px;
-    font-size: 12px;
-  }
-
-  .btn-lg {
-    padding: 9px 18px;
-    font-size: 13px;
-  }
-
-  /* Notebook responsive layout */
-  .notebook-container {
-    flex-direction: column;
-    height: auto;
-    min-height: 500px;
-  }
-
-  .notes-list-pane {
-    width: 100%;
-    max-height: 240px;
-    border-right: none;
-    border-bottom: 1px solid var(--outline-variant);
-  }
-
-  .note-editor-pane {
-    width: 100%;
-    min-height: 350px;
-  }
-
-  /* Tabs responsive scrolling */
-  .tabs-header {
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    gap: 4px;
-  }
-
-  .tab-btn {
-    padding: 8px 12px;
-    font-size: 12px;
-  }
-
-  .tabs-pills {
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    width: 100%;
-  }
-
-  /* Toast notification on mobile */
-  .toast-container {
-    left: 14px;
-    right: 14px;
-    bottom: 16px;
-    align-items: center;
-  }
-
-  .toast {
-    min-width: unset;
-    width: 100%;
-    max-width: 100%;
-  }
-}
-
-/* ==========================================================================
-   EXTRA SMALL PHONES (Under 480px)
-   ========================================================================== */
-@media (max-width: 479px) {
-  .main-content {
-    padding: 12px 10px 80px;
-  }
-
-  .card {
-    padding: 12px;
-  }
-
-  .page-title {
-    font-size: 1.25rem;
-  }
-
-  .page-subtitle {
-    font-size: 0.8rem;
-  }
-
-  .header-actions .btn span:not(.material-symbols-outlined) {
-    display: none;
-  }
-
-  .header-actions .btn {
-    padding: 6px 8px;
-  }
-
-  .auth-card {
-    border-radius: var(--radius-lg);
-  }
-
-  .auth-body {
-    padding: 12px 16px 20px;
-  }
-
-  .auth-header {
-    padding: 18px 16px 8px;
-  }
-
-  .mobile-header-title {
-    max-width: 120px;
-    font-size: 13px;
   }
 }
 

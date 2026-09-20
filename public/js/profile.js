@@ -5,6 +5,7 @@
 document.addEventListener('DOMContentLoaded', async () => {
   await loadUserProfile();
   setupProfileForm();
+  setupDeleteAccount();
 });
 
 let currentUser = null;
@@ -122,6 +123,49 @@ function setupProfileForm() {
     } finally {
       btn.disabled = false;
       btn.innerHTML = '<span class="material-symbols-outlined" style="font-size: 16px;">save</span><span>Save Profile Changes</span>';
+    }
+  });
+}
+
+function setupDeleteAccount() {
+  const btn = document.getElementById('btnDeleteAccount');
+  if (!btn) return;
+
+  btn.addEventListener('click', async () => {
+    const confirmed = confirm(
+      'PERMANENT DELETION WARNING\n\n' +
+      'This will permanently delete:\n' +
+      '- Your account and login access\n' +
+      '- All cases, hearings, and tasks\n' +
+      '- All notes, clients, and reminders\n' +
+      '- All financial records (payments & expenses)\n' +
+      '- Your law firm workspace\n' +
+      '- All audit logs\n\n' +
+      'This action CANNOT be undone. Are you absolutely sure?'
+    );
+    if (!confirmed) return;
+
+    const doubleConfirm = prompt('Type DELETE to confirm permanent account deletion:');
+    if (doubleConfirm !== 'DELETE') {
+      UI.showToast('Account deletion cancelled.', 'info');
+      return;
+    }
+
+    btn.disabled = true;
+    btn.innerHTML = '<span>Deleting Account...</span>';
+
+    try {
+      const res = await API.auth.deleteAccount();
+      if (res.success) {
+        UI.showToast('Account deleted. Redirecting...', 'success');
+        setTimeout(() => {
+          window.location.href = '/login.html';
+        }, 1500);
+      }
+    } catch (err) {
+      UI.showToast(err.message || 'Failed to delete account.', 'danger');
+      btn.disabled = false;
+      btn.innerHTML = '<span class="material-symbols-outlined" style="font-size: 16px;">delete_forever</span><span>Delete My Account & All Data</span>';
     }
   });
 }
