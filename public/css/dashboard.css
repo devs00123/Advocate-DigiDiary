@@ -1,0 +1,268 @@
+/* Advocate DigiDiary — Dashboard Page Styles */
+
+/* ── Page Header ── */
+.dash-page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1.5rem;
+}
+
+.dash-page-title {
+  font-family: var(--font-headline);
+  font-size: 1.75rem;
+  color: var(--navy-900);
+  margin-bottom: 0.25rem;
+}
+
+.dash-page-subtitle {
+  color: var(--text-muted);
+  font-size: 0.875rem;
+}
+
+.dash-page-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+/* ── KPI Cards ── */
+.dash-kpi-grid {
+  margin-bottom: 1.5rem;
+}
+
+.kpi-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.75rem;
+}
+
+.kpi-icon-badge-sm {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.kpi-icon-badge-sm.navy {
+  background: rgba(10, 17, 40, 0.06);
+  color: var(--navy-900);
+}
+
+.kpi-icon-badge-sm.gold {
+  background: rgba(197, 155, 39, 0.12);
+  color: var(--gold-700);
+}
+
+.kpi-icon-badge-sm.red {
+  background: rgba(220, 38, 38, 0.08);
+  color: var(--danger);
+}
+
+.kpi-icon-badge-sm.green {
+  background: rgba(5, 150, 105, 0.08);
+  color: var(--success);
+}
+
+.kpi-value-lg {
+  font-family: var(--font-headline);
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--navy-900);
+  line-height: 1;
+}
+
+.kpi-subtext {
+  margin-top: 0.5rem;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.kpi-subtext.gold {
+  color: var(--gold-700);
+  font-weight: 600;
+}
+
+.kpi-subtext.green {
+  color: var(--success);
+  font-weight: 600;
+}
+
+/* ── Card Headers ── */
+.dash-card-header {
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid var(--border-light);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #FAFBFD;
+}
+
+.dash-card-title {
+  font-family: var(--font-headline);
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--navy-900);
+}
+
+.dash-card-subtitle {
+  font-size: 0.8125rem;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
+.dash-card-title-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* ── Section Headers (Right Column) ── */
+.dash-section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.dash-section-title {
+  font-family: var(--font-headline);
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--navy-900);
+}
+
+.dash-view-all {
+  font-size: 0.75rem;
+  color: var(--gold-600);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.dash-view-all:hover {
+  text-decoration: underline;
+}
+
+/* ── Layout Utilities ── */
+.dash-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.dash-card-flush {
+  padding: 0;
+  overflow: hidden;
+}
+
+/* ── Financial Summary Box ── */
+.fin-summary-box {
+  background: var(--surface-low);
+  border-radius: var(--radius-md);
+  padding: 1rem;
+  margin-bottom: 0.75rem;
+}
+
+.fin-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.8125rem;
+  margin-bottom: 0.35rem;
+}
+
+.fin-row .fin-label {
+  color: var(--text-muted);
+}
+
+.fin-row .fin-value {
+  font-weight: 600;
+  color: var(--navy-900);
+}
+
+.fin-row .fin-value.green {
+  color: var(--success);
+}
+
+.fin-row .fin-value.red {
+  font-weight: 700;
+  color: var(--danger);
+}
+
+.fin-row-total {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.8125rem;
+  border-top: 1px solid var(--border-light);
+  padding-top: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.fin-row-total .fin-label {
+  font-weight: 600;
+  color: var(--navy-900);
+}
+
+.fin-row-total .fin-value {
+  font-weight: 700;
+  color: var(--danger);
+}
+
+/* ── Empty State ── */
+.dash-empty-state {
+  text-align: center;
+  padding: 2rem;
+  color: var(--text-muted);
+}
+
+.dash-empty-state .material-symbols-outlined {
+  font-size: 2rem;
+  opacity: 0.4;
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+/* ── Responsive ── */
+@media (max-width: 767px) {
+  .dash-page-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .dash-page-title {
+    font-size: 1.4rem;
+  }
+
+  .dash-page-actions {
+    width: 100%;
+    overflow-x: auto;
+  }
+
+  .dash-card-header {
+    padding: 1rem 1rem;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .kpi-value-lg {
+    font-size: 1.75rem;
+  }
+}
+
+@media (max-width: 479px) {
+  .dash-page-title {
+    font-size: 1.25rem;
+  }
+
+  .dash-page-actions .btn span:not(.material-symbols-outlined) {
+    display: none;
+  }
+
+  .dash-page-actions .btn {
+    padding: 6px 8px;
+  }
+}

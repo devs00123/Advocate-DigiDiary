@@ -401,6 +401,21 @@
 
 /* Grid Layout Tokens — grid utilities defined in global.css */
 
+/* Sidebar Nav Section Labels */
+.nav-section-label {
+  padding: 6px 14px 2px;
+  font-size: 10px;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.4);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.nav-section-label + .nav-section-label,
+.nav-section-label.spaced {
+  padding-top: 12px;
+}
+
 .kpi-grid-5 {
   display: grid;
   grid-template-columns: repeat(5, minmax(0, 1fr));
