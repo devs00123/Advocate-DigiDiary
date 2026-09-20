@@ -107,13 +107,11 @@ exports.createClient = async (req, res, next) => {
   try {
     const { name, phone, email, address, clientType, companyName, notes } = req.body;
 
-    if (!name) {
-      return res.status(400).json({ success: false, message: 'Client name is required.' });
-    }
+    const finalName = (name && String(name).trim()) ? String(name).trim() : ('Client ' + Date.now().toString().slice(-4));
 
     const client = await Client.create({
       lawFirmId: req.user.lawFirmId,
-      name,
+      name: finalName,
       phone: phone || '',
       email: email ? email.toLowerCase() : '',
       address: address || '',

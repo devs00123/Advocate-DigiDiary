@@ -416,8 +416,8 @@
         <div class="modal-body">
           <div class="grid grid-cols-2 gap-4">
             <div class="form-group">
-              <label class="form-label" for="cHearingDate">Hearing Date *</label>
-              <input type="date" id="cHearingDate" class="form-control" required>
+              <label class="form-label" for="cHearingDate">Hearing Date</label>
+              <input type="date" id="cHearingDate" class="form-control">
             </div>
             <div class="form-group">
               <label class="form-label" for="cHearingTime">Time</label>
@@ -435,8 +435,8 @@
             </div>
           </div>
           <div class="form-group">
-            <label class="form-label" for="cHearingPurpose">Hearing Purpose / Stage *</label>
-            <input type="text" id="cHearingPurpose" class="form-control" placeholder="e.g. Final Arguments / Admission" required>
+            <label class="form-label" for="cHearingPurpose">Hearing Purpose / Stage</label>
+            <input type="text" id="cHearingPurpose" class="form-control" placeholder="e.g. Final Arguments / Admission">
           </div>
           <div class="form-group">
             <label class="form-label" for="cHearingJudge">Bench / Judge</label>
@@ -462,16 +462,16 @@
         <input type="hidden" id="outcomeHearingId">
         <div class="modal-body">
           <div class="form-group">
-            <label class="form-label" for="outcomeStatusSelect">Hearing Status *</label>
-            <select id="outcomeStatusSelect" class="form-control" required>
+            <label class="form-label" for="outcomeStatusSelect">Hearing Status</label>
+            <select id="outcomeStatusSelect" class="form-control">
               <option value="completed">Completed / Heard</option>
               <option value="adjourned">Adjourned</option>
               <option value="cancelled">Cancelled / Passed Over</option>
             </select>
           </div>
           <div class="form-group">
-            <label class="form-label" for="outcomeText">Summary of Proceedings / Order Dictated *</label>
-            <textarea id="outcomeText" class="form-control" rows="3" placeholder="Notice issued to respondents returnable within 4 weeks. Interim stay extended." required></textarea>
+            <label class="form-label" for="outcomeText">Summary of Proceedings / Order Dictated</label>
+            <textarea id="outcomeText" class="form-control" rows="3" placeholder="Notice issued to respondents returnable within 4 weeks. Interim stay extended."></textarea>
           </div>
           <div class="grid grid-cols-2 gap-4">
             <div class="form-group">
@@ -502,13 +502,13 @@
       <form id="caseTaskForm">
         <div class="modal-body">
           <div class="form-group">
-            <label class="form-label" for="taskTitle">Task Title *</label>
-            <input type="text" id="taskTitle" class="form-control" placeholder="Draft Rejoinder / Compile Case Law" required>
+            <label class="form-label" for="taskTitle">Task Title</label>
+            <input type="text" id="taskTitle" class="form-control" placeholder="Draft Rejoinder / Compile Case Law">
           </div>
           <div class="grid grid-cols-2 gap-4">
             <div class="form-group">
-              <label class="form-label" for="taskDueDate">Due Date *</label>
-              <input type="date" id="taskDueDate" class="form-control" required>
+              <label class="form-label" for="taskDueDate">Due Date</label>
+              <input type="date" id="taskDueDate" class="form-control">
             </div>
             <div class="form-group">
               <label class="form-label" for="taskPriority">Priority</label>
@@ -539,12 +539,12 @@
       <form id="caseNoteForm">
         <div class="modal-body">
           <div class="form-group">
-            <label class="form-label" for="noteTitle">Note Title *</label>
-            <input type="text" id="noteTitle" class="form-control" placeholder="e.g. Grounds for Quashing under Sec 482" required>
+            <label class="form-label" for="noteTitle">Note Title</label>
+            <input type="text" id="noteTitle" class="form-control" placeholder="e.g. Grounds for Quashing under Sec 482">
           </div>
           <div class="form-group">
-            <label class="form-label" for="noteContent">Research Text / Arguments *</label>
-            <textarea id="noteContent" class="form-control" rows="5" placeholder="Enter legal arguments, statutory points, precedents..." required></textarea>
+            <label class="form-label" for="noteContent">Research Text / Arguments</label>
+            <textarea id="noteContent" class="form-control" rows="5" placeholder="Enter legal arguments, statutory points, precedents..."></textarea>
           </div>
           <div class="form-group">
             <label class="form-label" for="noteCitations">Citations (Comma separated)</label>
@@ -570,12 +570,12 @@
         <div class="modal-body">
           <div class="grid grid-cols-2 gap-4">
             <div class="form-group">
-              <label class="form-label" for="payAmount">Amount Received (₹) *</label>
-              <input type="number" id="payAmount" class="form-control" placeholder="50000" min="1" required>
+              <label class="form-label" for="payAmount">Amount Received (₹)</label>
+              <input type="number" id="payAmount" class="form-control" placeholder="50000" min="0">
             </div>
             <div class="form-group">
-              <label class="form-label" for="payDate">Payment Date *</label>
-              <input type="date" id="payDate" class="form-control" required>
+              <label class="form-label" for="payDate">Payment Date</label>
+              <input type="date" id="payDate" class="form-control">
             </div>
           </div>
           <div class="grid grid-cols-2 gap-4">

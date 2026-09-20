@@ -268,8 +268,8 @@
       <form id="recordPaymentForm">
         <div class="modal-body">
           <div class="form-group">
-            <label class="form-label" for="payCaseSelect">Select Case Matter *</label>
-            <select id="payCaseSelect" class="form-control" required>
+            <label class="form-label" for="payCaseSelect">Select Case Matter</label>
+            <select id="payCaseSelect" class="form-control">
               <option value="">Select case...</option>
             </select>
             <div id="caseBalanceHint" style="font-size: 0.75rem; color: var(--gold-700); font-weight: 600; margin-top: 4px;"></div>
@@ -277,19 +277,19 @@
 
           <div class="grid grid-cols-2 gap-4">
             <div class="form-group">
-              <label class="form-label" for="payAmountInput">Amount Received (₹) *</label>
-              <input type="number" id="payAmountInput" class="form-control" placeholder="50000" min="1" required>
+              <label class="form-label" for="payAmountInput">Amount Received (₹)</label>
+              <input type="number" id="payAmountInput" class="form-control" placeholder="50000" min="0">
             </div>
             <div class="form-group">
-              <label class="form-label" for="payDateInput">Payment Date *</label>
-              <input type="date" id="payDateInput" class="form-control" required>
+              <label class="form-label" for="payDateInput">Payment Date</label>
+              <input type="date" id="payDateInput" class="form-control">
             </div>
           </div>
 
           <div class="grid grid-cols-2 gap-4">
             <div class="form-group">
-              <label class="form-label" for="payMethodSelect">Payment Mode *</label>
-              <select id="payMethodSelect" class="form-control" required>
+              <label class="form-label" for="payMethodSelect">Payment Mode</label>
+              <select id="payMethodSelect" class="form-control">
                 <option value="Bank Transfer">NEFT / RTGS / IMPS</option>
                 <option value="UPI">UPI</option>
                 <option value="Cheque">Cheque</option>

@@ -1,3 +1,4 @@
+const mongoose = require('mongoose');
 const Reminder = require('../models/Reminder');
 const { logAudit } = require('../utils/auditLogger');
 
@@ -25,17 +26,16 @@ exports.createReminder = async (req, res, next) => {
   try {
     const { title, type, relatedCase, relatedClient, reminderDate, reminderTime, priority } = req.body;
 
-    if (!title || !reminderDate) {
-      return res.status(400).json({ success: false, message: 'Title and Reminder Date are required.' });
-    }
+    const finalTitle = (title && String(title).trim()) ? String(title).trim() : 'Reminder';
+    const finalDate = reminderDate ? new Date(reminderDate) : new Date();
 
     const reminder = await Reminder.create({
       lawFirmId: req.user.lawFirmId,
-      title,
+      title: finalTitle,
       type: type || 'Hearing',
-      relatedCase: relatedCase || null,
-      relatedClient: relatedClient || null,
-      reminderDate: new Date(reminderDate),
+      relatedCase: (relatedCase && mongoose.Types.ObjectId.isValid(relatedCase)) ? relatedCase : null,
+      relatedClient: (relatedClient && mongoose.Types.ObjectId.isValid(relatedClient)) ? relatedClient : null,
+      reminderDate: finalDate,
       reminderTime: reminderTime || '09:00 AM',
       priority: priority || 'Medium',
       completed: false,

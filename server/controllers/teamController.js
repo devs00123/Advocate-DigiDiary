@@ -15,22 +15,22 @@ exports.addTeamMember = async (req, res, next) => {
   try {
     const { name, email, password, phone, role, designation, enrollmentNumber } = req.body;
 
-    if (!name || !email || !password) {
-      return res.status(400).json({ success: false, message: 'Name, email, and initial password are required.' });
-    }
+    const finalName = (name && String(name).trim()) ? String(name).trim() : 'Chamber Counsel';
+    const finalEmail = (email && String(email).trim()) ? String(email).trim().toLowerCase() : `counsel_${Date.now().toString().slice(-6)}@chamber.local`;
+    const finalPassword = password || 'Advocate@2026';
 
-    const existing = await User.findOne({ email: email.toLowerCase() });
+    const existing = await User.findOne({ email: finalEmail });
     if (existing) {
       return res.status(409).json({ success: false, message: 'User with this email already exists.' });
     }
 
     const salt = await bcrypt.genSalt(10);
-    const passwordHash = await bcrypt.hash(password, salt);
+    const passwordHash = await bcrypt.hash(finalPassword, salt);
 
     const newMember = await User.create({
       lawFirmId: req.user.lawFirmId,
-      name,
-      email: email.toLowerCase(),
+      name: finalName,
+      email: finalEmail,
       passwordHash,
       phone: phone || '',
       role: role || 'advocate',

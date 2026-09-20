@@ -11,18 +11,16 @@ const hearingSchema = new mongoose.Schema(
     caseId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Case',
-      required: true,
       index: true,
     },
     clientId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Client',
-      required: true,
       index: true,
     },
     date: {
       type: Date,
-      required: [true, 'Hearing date is required'],
+      default: Date.now,
       index: true,
     },
     time: {
@@ -37,7 +35,7 @@ const hearingSchema = new mongoose.Schema(
     },
     court: {
       type: String,
-      required: true,
+      default: 'District Court',
       trim: true,
     },
     courtroom: {
@@ -52,7 +50,6 @@ const hearingSchema = new mongoose.Schema(
     },
     purpose: {
       type: String,
-      required: true,
       trim: true,
       default: 'Regular Hearing',
     },

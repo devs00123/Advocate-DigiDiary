@@ -10,7 +10,7 @@ const reminderSchema = new mongoose.Schema(
     },
     title: {
       type: String,
-      required: [true, 'Reminder title is required'],
+      default: 'Reminder',
       trim: true,
     },
     type: {
@@ -31,7 +31,7 @@ const reminderSchema = new mongoose.Schema(
     },
     reminderDate: {
       type: Date,
-      required: [true, 'Reminder date is required'],
+      default: Date.now,
       index: true,
     },
     reminderTime: {

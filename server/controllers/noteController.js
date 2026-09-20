@@ -1,3 +1,4 @@
+const mongoose = require('mongoose');
 const Note = require('../models/Note');
 const { logAudit } = require('../utils/auditLogger');
 
@@ -106,17 +107,16 @@ exports.createNote = async (req, res, next) => {
   try {
     const { title, content, category, caseId, clientId, pinned, citation, court, judge } = req.body;
 
-    if (!title || !content) {
-      return res.status(400).json({ success: false, message: 'Note title and content are required.' });
-    }
+    const finalTitle = (title && String(title).trim()) ? String(title).trim() : 'Chamber Note';
+    const finalContent = content !== undefined && content !== null ? String(content) : '';
 
     const note = await Note.create({
       lawFirmId: req.user.lawFirmId,
-      title,
-      content,
+      title: finalTitle,
+      content: finalContent,
       category: category || 'General',
-      caseId: caseId || null,
-      clientId: clientId || null,
+      caseId: (caseId && mongoose.Types.ObjectId.isValid(caseId)) ? caseId : null,
+      clientId: (clientId && mongoose.Types.ObjectId.isValid(clientId)) ? clientId : null,
       pinned: Boolean(pinned),
       citation: citation || '',
       court: court || '',

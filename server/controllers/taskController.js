@@ -1,3 +1,4 @@
+const mongoose = require('mongoose');
 const Task = require('../models/Task');
 const { logAudit } = require('../utils/auditLogger');
 
@@ -72,9 +73,8 @@ exports.createTask = async (req, res, next) => {
   try {
     const { title, description, caseId, clientId, category, assignedTo, dueDate, priority } = req.body;
 
-    if (!title || !dueDate) {
-      return res.status(400).json({ success: false, message: 'Task Title and Due Date are required.' });
-    }
+    const finalTitle = (title && String(title).trim()) ? String(title).trim() : 'Chamber Task';
+    const finalDueDate = dueDate ? new Date(dueDate) : new Date();
 
     const normalizePriority = (p) => {
       if (!p) return 'Medium';
@@ -96,13 +96,13 @@ exports.createTask = async (req, res, next) => {
 
     const task = await Task.create({
       lawFirmId: req.user.lawFirmId,
-      title,
+      title: finalTitle,
       description: description || '',
-      caseId: caseId || null,
-      clientId: clientId || null,
+      caseId: (caseId && mongoose.Types.ObjectId.isValid(caseId)) ? caseId : null,
+      clientId: (clientId && mongoose.Types.ObjectId.isValid(clientId)) ? clientId : null,
       category: category || 'Drafting',
-      assignedTo: assignedTo || req.user._id,
-      dueDate: new Date(dueDate),
+      assignedTo: (assignedTo && mongoose.Types.ObjectId.isValid(assignedTo)) ? assignedTo : req.user._id,
+      dueDate: finalDueDate,
       priority: normalizePriority(priority),
       status: normalizeStatus(req.body.status),
       createdBy: req.user._id,

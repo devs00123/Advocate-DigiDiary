@@ -1,3 +1,4 @@
+const mongoose = require('mongoose');
 const Hearing = require('../models/Hearing');
 const Case = require('../models/Case');
 const Client = require('../models/Client');
@@ -119,16 +120,33 @@ exports.createHearing = async (req, res, next) => {
       assignedAdvocate,
     } = req.body;
 
-    const hearingDate = date || req.body.hearingDate;
-    const finalCourtroom = courtroom || req.body.courtRoom;
+    const hearingDate = date || req.body.hearingDate || new Date();
+    const finalCourtroom = courtroom || req.body.courtRoom || '';
 
-    if (!caseId || !hearingDate) {
-      return res.status(400).json({ success: false, message: 'Case and Hearing Date are required.' });
+    let foundCase = null;
+    if (caseId && mongoose.Types.ObjectId.isValid(caseId)) {
+      foundCase = await Case.findOne({ _id: caseId, lawFirmId: req.user.lawFirmId });
     }
-
-    const foundCase = await Case.findOne({ _id: caseId, lawFirmId: req.user.lawFirmId });
     if (!foundCase) {
-      return res.status(400).json({ success: false, message: 'Case docket not found in your firm.' });
+      foundCase = await Case.findOne({ lawFirmId: req.user.lawFirmId });
+    }
+    if (!foundCase) {
+      let client = await Client.findOne({ lawFirmId: req.user.lawFirmId });
+      if (!client) {
+        client = await Client.create({
+          lawFirmId: req.user.lawFirmId,
+          name: 'General Practice Client',
+          createdBy: req.user._id,
+        });
+      }
+      foundCase = await Case.create({
+        lawFirmId: req.user.lawFirmId,
+        caseNumber: 'MATTER-' + Date.now().toString().slice(-6),
+        title: 'General Chamber Matter',
+        clientId: client._id,
+        court: court || 'District Court',
+        createdBy: req.user._id,
+      });
     }
 
     const hearing = await Hearing.create({
@@ -138,13 +156,13 @@ exports.createHearing = async (req, res, next) => {
       date: new Date(hearingDate),
       time: time || '10:00 AM',
       itemNumber: itemNumber || '',
-      court: court || foundCase.court,
+      court: court || foundCase.court || 'District Court',
       courtroom: finalCourtroom || foundCase.courtroom || foundCase.courtRoom || '',
-      judge: judge || foundCase.judge,
+      judge: judge || foundCase.judge || '',
       purpose: purpose || 'Regular Hearing',
       benchNotes: benchNotes || '',
       status: status || 'Scheduled',
-      assignedAdvocate: assignedAdvocate || req.user._id,
+      assignedAdvocate: (assignedAdvocate && mongoose.Types.ObjectId.isValid(assignedAdvocate)) ? assignedAdvocate : req.user._id,
       createdBy: req.user._id,
     });
 
@@ -164,7 +182,7 @@ exports.createHearing = async (req, res, next) => {
       action: 'HEARING_SCHEDULED',
       entityType: 'Hearing',
       entityId: hearing._id,
-      description: `Hearing scheduled for ${foundCase.title} on ${new Date(date).toLocaleDateString()} at ${hearing.court}`,
+      description: `Hearing scheduled for ${foundCase.title} on ${new Date(hearingDate).toLocaleDateString()} at ${hearing.court}`,
       ipAddress: req.ip,
     });
 

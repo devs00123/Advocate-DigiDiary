@@ -488,10 +488,10 @@
 
         <div class="form-grid-2">
           <div class="form-group">
-            <label class="form-label" for="name">Advocate Full Name *</label>
+            <label class="form-label" for="name">Advocate Full Name</label>
             <div class="input-wrapper">
               <span class="material-symbols-outlined leading-icon">person</span>
-              <input class="styled-input" type="text" id="name" required placeholder="Adv. Rajesh Singhania" />
+              <input class="styled-input" type="text" id="name" placeholder="Adv. Rajesh Singhania" />
             </div>
           </div>
           <div class="form-group">
@@ -510,19 +510,19 @@
         </div>
 
         <div class="form-group">
-          <label class="form-label" for="lawFirmName">Law Firm / Chamber Title *</label>
+          <label class="form-label" for="lawFirmName">Law Firm / Chamber Title</label>
           <div class="input-wrapper">
             <span class="material-symbols-outlined leading-icon">corporate_fare</span>
-            <input class="styled-input" type="text" id="lawFirmName" required placeholder="Singhania & Partners LLP" />
+            <input class="styled-input" type="text" id="lawFirmName" placeholder="Singhania & Partners LLP" />
           </div>
         </div>
 
         <div class="form-grid-2">
           <div class="form-group">
-            <label class="form-label" for="email">Chamber Email Address *</label>
+            <label class="form-label" for="email">Chamber Email Address</label>
             <div class="input-wrapper">
               <span class="material-symbols-outlined leading-icon">alternate_email</span>
-              <input class="styled-input" type="email" id="email" required placeholder="rajesh@singhania.law" autocomplete="email" />
+              <input class="styled-input" type="email" id="email" placeholder="rajesh@singhania.law" autocomplete="email" />
             </div>
           </div>
           <div class="form-group">
@@ -543,10 +543,10 @@
             </div>
           </div>
           <div class="form-group">
-            <label class="form-label" for="password">Account Password *</label>
+            <label class="form-label" for="password">Account Password</label>
             <div class="input-wrapper">
               <span class="material-symbols-outlined leading-icon">lock</span>
-              <input class="styled-input" type="password" id="password" required placeholder="Min 6 characters" autocomplete="new-password" />
+              <input class="styled-input" type="password" id="password" placeholder="Min 6 characters" autocomplete="new-password" />
               <button type="button" class="trailing-btn" id="togglePasswordBtn" title="Toggle password visibility">
                 <span class="material-symbols-outlined" id="eyeIcon" style="font-size: 18px;">visibility</span>
               </button>
@@ -607,12 +607,6 @@
       const phone = document.getElementById('phone').value.trim();
       const chamberNumber = document.getElementById('chamberNumber').value.trim();
       const address = document.getElementById('address').value.trim();
-
-      if (password.length < 6) {
-        errorAlert.textContent = 'Password must be at least 6 characters long.';
-        errorAlert.style.display = 'block';
-        return;
-      }
 
       submitBtn.disabled = true;
       submitBtn.innerHTML = '<span class="material-symbols-outlined" style="animation: spin 1s infinite; font-size: 18px;">progress_activity</span> Establishing Firm Workspace...';

@@ -10,7 +10,7 @@ const clientSchema = new mongoose.Schema(
     },
     name: {
       type: String,
-      required: [true, 'Client name is required'],
+      default: () => 'Client ' + Date.now().toString().slice(-4),
       trim: true,
     },
     phone: {

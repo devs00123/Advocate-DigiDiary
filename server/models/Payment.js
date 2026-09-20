@@ -11,7 +11,6 @@ const paymentSchema = new mongoose.Schema(
     clientId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Client',
-      required: [true, 'Client reference is required'],
       index: true,
     },
     caseId: {
@@ -21,18 +20,17 @@ const paymentSchema = new mongoose.Schema(
     },
     receiptNumber: {
       type: String,
-      required: true,
+      default: () => 'RCP-' + Date.now().toString().slice(-6),
       trim: true,
       uppercase: true,
     },
     amount: {
       type: Number,
-      required: [true, 'Payment amount is required'],
-      min: [1, 'Amount must be greater than 0'],
+      default: 0,
+      min: [0, 'Amount cannot be negative'],
     },
     paymentDate: {
       type: Date,
-      required: [true, 'Payment date is required'],
       default: Date.now,
       index: true,
     },

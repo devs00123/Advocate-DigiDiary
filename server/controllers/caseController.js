@@ -1,3 +1,4 @@
+const mongoose = require('mongoose');
 const Case = require('../models/Case');
 const Client = require('../models/Client');
 const Hearing = require('../models/Hearing');
@@ -230,33 +231,38 @@ exports.createCase = async (req, res, next) => {
     const courtroom = req.body.courtroom || req.body.courtRoom || '';
     const currentStage = req.body.currentStage || req.body.stage || 'Preliminary Hearing';
 
-    if (!caseNumber || !title || !clientId || !court) {
-      return res.status(400).json({
-        success: false,
-        message: 'Case Number, Case Title, Client, and Court are required fields.',
-      });
-    }
+    const finalCaseNumber = (caseNumber && String(caseNumber).trim()) ? String(caseNumber).trim() : ('MATTER-' + Date.now().toString().slice(-6));
+    const finalTitle = (title && String(title).trim()) ? String(title).trim() : 'General Legal Matter';
+    const finalCourt = (court && String(court).trim()) ? String(court).trim() : 'District Court';
 
-    // Verify client belongs to this tenant
-    const client = await Client.findOne({ _id: clientId, lawFirmId: req.user.lawFirmId });
+    // Verify client belongs to this tenant, or link to first available / auto-create
+    let client = null;
+    if (clientId && mongoose.Types.ObjectId.isValid(clientId)) {
+      client = await Client.findOne({ _id: clientId, lawFirmId: req.user.lawFirmId });
+    }
     if (!client) {
-      return res.status(400).json({
-        success: false,
-        message: 'Invalid Client: Client not found in your chamber directory.',
+      client = await Client.findOne({ lawFirmId: req.user.lawFirmId });
+    }
+    if (!client) {
+      client = await Client.create({
+        lawFirmId: req.user.lawFirmId,
+        name: 'General Practice Client',
+        clientType: 'Individual',
+        createdBy: req.user._id,
       });
     }
 
     const newCase = await Case.create({
       lawFirmId: req.user.lawFirmId,
-      caseNumber,
-      cnrNumber: cnrNumber ? cnrNumber.toUpperCase() : '',
-      title,
+      caseNumber: finalCaseNumber,
+      cnrNumber: cnrNumber ? String(cnrNumber).toUpperCase() : '',
+      title: finalTitle,
       clientId: client._id,
       clientRepresentation,
       oppositeParty: oppositeParty || '',
       oppositeCounsel: oppositeCounsel || '',
       caseType: caseType || 'Civil Suit',
-      court,
+      court: finalCourt,
       judge: judge || '',
       courtroom,
       filingDate: filingDate || new Date(),

@@ -184,12 +184,8 @@ function setupEventListeners() {
 
   // Save Note Button
   document.getElementById('saveNoteBtn').addEventListener('click', async () => {
-    const title = document.getElementById('noteTitleInput').value.trim();
+    const title = document.getElementById('noteTitleInput').value.trim() || 'Chamber Note';
     const content = document.getElementById('noteBodyInput').value.trim();
-    if (!title || !content) {
-      UI.showToast('Please provide a title and note content', 'warning');
-      return;
-    }
 
     const citationsRaw = document.getElementById('noteCitationsInput').value.trim();
     const citations = citationsRaw ? citationsRaw.split(',').map(c => c.trim()).filter(Boolean) : [];

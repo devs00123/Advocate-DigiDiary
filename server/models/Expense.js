@@ -21,17 +21,16 @@ const expenseSchema = new mongoose.Schema(
     },
     description: {
       type: String,
-      required: [true, 'Expense description is required'],
+      default: 'Chamber Expense',
       trim: true,
     },
     amount: {
       type: Number,
-      required: [true, 'Amount is required'],
-      min: [1, 'Amount must be greater than 0'],
+      default: 0,
+      min: [0, 'Amount cannot be negative'],
     },
     expenseDate: {
       type: Date,
-      required: [true, 'Expense date is required'],
       default: Date.now,
       index: true,
     },

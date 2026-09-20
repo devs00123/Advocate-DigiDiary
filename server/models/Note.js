@@ -10,12 +10,12 @@ const noteSchema = new mongoose.Schema(
     },
     title: {
       type: String,
-      required: [true, 'Note title is required'],
+      default: 'Chamber Note',
       trim: true,
     },
     content: {
       type: String,
-      required: [true, 'Note content is required'],
+      default: '',
       trim: true,
     },
     category: {

@@ -253,19 +253,19 @@
         <div class="modal-body">
           <div class="grid grid-cols-2 gap-4">
             <div class="form-group">
-              <label class="form-label" for="expAmount">Amount (₹) *</label>
-              <input type="number" id="expAmount" class="form-control" placeholder="1500" min="1" required>
+              <label class="form-label" for="expAmount">Amount (₹)</label>
+              <input type="number" id="expAmount" class="form-control" placeholder="1500" min="0">
             </div>
             <div class="form-group">
-              <label class="form-label" for="expDate">Expense Date *</label>
-              <input type="date" id="expDate" class="form-control" required>
+              <label class="form-label" for="expDate">Expense Date</label>
+              <input type="date" id="expDate" class="form-control">
             </div>
           </div>
 
           <div class="grid grid-cols-2 gap-4">
             <div class="form-group">
-              <label class="form-label" for="expCategory">Category *</label>
-              <select id="expCategory" class="form-control" required>
+              <label class="form-label" for="expCategory">Category</label>
+              <select id="expCategory" class="form-control">
                 <option value="Court Fee">Court Fee & Stamping</option>
                 <option value="Travel">Travel & Lodging</option>
                 <option value="Clerkage">Clerkage & Process</option>
@@ -291,8 +291,8 @@
           </div>
 
           <div class="form-group">
-            <label class="form-label" for="expDesc">Description / Purpose *</label>
-            <input type="text" id="expDesc" class="form-control" placeholder="e.g. Court filing fees for rejoinder application" required>
+            <label class="form-label" for="expDesc">Description / Purpose</label>
+            <input type="text" id="expDesc" class="form-control" placeholder="e.g. Court filing fees for rejoinder application">
           </div>
 
           <div class="form-group">

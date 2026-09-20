@@ -10,7 +10,7 @@ const taskSchema = new mongoose.Schema(
     },
     title: {
       type: String,
-      required: [true, 'Task title is required'],
+      default: 'Chamber Task',
       trim: true,
     },
     description: {
@@ -39,7 +39,7 @@ const taskSchema = new mongoose.Schema(
     },
     dueDate: {
       type: Date,
-      required: [true, 'Due date is required'],
+      default: Date.now,
       index: true,
     },
     priority: {

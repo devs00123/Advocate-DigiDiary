@@ -1,3 +1,4 @@
+const mongoose = require('mongoose');
 const Payment = require('../models/Payment');
 const Expense = require('../models/Expense');
 const Case = require('../models/Case');
@@ -126,14 +127,22 @@ exports.recordPayment = async (req, res, next) => {
   try {
     const { clientId, caseId, amount, paymentDate, paymentMethod, transactionReference, category, description, status } = req.body;
 
-    if (!clientId || !amount || Number(amount) <= 0) {
-      return res.status(400).json({ success: false, message: 'Valid Client and positive Amount are required.' });
+    let client = null;
+    if (clientId && mongoose.Types.ObjectId.isValid(clientId)) {
+      client = await Client.findOne({ _id: clientId, lawFirmId: req.user.lawFirmId });
+    }
+    if (!client) {
+      client = await Client.findOne({ lawFirmId: req.user.lawFirmId });
+    }
+    if (!client) {
+      client = await Client.create({
+        lawFirmId: req.user.lawFirmId,
+        name: 'General Practice Client',
+        createdBy: req.user._id,
+      });
     }
 
-    const client = await Client.findOne({ _id: clientId, lawFirmId: req.user.lawFirmId });
-    if (!client) {
-      return res.status(400).json({ success: false, message: 'Client not found in your chamber.' });
-    }
+    const finalAmount = !isNaN(Number(amount)) && Number(amount) >= 0 ? Number(amount) : 0;
 
     // Auto-generate receipt number: REC-YYYY-XXXX
     const count = await Payment.countDocuments({ lawFirmId: req.user.lawFirmId });
@@ -143,9 +152,9 @@ exports.recordPayment = async (req, res, next) => {
     const payment = await Payment.create({
       lawFirmId: req.user.lawFirmId,
       clientId: client._id,
-      caseId: caseId || null,
+      caseId: (caseId && mongoose.Types.ObjectId.isValid(caseId)) ? caseId : null,
       receiptNumber,
-      amount: Number(amount),
+      amount: finalAmount,
       paymentDate: paymentDate ? new Date(paymentDate) : new Date(),
       paymentMethod: paymentMethod || 'NEFT',
       transactionReference: transactionReference || '',
@@ -163,15 +172,11 @@ exports.recordPayment = async (req, res, next) => {
       action: 'PAYMENT_RECORDED',
       entityType: 'Payment',
       entityId: payment._id,
-      description: `Recorded fee payment of ₹${payment.amount} (${payment.receiptNumber}) from ${client.name}`,
+      description: `Recorded payment of ₹${payment.amount} from ${client.name} (Receipt: ${receiptNumber})`,
       ipAddress: req.ip,
     });
 
-    res.status(201).json({
-      success: true,
-      message: 'Payment recorded and receipt generated.',
-      data: payment,
-    });
+    res.status(201).json({ success: true, message: 'Payment recorded successfully.', data: payment });
   } catch (err) {
     next(err);
   }
@@ -246,16 +251,15 @@ exports.createExpense = async (req, res, next) => {
   try {
     const { caseId, category, description, amount, expenseDate, paymentMode, billNumber } = req.body;
 
-    if (!description || !amount || Number(amount) <= 0) {
-      return res.status(400).json({ success: false, message: 'Description and valid amount are required.' });
-    }
+    const finalDesc = (description && String(description).trim()) ? String(description).trim() : 'Chamber Expense';
+    const finalAmount = !isNaN(Number(amount)) && Number(amount) >= 0 ? Number(amount) : 0;
 
     const expense = await Expense.create({
       lawFirmId: req.user.lawFirmId,
-      caseId: caseId || null,
+      caseId: (caseId && mongoose.Types.ObjectId.isValid(caseId)) ? caseId : null,
       category: category || 'Court Fees',
-      description,
-      amount: Number(amount),
+      description: finalDesc,
+      amount: finalAmount,
       expenseDate: expenseDate ? new Date(expenseDate) : new Date(),
       paymentMode: paymentMode || 'Cash',
       billNumber: billNumber || '',

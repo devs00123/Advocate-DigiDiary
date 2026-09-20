@@ -10,7 +10,7 @@ const caseSchema = new mongoose.Schema(
     },
     caseNumber: {
       type: String,
-      required: [true, 'Case registration number is required'],
+      default: () => 'MATTER-' + Date.now().toString().slice(-6),
       trim: true,
     },
     cnrNumber: {
@@ -21,13 +21,12 @@ const caseSchema = new mongoose.Schema(
     },
     title: {
       type: String,
-      required: [true, 'Case title is required'],
+      default: 'General Legal Matter',
       trim: true,
     },
     clientId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Client',
-      required: true,
       index: true,
     },
     clientRepresentation: {
@@ -47,13 +46,12 @@ const caseSchema = new mongoose.Schema(
     },
     caseType: {
       type: String,
-      required: true,
       trim: true,
       default: 'Civil Suit',
     },
     court: {
       type: String,
-      required: [true, 'Court complex is required'],
+      default: 'District Court',
       trim: true,
     },
     judge: {

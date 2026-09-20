@@ -362,11 +362,10 @@ exports.inviteAdvocate = async (req, res, next) => {
   try {
     const { name, email, role = 'advocate', firmName, enrollmentNumber } = req.body;
 
-    if (!name || !email) {
-      return res.status(400).json({ success: false, message: 'Name and Email are required for onboarding.' });
-    }
+    const finalName = (name && String(name).trim()) ? String(name).trim() : 'Advocate';
+    const finalEmail = (email && String(email).trim()) ? String(email).trim().toLowerCase() : `advocate_${Date.now().toString().slice(-6)}@chamber.law`;
 
-    const existing = await User.findOne({ email: email.toLowerCase().trim() });
+    const existing = await User.findOne({ email: finalEmail });
     if (existing) {
       return res.status(400).json({ success: false, message: 'A user with this email address is already registered.' });
     }
