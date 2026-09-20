@@ -99,11 +99,11 @@ Thank you for your query regarding: **"${query.length > 60 ? query.substring(0, 
 *(Disclaimer: For chamber research and drafting assistance only. Not a substitute for formal legal opinion.)*`;
 }
 
-// Candidate models in order of priority (only verified working Gemini models)
+// Candidate models in order of priority (Google Gemini latest models)
 const CANDIDATE_MODELS = [
   process.env.GEMINI_MODEL,
-  'gemini-2.0-flash',
-  'gemini-1.5-flash',
+  'gemini-2.5-flash',
+  'gemini-3.6-flash',
 ].filter(Boolean);
 
 async function generateWithModelFallback(genAI, contentPayload) {
