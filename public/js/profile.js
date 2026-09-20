@@ -3,9 +3,9 @@
  */
 
 document.addEventListener('DOMContentLoaded', async () => {
-  await loadUserProfile();
-  setupProfileForm();
   setupDeleteAccount();
+  setupProfileForm();
+  await loadUserProfile();
 });
 
 let currentUser = null;
@@ -131,7 +131,10 @@ function setupDeleteAccount() {
   const btn = document.getElementById('btnDeleteAccount');
   if (!btn) return;
 
-  btn.addEventListener('click', async () => {
+  btn.addEventListener('click', async (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+
     const confirmed = confirm(
       'PERMANENT DELETION WARNING\n\n' +
       'This will permanently delete:\n' +
@@ -152,18 +155,21 @@ function setupDeleteAccount() {
     }
 
     btn.disabled = true;
-    btn.innerHTML = '<span>Deleting Account...</span>';
+    btn.innerHTML = '<span class="material-symbols-outlined" style="font-size: 16px; animation: spin 1s infinite;">progress_activity</span><span>Deleting Account...</span>';
 
     try {
       const res = await API.auth.deleteAccount();
-      if (res.success) {
-        UI.showToast('Account deleted. Redirecting...', 'success');
+      if (res && res.success) {
+        UI.showToast('Account deleted successfully. Redirecting to login...', 'success');
         setTimeout(() => {
           window.location.href = '/login.html';
-        }, 1500);
+        }, 2000);
+      } else {
+        throw new Error(res && res.message || 'Delete request returned unexpected response.');
       }
     } catch (err) {
-      UI.showToast(err.message || 'Failed to delete account.', 'danger');
+      console.error('[DELETE ACCOUNT ERROR]', err);
+      UI.showToast(err.message || 'Failed to delete account. Please try again.', 'danger');
       btn.disabled = false;
       btn.innerHTML = '<span class="material-symbols-outlined" style="font-size: 16px;">delete_forever</span><span>Delete My Account & All Data</span>';
     }

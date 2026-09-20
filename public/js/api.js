@@ -12,13 +12,13 @@ class ApiClient {
     const config = {
       ...options,
       headers: {
-        'Content-Type': 'application/json',
         ...(options.headers || {}),
       },
       credentials: 'same-origin', // Passes HTTP-only cookie automatically
     };
 
     if (config.body && typeof config.body === 'object') {
+      config.headers['Content-Type'] = 'application/json';
       config.body = JSON.stringify(config.body);
     }
 
