@@ -101,6 +101,47 @@ exports.updateMemberRole = async (req, res, next) => {
   }
 };
 
+exports.deleteTeamMember = async (req, res, next) => {
+  try {
+    if (req.user._id.toString() === req.params.id) {
+      return res.status(400).json({ success: false, message: 'You cannot remove your own account from this panel.' });
+    }
+
+    const member = await User.findOne({ _id: req.params.id, lawFirmId: req.user.lawFirmId });
+    if (!member) {
+      return res.status(404).json({ success: false, message: 'Member not found.' });
+    }
+
+    if (member.role === 'admin') {
+      const adminCount = await User.countDocuments({ lawFirmId: req.user.lawFirmId, role: 'admin', isActive: true });
+      if (adminCount <= 1) {
+        return res.status(400).json({ success: false, message: 'Cannot remove the last active admin of the firm.' });
+      }
+    }
+
+    await User.findByIdAndDelete(member._id);
+
+    await logAudit({
+      lawFirmId: req.user.lawFirmId,
+      userId: req.user._id,
+      userName: req.user.name,
+      userEmail: req.user.email,
+      action: 'TEAM_MEMBER_REMOVED',
+      entityType: 'User',
+      entityId: member._id,
+      description: `Removed team member ${member.name} (${member.role}) from chamber roster`,
+      ipAddress: req.ip,
+    });
+
+    res.status(200).json({
+      success: true,
+      message: 'Team member removed successfully.',
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+
 exports.toggleMemberStatus = async (req, res, next) => {
   try {
     if (req.user._id.toString() === req.params.id) {

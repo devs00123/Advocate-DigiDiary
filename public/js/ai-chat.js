@@ -776,7 +776,20 @@
 
         const json = await res.json();
         if (json.success && json.data) {
+          const warningHtml = json.data.warning
+            ? `<div style="background: #FFF3CD; border: 1px solid #FFC107; border-radius: 8px; padding: 10px 14px; margin-bottom: 12px; font-size: 12px; color: #856404; display: flex; align-items: flex-start; gap: 8px;">
+                <span class="material-symbols-outlined" style="font-size: 18px; color: #D4A017; flex-shrink: 0;">warning</span>
+                <div>
+                  <strong>AI Vision Not Configured:</strong> ${escapeHTML(json.data.warning)}
+                  <div style="margin-top: 6px;">
+                    <a href="https://aistudio.google.com/app/apikey" target="_blank" style="color: #856404; font-weight: 600; text-decoration: underline;">Get free Gemini API key</a>
+                    &mdash; Add to <code style="background: rgba(0,0,0,0.08); padding: 1px 4px; border-radius: 3px;">.env</code> as <code style="background: rgba(0,0,0,0.08); padding: 1px 4px; border-radius: 3px;">GEMINI_API_KEY</code>
+                  </div>
+                </div>
+              </div>`
+            : '';
           docResults.innerHTML = `
+            ${warningHtml}
             <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; padding-bottom: 6px; border-bottom: 1px solid #E2E8F0;">
               <span style="font-weight: 700; color: #0A1128;">${escapeHTML(json.data.fileName)}</span>
               <span class="badge badge-gold" style="font-size: 10px;">${escapeHTML(json.data.source)}</span>

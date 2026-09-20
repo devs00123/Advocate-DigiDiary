@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Privacy Policy — Advocate DigiDiary</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Plus+Jakarta+Sans:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+  <link rel="stylesheet" href="/css/variables.css">
+  <link rel="stylesheet" href="/css/global.css">
+  <style>
+    .legal-page { max-width: 860px; margin: 0 auto; padding: 48px 24px 80px; }
+    .legal-page h1 { font-family: var(--font-headline); font-size: 2.25rem; color: var(--navy-900); margin-bottom: 0.5rem; }
+    .legal-page .meta { color: var(--text-muted); font-size: 0.875rem; margin-bottom: 2rem; border-bottom: 1px solid var(--border-light); padding-bottom: 1.5rem; }
+    .legal-page h2 { font-family: var(--font-headline); font-size: 1.35rem; color: var(--navy-900); margin: 2rem 0 0.75rem; }
+    .legal-page p, .legal-page li { font-size: 0.9375rem; line-height: 1.75; color: #334155; }
+    .legal-page ul, .legal-page ol { margin: 0.5rem 0 1rem 1.5rem; }
+    .legal-page li { margin-bottom: 0.5rem; }
+    .legal-page a { color: var(--gold-700); text-decoration: none; font-weight: 600; }
+    .legal-page a:hover { text-decoration: underline; }
+    .back-link { display: inline-flex; align-items: center; gap: 6px; color: var(--gold-700); font-weight: 600; font-size: 0.875rem; text-decoration: none; margin-bottom: 1.5rem; }
+    .back-link:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <div class="legal-page">
+    <a href="/" class="back-link">
+      <span class="material-symbols-outlined" style="font-size: 18px;">arrow_back</span>
+      Back to Advocate DigiDiary
+    </a>
+    <h1>Privacy Policy</h1>
+    <div class="meta">Effective Date: September 20, 2026 &bull; Last Updated: September 20, 2026</div>
+
+    <p>Advocate DigiDiary ("we," "our," or "us") is committed to protecting the privacy and confidentiality of all users ("you," "your"), including advocates, law firms, chambers, and their clients. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you use our Legal Practice Management platform.</p>
+
+    <h2>1. Information We Collect</h2>
+    <p>We collect information you provide directly and information generated through your use of the platform:</p>
+    <ul>
+      <li><strong>Account Information:</strong> Name, email address, phone number, Bar Council enrollment number, designation, and password (stored in hashed form only).</li>
+      <li><strong>Law Firm Data:</strong> Firm name, chamber number, address, bar council registration, and court jurisdictions.</li>
+      <li><strong>Practice Data:</strong> Case details, hearing schedules, client information, tasks, notes, payment records, and expense entries — all entered by you or your authorized team members.</li>
+      <li><strong>Usage Data:</strong> IP address, browser type, device information, login timestamps, and audit trail entries generated automatically.</li>
+      <li><strong>AI Interactions:</strong> Queries submitted to the AI Legal Assistant and documents uploaded for summarization (processed in-memory only; never persisted to disk).</li>
+    </ul>
+
+    <h2>2. How We Use Your Information</h2>
+    <ul>
+      <li>To provide, maintain, and improve the platform's legal practice management services.</li>
+      <li>To authenticate users and enforce role-based access controls within your chamber.</li>
+      <li>To generate cause lists, fee ledgers, case summaries, and other practice reports on your request.</li>
+      <li>To process AI-assisted legal queries and document analysis using Google Gemini API.</li>
+      <li>To maintain an immutable audit trail for compliance and security monitoring.</li>
+      <li>To send service-related notifications (e.g., password reset, account alerts).</li>
+    </ul>
+
+    <h2>3. Data Storage & Security</h2>
+    <ul>
+      <li>All data is stored in MongoDB Atlas with TLS 1.3 encryption in transit and at rest.</li>
+      <li>Every tenant's data is cryptographically isolated by <code>lawFirmId</code> — no cross-firm data leakage is possible.</li>
+      <li>Passwords are hashed using bcrypt with salt rounds of 10+ and are never stored in plain text.</li>
+      <li>JWT tokens are delivered as HTTP-only, Secure, SameSite=Strict cookies.</li>
+      <li><strong>Zero Document Storage:</strong> Advocate DigiDiary does not store any uploaded documents, court briefs, or files on disk. All document processing happens in-memory during the session.</li>
+    </ul>
+
+    <h2>4. Data Sharing & Disclosure</h2>
+    <p>We do <strong>not</strong> sell, trade, or rent your personal or practice data to any third party. Your data may be disclosed only:</p>
+    <ul>
+      <li>When required by law, court order, or regulatory authority.</li>
+      <li>To service providers who assist in platform operations (e.g., MongoDB Atlas hosting, Render.com hosting), bound by strict data processing agreements.</li>
+      <li>Within your law firm, to team members with appropriate role-based access.</li>
+    </ul>
+
+    <h2>5. Your Rights</h2>
+    <ul>
+      <li><strong>Access:</strong> You may request a copy of all personal data we hold about you.</li>
+      <li><strong>Correction:</strong> You may update your profile information at any time through the platform.</li>
+      <li><strong>Deletion:</strong> You may request deletion of your account and all associated data by contacting us.</li>
+      <li><strong>Export:</strong> You may export your case data, fee ledgers, and audit logs in CSV/Excel format at any time.</li>
+      <li><strong>Portability:</strong> Your data belongs to you. We will provide it in machine-readable format upon request.</li>
+    </ul>
+
+    <h2>6. Cookies</h2>
+    <p>We use HTTP-only session cookies for authentication. We do not use third-party advertising or tracking cookies. Essential cookies are necessary for platform functionality and cannot be disabled while logged in.</p>
+
+    <h2>7. Children's Privacy</h2>
+    <p>Advocate DigiDiary is not intended for users under 18 years of age. We do not knowingly collect data from minors.</p>
+
+    <h2>8. Changes to This Policy</h2>
+    <p>We may update this Privacy Policy from time to time. Material changes will be communicated via email or platform notification. Continued use of the platform after changes constitutes acceptance of the updated policy.</p>
+
+    <h2>9. Contact Us</h2>
+    <p>For any questions about this Privacy Policy or to exercise your data rights, contact us at:</p>
+    <p><strong>Email:</strong> <a href="mailto:privacy@advocate-digidiary.law">privacy@advocate-digidiary.law</a><br>
+    <strong>Platform:</strong> <a href="/settings.html">Settings &rarr; Account &amp; Privacy</a></p>
+  </div>
+</body>
+</html>

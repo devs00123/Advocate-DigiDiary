@@ -5,6 +5,7 @@ const {
   addTeamMember,
   updateMemberRole,
   toggleMemberStatus,
+  deleteTeamMember,
 } = require('../controllers/teamController');
 const { protect, requireRole } = require('../middleware/auth');
 const { enforceTenant } = require('../middleware/tenant');
@@ -17,5 +18,6 @@ router.route('/')
 
 router.put('/:id/role', requireRole('admin'), updateMemberRole);
 router.patch('/:id/toggle-status', requireRole('admin'), toggleMemberStatus);
+router.delete('/:id', requireRole('admin'), deleteTeamMember);
 
 module.exports = router;

@@ -334,81 +334,6 @@
       transform: translateY(0);
     }
 
-    /* 1-Click Chamber Demo Accounts */
-    .demo-box {
-      margin-top: 24px;
-      padding: 16px;
-      border-radius: 12px;
-      background: #F8FAFC;
-      border: 1px solid #E2E8F0;
-    }
-
-    .demo-box-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 10px;
-    }
-
-    .demo-box-title {
-      font-family: var(--font-label, sans-serif);
-      font-size: 11px;
-      font-weight: 700;
-      color: #475569;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-    }
-
-    .demo-grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 6px;
-    }
-
-    .demo-btn {
-      width: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 8px 12px;
-      background: #FFFFFF;
-      border: 1px solid #CBD5E1;
-      border-radius: 8px;
-      cursor: pointer;
-      font-size: 12px;
-      color: #334155;
-      transition: all 0.15s ease;
-      text-align: left;
-    }
-
-    .demo-btn:hover {
-      border-color: var(--gold-500, #C59B27);
-      background: #FFFDF8;
-      transform: translateY(-1px);
-      box-shadow: 0 2px 6px rgba(197, 155, 39, 0.15);
-    }
-
-    .demo-btn.active {
-      border-color: var(--gold-600, #B08A1F);
-      background: #FFFDF5;
-      box-shadow: 0 0 0 1.5px var(--gold-500, #C59B27);
-    }
-
-    .demo-role-badge {
-      font-size: 10px;
-      font-weight: 700;
-      font-family: var(--font-label, sans-serif);
-      padding: 2px 6px;
-      border-radius: 4px;
-      background: #F1F5F9;
-      color: #0A1128;
-    }
-
-    .demo-btn:hover .demo-role-badge {
-      background: rgba(197, 155, 39, 0.15);
-      color: #8B6D18;
-    }
-
     .form-footer-link {
       text-align: center;
       margin-top: 20px;
@@ -555,41 +480,16 @@
         </button>
       </form>
 
-      <!-- 1-Click Chamber Demo Accounts -->
-      <div class="demo-box">
-        <div class="demo-box-header">
-          <span class="demo-box-title">Chamber Demo Accounts (1-Click Fill)</span>
-          <span class="material-symbols-outlined" style="font-size: 16px; color: var(--gold-600, #B08A1F);">touch_app</span>
-        </div>
-
-        <div class="demo-grid">
-          <button type="button" class="demo-btn" id="btnFillAdmin">
-            <div>
-              <div style="font-weight: 600;">rajesh@singhania.law</div>
-              <div style="font-size: 10px; color: #64748B;">Password: Advocate@2026</div>
-            </div>
-            <span class="demo-role-badge">SENIOR ADVOCATE</span>
-          </button>
-          <button type="button" class="demo-btn" id="btnFillAdvocate">
-            <div>
-              <div style="font-weight: 600;">ananya@singhania.law</div>
-              <div style="font-size: 10px; color: #64748B;">Password: Advocate@2026</div>
-            </div>
-            <span class="demo-role-badge">ASSOCIATE</span>
-          </button>
-          <button type="button" class="demo-btn" id="btnFillJunior">
-            <div>
-              <div style="font-weight: 600;">vikram@singhania.law</div>
-              <div style="font-size: 10px; color: #64748B;">Password: Advocate@2026</div>
-            </div>
-            <span class="demo-role-badge">JUNIOR COUNSEL</span>
-          </button>
-        </div>
-      </div>
-
       <div class="form-footer-link">
         New legal practice chamber?
         <a href="/register.html">Register Law Firm &rarr;</a>
+      </div>
+      <div style="text-align: center; margin-top: 16px; font-size: 11px; color: #94A3B8;">
+        <a href="/privacy.html" style="color: #94A3B8; text-decoration: none; font-weight: 400;">Privacy</a> &bull;
+        <a href="/terms.html" style="color: #94A3B8; text-decoration: none; font-weight: 400;">Terms</a> &bull;
+        <a href="/refund.html" style="color: #94A3B8; text-decoration: none; font-weight: 400;">Refunds</a> &bull;
+        <a href="/disclaimer.html" style="color: #94A3B8; text-decoration: none; font-weight: 400;">Disclaimer</a> &bull;
+        <a href="/contact.html" style="color: #94A3B8; text-decoration: none; font-weight: 400;">Contact</a>
       </div>
     </div>
   </div>
@@ -613,25 +513,6 @@
         passInput.type = 'password';
         eyeIcon.textContent = 'visibility';
       }
-    });
-
-    // 1-Click quick fill buttons
-    const demoBtns = [
-      { id: 'btnFillAdmin', email: 'rajesh@singhania.law', pass: 'Advocate@2026' },
-      { id: 'btnFillAdvocate', email: 'ananya@singhania.law', pass: 'Advocate@2026' },
-      { id: 'btnFillJunior', email: 'vikram@singhania.law', pass: 'Advocate@2026' },
-    ];
-
-    demoBtns.forEach(({ id, email, pass }) => {
-      const btn = document.getElementById(id);
-      if (!btn) return;
-      btn.addEventListener('click', () => {
-        demoBtns.forEach(d => document.getElementById(d.id)?.classList.remove('active'));
-        btn.classList.add('active');
-        emailInput.value = email;
-        passInput.value = pass;
-        emailInput.focus();
-      });
     });
 
     // Form submission

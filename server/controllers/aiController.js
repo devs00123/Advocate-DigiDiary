@@ -265,7 +265,15 @@ Use clear Markdown headings and bullet points.`,
 - **File Size**: ${fileSizeKb} KB
 - **Upload Status**: Received and verified for Chamber Repository
 
-#### **Chamber Preliminary Assessment:**
+#### **Warning: AI Vision Engine Not Configured**
+To enable full document reading with Google Gemini 2.0 Flash (OCR, text extraction, clause analysis), configure your \`GEMINI_API_KEY\` in the \`.env\` file or Render Dashboard.
+
+**How to enable:**
+1. Get a free API key at: https://aistudio.google.com/app/apikey
+2. Add \`GEMINI_API_KEY=your_key_here\` to your \`.env\` file
+3. Restart the server
+
+#### **Chamber Preliminary Assessment (Metadata Only):**
 1. **Document Classification**: The file \`${file.originalname}\` has been catalogued under your chamber's evidentiary archives.
 2. **Recommended Filing Verification**:
    - Ensure the document bears proper court seals and legible exhibit/annexure markings.
@@ -275,7 +283,7 @@ Use clear Markdown headings and bullet points.`,
    - File application for urgent listing or early hearing if interim relief is sought.
    - Serve advance notice copy to opposite counsel or standing counsel as per court rules.
 
-*(Note: Operating in Chamber Practice Mode. To activate full multimodal OCR and deep reasoning on uploaded PDFs/Photos via Google Gemini 2.0 Flash, configure your GEMINI_API_KEY in .env or Render Dashboard.)*
+*(Note: This is a metadata-only analysis. Configure GEMINI_API_KEY for full AI-powered document reading with OCR and content extraction.)*
 *(Disclaimer: For chamber research and drafting assistance only. Not a substitute for formal legal opinion.)*`;
 
     return res.json({
@@ -286,6 +294,7 @@ Use clear Markdown headings and bullet points.`,
         mimeType: file.mimetype,
         summary: fallbackSummary,
         source: 'chamber-engine',
+        warning: 'GEMINI_API_KEY not configured. Only metadata analysis available. Configure your API key for full document reading.',
       },
     });
   } catch (err) {
