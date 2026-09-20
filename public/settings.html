@@ -93,6 +93,10 @@
           <span class="material-symbols-outlined">history</span>
           <span>Audit Logs</span>
         </a>
+        <a href="/profile.html" class="nav-link">
+          <span class="material-symbols-outlined">account_circle</span>
+          <span>My Profile</span>
+        </a>
         <a href="/settings.html" class="nav-link active">
           <span class="material-symbols-outlined">settings</span>
           <span>Settings</span>
@@ -213,6 +217,41 @@
 
                 <div style="text-align: right; margin-top: 1rem;">
                   <button type="submit" class="btn btn-primary btn-sm" id="saveProfBtn">Update Profile</button>
+                </div>
+              </form>
+            </div>
+
+            <!-- Security & Change Password Card -->
+            <div class="card" id="changePasswordCard">
+              <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 1rem;">
+                <span class="material-symbols-outlined" style="color: var(--gold-600); font-size: 24px;">lock_reset</span>
+                <h3 style="font-family: var(--font-headline); font-size: 1.15rem; color: var(--navy-900); margin: 0;">
+                  Security & Change Password
+                </h3>
+              </div>
+              <p style="font-size: 0.8125rem; color: var(--text-muted); margin-bottom: 1.25rem;">
+                Keep your chamber account secure. All members can update their own login password at any time.
+              </p>
+              <form id="changePasswordForm">
+                <div class="form-group" style="margin-bottom: 1rem;">
+                  <label class="form-label" for="currentPasswordInput">Current Password</label>
+                  <input type="password" id="currentPasswordInput" class="form-control" placeholder="Enter your current password">
+                </div>
+                <div class="grid grid-cols-2 gap-4" style="margin-bottom: 1rem;">
+                  <div class="form-group">
+                    <label class="form-label" for="newPasswordInput">New Password</label>
+                    <input type="password" id="newPasswordInput" class="form-control" placeholder="Minimum 6 characters">
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label" for="confirmPasswordInput">Confirm New Password</label>
+                    <input type="password" id="confirmPasswordInput" class="form-control" placeholder="Re-enter new password">
+                  </div>
+                </div>
+                <div style="display: flex; justify-content: flex-end;">
+                  <button type="submit" class="btn btn-primary btn-sm" id="btnChangePassword">
+                    <span class="material-symbols-outlined" style="font-size: 16px;">key</span>
+                    <span>Update Password</span>
+                  </button>
                 </div>
               </form>
             </div>

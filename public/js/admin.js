@@ -41,9 +41,9 @@
         return;
       }
 
-      // Check role
-      if (user.role !== 'admin') {
-        alert('Access Restricted: Super Admin console requires root chamber privileges.');
+      // Check role strictly for superadmin
+      if (user.role !== 'superadmin') {
+        alert('Access Restricted: The Super Admin Console is strictly reserved for Super Administrator credentials.');
         window.location.href = 'dashboard.html';
         return;
       }
@@ -51,8 +51,8 @@
       // Set user header details
       const nameEl = document.getElementById('adminUserName');
       const emailEl = document.getElementById('adminUserEmail');
-      if (nameEl) nameEl.textContent = user.name || 'Master Admin';
-      if (emailEl) emailEl.textContent = user.email || 'root@advocatedigi.com';
+      if (nameEl) nameEl.textContent = user.name || 'Platform Super Admin';
+      if (emailEl) emailEl.textContent = user.email || 'superadmin@digidiary.com';
     } catch (err) {
       console.error('Failed to verify session', err);
       window.location.href = 'login.html';
@@ -235,14 +235,35 @@
       const advocateEl = document.getElementById('kpiAdvocateRoster');
       if (advocateEl) advocateEl.textContent = d.advocateRoster.total.toLocaleString();
 
+      const advocateSubEl = document.getElementById('kpiAdvocateSub');
+      if (advocateSubEl) advocateSubEl.innerHTML = `<span class="material-symbols-outlined text-[14px]">arrow_upward</span> +${d.advocateRoster.newThisMonth} this month`;
+
+      const advocateVerifiedEl = document.querySelector('.font-body-sm.text-on-surface-variant');
+      if (advocateVerifiedEl && d.advocateRoster.verifiedPercentage) {
+        advocateVerifiedEl.textContent = `${d.advocateRoster.verifiedPercentage}% verified accounts`;
+      }
+
       const viewsEl = document.getElementById('kpiPlatformViews');
       if (viewsEl) viewsEl.textContent = d.totalPlatformViews.toLocaleString();
+
+      const viewsSubEl = document.getElementById('kpiViewsSub');
+      if (viewsSubEl) viewsSubEl.innerHTML = `<span class="material-symbols-outlined text-[14px]">history</span> Immutable event audit log`;
 
       const concurrentEl = document.getElementById('kpiActiveConcurrent');
       if (concurrentEl) concurrentEl.textContent = d.activeConcurrent.toLocaleString();
 
+      const concurrentSubEl = document.getElementById('kpiConcurrentSub');
+      if (concurrentSubEl) concurrentSubEl.textContent = `Active practitioners across ${d.totalFirms || 1} registered chambers`;
+
+      const retentionEl = document.getElementById('kpiStickyRetention');
+      if (retentionEl) retentionEl.textContent = `${d.stickyRetention}%`;
+
       const footprintEl = document.getElementById('kpiDataFootprint');
-      if (footprintEl) footprintEl.textContent = d.dataFootprintGB;
+      if (footprintEl) {
+        // Strip string unit if footprintGB already has MB/GB
+        const val = String(d.dataFootprintGB).replace(/[^0-9.]/g, '');
+        footprintEl.textContent = val || d.dataFootprintGB;
+      }
 
       // Module distribution bars
       if (d.moduleTraffic) {

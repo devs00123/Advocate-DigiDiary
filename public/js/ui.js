@@ -213,7 +213,45 @@ function initDrawersAndModals() {
       sidebarBackdrop.classList.remove('active');
     });
   }
+
+  // Setup mobile header title & details
+  setupMobileHeader();
 }
+
+function setupMobileHeader() {
+  const topHeader = document.querySelector('.top-header');
+  if (!topHeader) return;
+
+  const leftBox = topHeader.querySelector('div:first-child');
+  if (leftBox && !leftBox.querySelector('.mobile-header-brand')) {
+    let titleText = '';
+    const pageTitleEl = document.querySelector('.page-title');
+    if (pageTitleEl) {
+      titleText = pageTitleEl.textContent.trim().split('\n')[0].trim();
+    } else {
+      titleText = document.title.split('—')[0].split('-')[0].trim();
+    }
+
+    const brandEl = document.createElement('div');
+    brandEl.className = 'mobile-header-brand d-md-none';
+    brandEl.innerHTML = `
+      <span class="mobile-header-title">${escapeHTML(titleText || 'Advocate Diary')}</span>
+      <span class="mobile-header-subtitle">DigiDiary</span>
+    `;
+    leftBox.appendChild(brandEl);
+  }
+
+  const actionsBox = topHeader.querySelector('.header-actions');
+  if (actionsBox && !actionsBox.querySelector('.mobile-user-avatar')) {
+    const avatarEl = document.createElement('a');
+    avatarEl.href = '/profile.html';
+    avatarEl.className = 'mobile-user-avatar d-md-none';
+    avatarEl.title = 'My Profile';
+    avatarEl.innerHTML = `<span class="material-symbols-outlined" style="font-size: 18px;">account_circle</span>`;
+    actionsBox.appendChild(avatarEl);
+  }
+}
+window.setupMobileHeader = setupMobileHeader;
 
 // Confirmation Dialog Modal (Promise-based, Sovereign Navy + Antique Brass aesthetic)
 function confirmDialog(options = {}) {
@@ -527,4 +565,24 @@ document.addEventListener('DOMContentLoaded', () => {
   setTimeout(() => {
     checkRemindersAndShowPopup();
   }, 1500);
+
+  // Auto-load DigiDiary Legal AI Assistant on all authenticated pages
+  try {
+    const isAuthPage =
+      window.location.pathname.includes('login') ||
+      window.location.pathname.includes('register') ||
+      window.location.pathname.includes('forgot') ||
+      window.location.pathname.includes('reset') ||
+      window.location.pathname === '/' ||
+      window.location.pathname.endsWith('index.html');
+
+    if (!isAuthPage && !document.querySelector('script[src*="ai-chat.js"]')) {
+      const aiScript = document.createElement('script');
+      aiScript.src = '/js/ai-chat.js';
+      aiScript.defer = true;
+      document.body.appendChild(aiScript);
+    }
+  } catch (e) {
+    console.debug('AI chat script init notice:', e);
+  }
 });

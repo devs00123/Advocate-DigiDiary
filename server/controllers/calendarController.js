@@ -25,7 +25,7 @@ exports.getCalendarEvents = async (req, res, next) => {
       Hearing.find({
         lawFirmId: req.user.lawFirmId,
         date: { $gte: startDate, $lte: endDate },
-      }).populate('caseId', 'title caseNumber court courtroom judge priority status'),
+      }).populate('caseId', 'title caseNumber court courtroom judge priority status clientRepresentation partyRole nextHearingDate'),
       Task.find({
         lawFirmId: req.user.lawFirmId,
         dueDate: { $gte: startDate, $lte: endDate },
@@ -38,16 +38,46 @@ exports.getCalendarEvents = async (req, res, next) => {
 
     const events = [];
 
-    hearings.forEach((h) => {
+    // Enrich hearings with previous hearing date, next hearing date, appearingFor, and remarks
+    for (const h of hearings) {
+      let lastHearingDate = null;
+      if (h.caseId && h.caseId._id) {
+        const prev = await Hearing.findOne({
+          lawFirmId: req.user.lawFirmId,
+          caseId: h.caseId._id,
+          date: { $lt: h.date },
+        })
+          .sort({ date: -1 })
+          .select('date');
+        if (prev) {
+          lastHearingDate = prev.date;
+        }
+      }
+
+      const caseTitle = h.caseId ? h.caseId.title : (h.purpose || 'Court Hearing');
+      const court = h.court || (h.caseId ? h.caseId.court : 'District Court');
+      const appearingFor = h.caseId ? (h.caseId.clientRepresentation || h.caseId.partyRole || 'Counsel') : 'Counsel';
+      const remarks = h.outcome
+        ? `${h.outcome}${h.benchNotes ? ' | ' + h.benchNotes : ''}`
+        : (h.benchNotes || h.purpose || 'Regular Hearing Proceedings');
+
       events.push({
         id: h._id,
         type: 'hearing',
         title: h.caseId ? `${h.caseId.title} (${h.time || '10:00 AM'})` : (h.purpose || 'Court Hearing'),
+        caseTitle,
         caseNumber: h.caseId ? h.caseId.caseNumber : '',
         start: h.date,
         date: h.date,
+        currentDate: h.date,
+        lastDate: lastHearingDate,
+        nextDate: h.nextDate || (h.caseId ? h.caseId.nextHearingDate : null),
+        appearingFor,
+        remarks,
+        benchNotes: h.benchNotes || '',
+        outcome: h.outcome || '',
         time: h.time || '10:00 AM',
-        court: h.court || (h.caseId ? h.caseId.court : 'District Court'),
+        court,
         courtroom: h.courtroom || '',
         judge: h.judge || '',
         purpose: h.purpose || 'Hearing',
@@ -56,7 +86,7 @@ exports.getCalendarEvents = async (req, res, next) => {
         caseId: h.caseId,
         color: '#C59B27', // Antique Gold
       });
-    });
+    }
 
     tasks.forEach((t) => {
       events.push({

@@ -10,14 +10,56 @@ const startServer = async () => {
   try {
     await connectDB();
 
-    if (process.env.NODE_ENV !== 'production' || process.env.SEED_ON_EMPTY === 'true') {
+    if (process.env.SEED_ON_EMPTY === 'true') {
       const User = require('./models/User');
       const userCount = await User.countDocuments();
       if (userCount === 0) {
-        console.log('[SEED] Empty database detected. Populating initial test chamber...');
+        console.log('[SEED] Empty database detected with SEED_ON_EMPTY=true. Populating initial chamber data...');
         const seedData = require('./scripts/seed');
         await seedData();
       }
+    }
+
+    // Ensure Master Super Admin exists
+    try {
+      const User = require('./models/User');
+      const LawFirm = require('./models/LawFirm');
+      const bcrypt = require('bcryptjs');
+      const superEmail = (process.env.SUPERADMIN_EMAIL || 'superadmin@digidiary.com').toLowerCase();
+      let existingSuper = await User.findOne({ email: superEmail });
+      if (!existingSuper) {
+        let firm = await LawFirm.findOne();
+        if (!firm) {
+          firm = await LawFirm.create({
+            name: 'Advocate DigiDiary Platform Administration',
+            chamberNumber: 'Master Suite 001',
+            address: 'Supreme Court Commercial Arcade, New Delhi',
+            email: superEmail,
+            barCouncilRegistration: 'D/ROOT/2026',
+          });
+        }
+        const salt = await bcrypt.genSalt(10);
+        const passwordHash = await bcrypt.hash(process.env.SUPERADMIN_PASSWORD || 'SuperAdmin@2026', salt);
+        await User.create({
+          name: 'Master Super Administrator',
+          email: superEmail,
+          phone: '+91 99999 00000',
+          passwordHash,
+          role: 'superadmin',
+          designation: 'Platform Super Administrator',
+          enrollmentNumber: 'D/ROOT/2026',
+          lawFirmId: firm._id,
+          emailVerified: true,
+          lastLogin: new Date(),
+        });
+        console.log(`[SUPERADMIN] Master Super Administrator provisioned: ${superEmail}`);
+      } else if (existingSuper.role !== 'superadmin') {
+        existingSuper.role = 'superadmin';
+        await existingSuper.save();
+        console.log(`[SUPERADMIN] Role elevated to 'superadmin' for: ${superEmail}`);
+      }
+    } catch (adminErr) {
+      console.warn('[SUPERADMIN] Notice provisioning superadmin:', adminErr.message);
     }
 
     const listenOnPort = (portToTry) => {

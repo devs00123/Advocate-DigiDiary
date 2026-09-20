@@ -212,8 +212,6 @@ exports.createCase = async (req, res, next) => {
       cnrNumber,
       title,
       clientId,
-      oppositeParty,
-      oppositeCounsel,
       caseType,
       court,
       judge,
@@ -226,6 +224,8 @@ exports.createCase = async (req, res, next) => {
       assignedAdvocate,
     } = req.body;
 
+    const oppositeParty = req.body.oppositeParty || req.body.opponentParty || '';
+    const oppositeCounsel = req.body.oppositeCounsel || req.body.opponentAdvocate || '';
     const clientRepresentation = req.body.clientRepresentation || req.body.partyRole || 'Plaintiff';
     const agreedFee = req.body.agreedFee !== undefined ? req.body.agreedFee : (req.body.totalAgreedFee || 0);
     const courtroom = req.body.courtroom || req.body.courtRoom || '';
@@ -259,8 +259,8 @@ exports.createCase = async (req, res, next) => {
       title: finalTitle,
       clientId: client._id,
       clientRepresentation,
-      oppositeParty: oppositeParty || '',
-      oppositeCounsel: oppositeCounsel || '',
+      oppositeParty,
+      oppositeCounsel,
       caseType: caseType || 'Civil Suit',
       court: finalCourt,
       judge: judge || '',
@@ -330,34 +330,43 @@ exports.updateCase = async (req, res, next) => {
       });
     }
 
-    // Updatable fields
-    const fields = [
-      'caseNumber',
-      'cnrNumber',
-      'title',
-      'clientRepresentation',
-      'oppositeParty',
-      'oppositeCounsel',
-      'caseType',
-      'court',
-      'judge',
-      'courtroom',
-      'filingDate',
-      'firstHearingDate',
-      'nextHearingDate',
-      'currentStage',
-      'priority',
-      'status',
-      'description',
-      'agreedFee',
-      'assignedAdvocate',
-    ];
-
-    fields.forEach((f) => {
-      if (req.body[f] !== undefined) {
-        foundCase[f] = req.body[f];
-      }
-    });
+    // Updatable fields with alias resolution
+    if (req.body.caseNumber !== undefined) foundCase.caseNumber = req.body.caseNumber;
+    if (req.body.cnrNumber !== undefined) foundCase.cnrNumber = req.body.cnrNumber ? String(req.body.cnrNumber).toUpperCase() : '';
+    if (req.body.title !== undefined) foundCase.title = req.body.title;
+    if (req.body.clientRepresentation !== undefined || req.body.partyRole !== undefined) {
+      foundCase.clientRepresentation = req.body.clientRepresentation || req.body.partyRole;
+    }
+    if (req.body.oppositeParty !== undefined || req.body.opponentParty !== undefined) {
+      foundCase.oppositeParty = req.body.oppositeParty !== undefined ? req.body.oppositeParty : req.body.opponentParty;
+    }
+    if (req.body.oppositeCounsel !== undefined || req.body.opponentAdvocate !== undefined) {
+      foundCase.oppositeCounsel = req.body.oppositeCounsel !== undefined ? req.body.oppositeCounsel : req.body.opponentAdvocate;
+    }
+    if (req.body.caseType !== undefined) foundCase.caseType = req.body.caseType;
+    if (req.body.court !== undefined) foundCase.court = req.body.court;
+    if (req.body.judge !== undefined) foundCase.judge = req.body.judge;
+    if (req.body.courtroom !== undefined || req.body.courtRoom !== undefined) {
+      foundCase.courtroom = req.body.courtroom !== undefined ? req.body.courtroom : req.body.courtRoom;
+    }
+    if (req.body.filingDate !== undefined) foundCase.filingDate = req.body.filingDate;
+    if (req.body.firstHearingDate !== undefined) foundCase.firstHearingDate = req.body.firstHearingDate;
+    if (req.body.nextHearingDate !== undefined) foundCase.nextHearingDate = req.body.nextHearingDate;
+    if (req.body.currentStage !== undefined || req.body.stage !== undefined) {
+      foundCase.currentStage = req.body.currentStage !== undefined ? req.body.currentStage : req.body.stage;
+    }
+    if (req.body.priority !== undefined) foundCase.priority = req.body.priority ? req.body.priority.toLowerCase() : 'standard';
+    if (req.body.status !== undefined) foundCase.status = req.body.status;
+    if (req.body.description !== undefined) foundCase.description = req.body.description;
+    if (req.body.agreedFee !== undefined || req.body.totalAgreedFee !== undefined) {
+      foundCase.agreedFee = Number(req.body.agreedFee !== undefined ? req.body.agreedFee : req.body.totalAgreedFee) || 0;
+    }
+    if (req.body.clientId && mongoose.Types.ObjectId.isValid(req.body.clientId)) {
+      foundCase.clientId = req.body.clientId;
+    }
+    if (req.body.assignedAdvocate && mongoose.Types.ObjectId.isValid(req.body.assignedAdvocate)) {
+      foundCase.assignedAdvocate = req.body.assignedAdvocate;
+    }
 
     await foundCase.save();
 

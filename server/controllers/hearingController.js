@@ -228,6 +228,18 @@ exports.updateHearing = async (req, res, next) => {
       if (req.body[f] !== undefined) hearing[f] = req.body[f];
     });
 
+    if (req.body.date) {
+      hearing.date = new Date(req.body.date);
+    }
+
+    if (req.body.remarks !== undefined && !req.body.benchNotes) {
+      hearing.benchNotes = req.body.remarks;
+    }
+
+    if (req.body.courtRoom && !req.body.courtroom) {
+      hearing.courtroom = req.body.courtRoom;
+    }
+
     if (req.body.status) {
       const s = String(req.body.status).toLowerCase();
       if (s === 'completed') hearing.status = 'Completed';

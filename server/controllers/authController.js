@@ -282,3 +282,103 @@ exports.resetPassword = async (req, res, next) => {
     next(err);
   }
 };
+
+exports.updateProfile = async (req, res, next) => {
+  try {
+    const user = await User.findById(req.user._id);
+    if (!user) {
+      return res.status(404).json({ success: false, message: 'User not found.' });
+    }
+
+    const { name, phone, designation, enrollmentNumber } = req.body;
+    if (name) user.name = String(name).trim();
+    if (phone !== undefined) user.phone = String(phone).trim();
+    if (designation !== undefined) user.designation = String(designation).trim();
+    if (enrollmentNumber !== undefined) user.enrollmentNumber = String(enrollmentNumber).trim();
+
+    await user.save();
+
+    await logAudit({
+      lawFirmId: user.lawFirmId,
+      userId: user._id,
+      userName: user.name,
+      userEmail: user.email,
+      action: 'USER_PROFILE_UPDATED',
+      entityType: 'User',
+      entityId: user._id,
+      description: `Practitioner profile updated for ${user.name}`,
+      ipAddress: req.ip,
+    });
+
+    res.status(200).json({
+      success: true,
+      message: 'Profile updated successfully.',
+      data: user,
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+
+exports.changePassword = async (req, res, next) => {
+  try {
+    const { currentPassword, newPassword, confirmPassword } = req.body;
+
+    if (!currentPassword || !newPassword) {
+      return res.status(400).json({
+        success: false,
+        message: 'Please provide both your current password and new password.',
+      });
+    }
+
+    if (newPassword.length < 6) {
+      return res.status(400).json({
+        success: false,
+        message: 'New password must be at least 6 characters long.',
+      });
+    }
+
+    if (confirmPassword && newPassword !== confirmPassword) {
+      return res.status(400).json({
+        success: false,
+        message: 'New password and confirmation password do not match.',
+      });
+    }
+
+    const user = await User.findById(req.user._id).select('+passwordHash');
+    if (!user) {
+      return res.status(404).json({ success: false, message: 'User not found.' });
+    }
+
+    const isMatch = await bcrypt.compare(currentPassword, user.passwordHash);
+    if (!isMatch) {
+      return res.status(400).json({
+        success: false,
+        message: 'Current password is incorrect.',
+      });
+    }
+
+    const salt = await bcrypt.genSalt(10);
+    user.passwordHash = await bcrypt.hash(newPassword, salt);
+    await user.save();
+
+    await logAudit({
+      lawFirmId: user.lawFirmId,
+      userId: user._id,
+      userName: user.name,
+      userEmail: user.email,
+      action: 'USER_PASSWORD_CHANGED',
+      entityType: 'User',
+      entityId: user._id,
+      description: `User ${user.name} changed their password.`,
+      ipAddress: req.ip,
+    });
+
+    res.status(200).json({
+      success: true,
+      message: 'Password changed successfully.',
+    });
+  } catch (err) {
+    next(err);
+  }
+};

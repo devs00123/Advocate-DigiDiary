@@ -225,20 +225,26 @@ function setupEventListeners() {
 
     const editId = document.getElementById('editCaseId').value;
 
+    const rawClientId = document.getElementById('caseClientSelect').value;
     const payload = {
-      title: document.getElementById('caseTitleInput').value.trim(),
-      caseNumber: document.getElementById('caseNumberInput').value.trim(),
+      title: document.getElementById('caseTitleInput').value.trim() || 'General Legal Matter',
+      caseNumber: document.getElementById('caseNumberInput').value.trim() || undefined,
       cnrNumber: document.getElementById('caseCnrInput').value.trim() || undefined,
-      court: document.getElementById('caseCourtInput').value.trim(),
+      court: document.getElementById('caseCourtInput').value.trim() || 'District Court',
       courtRoom: document.getElementById('caseCourtRoomInput').value.trim() || undefined,
-      caseType: document.getElementById('caseTypeSelect').value,
-      clientId: document.getElementById('caseClientSelect').value,
-      partyRole: document.getElementById('casePartyRoleSelect').value,
+      caseType: document.getElementById('caseTypeSelect').value || 'Civil',
+      clientId: rawClientId && rawClientId.trim() ? rawClientId.trim() : undefined,
+      partyRole: document.getElementById('casePartyRoleSelect').value || 'Petitioner',
+      clientRepresentation: document.getElementById('casePartyRoleSelect').value || 'Petitioner',
       opponentParty: document.getElementById('caseOpponent').value.trim() || undefined,
+      oppositeParty: document.getElementById('caseOpponent').value.trim() || undefined,
       opponentAdvocate: document.getElementById('caseOpponentAdvocate').value.trim() || undefined,
+      oppositeCounsel: document.getElementById('caseOpponentAdvocate').value.trim() || undefined,
       stage: document.getElementById('caseStageInput').value.trim() || undefined,
-      status: document.getElementById('caseStatusSelect').value,
+      currentStage: document.getElementById('caseStageInput').value.trim() || undefined,
+      status: document.getElementById('caseStatusSelect').value || 'Active',
       totalAgreedFee: Number(document.getElementById('caseAgreedFeeInput').value) || 0,
+      agreedFee: Number(document.getElementById('caseAgreedFeeInput').value) || 0,
       description: document.getElementById('caseDescriptionInput').value.trim() || undefined
     };
 
@@ -267,20 +273,20 @@ window.openEditCaseModal = async (id) => {
     if (res.success && res.data) {
       const c = res.data;
       document.getElementById('editCaseId').value = c._id;
-      document.getElementById('modalCaseTitleText').innerText = `Edit Case: ${c.caseNumber}`;
-      document.getElementById('caseTitleInput').value = c.title;
-      document.getElementById('caseNumberInput').value = c.caseNumber;
+      document.getElementById('modalCaseTitleText').innerText = `Edit Case: ${c.caseNumber || 'Matter'}`;
+      document.getElementById('caseTitleInput').value = c.title || '';
+      document.getElementById('caseNumberInput').value = c.caseNumber || '';
       document.getElementById('caseCnrInput').value = c.cnrNumber || '';
-      document.getElementById('caseCourtInput').value = c.court;
-      document.getElementById('caseCourtRoomInput').value = c.courtRoom || '';
-      document.getElementById('caseTypeSelect').value = c.caseType;
+      document.getElementById('caseCourtInput').value = c.court || '';
+      document.getElementById('caseCourtRoomInput').value = c.courtroom || c.courtRoom || '';
+      document.getElementById('caseTypeSelect').value = c.caseType || 'Civil';
       document.getElementById('caseClientSelect').value = c.clientId ? (c.clientId._id || c.clientId) : '';
-      document.getElementById('casePartyRoleSelect').value = c.partyRole;
-      document.getElementById('caseOpponent').value = c.opponentParty || '';
-      document.getElementById('caseOpponentAdvocate').value = c.opponentAdvocate || '';
-      document.getElementById('caseStageInput').value = c.stage || '';
-      document.getElementById('caseStatusSelect').value = c.status;
-      document.getElementById('caseAgreedFeeInput').value = c.totalAgreedFee || 0;
+      document.getElementById('casePartyRoleSelect').value = c.clientRepresentation || c.partyRole || 'Petitioner';
+      document.getElementById('caseOpponent').value = c.oppositeParty || c.opponentParty || '';
+      document.getElementById('caseOpponentAdvocate').value = c.oppositeCounsel || c.opponentAdvocate || '';
+      document.getElementById('caseStageInput').value = c.currentStage || c.stage || '';
+      document.getElementById('caseStatusSelect').value = (c.status || 'Active').toLowerCase();
+      document.getElementById('caseAgreedFeeInput').value = c.agreedFee !== undefined ? c.agreedFee : (c.totalAgreedFee || 0);
       document.getElementById('caseDescriptionInput').value = c.description || '';
 
       UI.openModal('caseModal');

@@ -172,6 +172,11 @@ describe('Calendar, Analytics Summary & Reminders Done/Toggle Verification', () 
     expect(hearingEv).toBeDefined();
     expect(hearingEv.start).toBeDefined();
     expect(hearingEv.date).toBeDefined();
+    expect(hearingEv.caseTitle).toBe('State vs. Mehra Industries');
+    expect(hearingEv.court).toBe('High Court of Delhi');
+    expect(hearingEv.currentDate).toBeDefined();
+    expect(hearingEv.appearingFor).toBeDefined();
+    expect(hearingEv.remarks).toBeDefined();
 
     const taskEv = events.find(e => e.type === 'task');
     expect(taskEv).toBeDefined();
@@ -180,6 +185,36 @@ describe('Calendar, Analytics Summary & Reminders Done/Toggle Verification', () 
     const reminderEv = events.find(e => e.type === 'reminder');
     expect(reminderEv).toBeDefined();
     expect(reminderEv.start).toBeDefined();
+  });
+
+  it('registers a case with frontend aliases, stayed status, and opposite party representation', async () => {
+    const res = await request(app)
+      .post('/api/cases')
+      .set('Cookie', authCookie)
+      .send({
+        title: 'Bansal Textiles vs. Union of India',
+        caseNumber: 'WP(C) 1982/2026',
+        court: 'High Court of Delhi',
+        courtRoom: 'Court No. 12',
+        caseType: 'Commercial',
+        partyRole: 'Opposite Party',
+        opponentParty: 'Union of India & Anr.',
+        opponentAdvocate: 'Standing Counsel GoI',
+        stage: 'Final Arguments',
+        status: 'stayed',
+        totalAgreedFee: 75000,
+        description: 'Commercial writ challenging notification',
+      });
+
+    expect(res.status).toBe(201);
+    expect(res.body.success).toBe(true);
+    expect(res.body.data.clientRepresentation).toBe('Opposite Party');
+    expect(res.body.data.status).toBe('Stayed');
+    expect(res.body.data.oppositeParty).toBe('Union of India & Anr.');
+    expect(res.body.data.oppositeCounsel).toBe('Standing Counsel GoI');
+    expect(res.body.data.courtroom).toBe('Court No. 12');
+    expect(res.body.data.currentStage).toBe('Final Arguments');
+    expect(res.body.data.agreedFee).toBe(75000);
   });
 
   it('toggles reminder status (Mark Done)', async () => {

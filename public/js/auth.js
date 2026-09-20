@@ -74,13 +74,40 @@ function updateUserUI(user, firm) {
   const chamberSubEl = document.querySelector('.chamber-sub');
   if (chamberSubEl && firm) chamberSubEl.textContent = firm.chamberNumber || 'Lawyers Chambers Block';
 
-  // Admin navigation link visibility
+  // Super Admin navigation link visibility (only superadmin)
   const adminLinks = document.querySelectorAll('.admin-only, #navAdminLink');
   adminLinks.forEach((el) => {
-    if (user.role === 'admin') {
+    if (user.role === 'superadmin') {
       el.style.display = 'flex';
     } else {
       el.style.display = 'none';
+    }
+  });
+
+  // Mobile user avatar initials
+  const mobileAvatar = document.querySelector('.mobile-user-avatar');
+  if (mobileAvatar && user) {
+    const initials = (user.name || 'Advocate')
+      .split(' ')
+      .filter(Boolean)
+      .map((p) => p[0])
+      .slice(0, 2)
+      .join('')
+      .toUpperCase();
+    mobileAvatar.innerHTML = `<span style="font-size: 11px; font-weight: 700; color: #FFF;">${initials || 'AD'}</span>`;
+  }
+
+  // Attach profile navigation on user card
+  const profileCards = document.querySelectorAll('.user-profile-card');
+  profileCards.forEach((card) => {
+    card.style.cursor = 'pointer';
+    card.title = 'View & Edit My Profile';
+    if (!card.hasAttribute('data-profile-listener')) {
+      card.setAttribute('data-profile-listener', 'true');
+      card.addEventListener('click', (e) => {
+        if (e.target.closest('.logout-btn')) return;
+        window.location.href = '/profile.html';
+      });
     }
   });
 

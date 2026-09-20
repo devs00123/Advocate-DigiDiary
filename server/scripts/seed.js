@@ -68,6 +68,20 @@ const seedData = async () => {
     const salt = await bcrypt.genSalt(10);
     const passwordHash = await bcrypt.hash('Advocate@2026', salt);
 
+    const superadminHash = await bcrypt.hash('SuperAdmin@2026', salt);
+    const superAdmin = await User.create({
+      name: 'Master Super Administrator',
+      email: 'superadmin@digidiary.com',
+      phone: '+91 99999 00000',
+      passwordHash: superadminHash,
+      role: 'superadmin',
+      designation: 'Platform Super Administrator',
+      enrollmentNumber: 'D/ROOT/2026',
+      lawFirmId: lawFirm._id,
+      emailVerified: true,
+      lastLogin: new Date(),
+    });
+
     const rajesh = await User.create({
       name: 'Rajesh V. Singhania',
       email: 'rajesh@singhania.law',

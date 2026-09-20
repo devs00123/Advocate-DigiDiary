@@ -31,8 +31,21 @@ const caseSchema = new mongoose.Schema(
     },
     clientRepresentation: {
       type: String,
-      enum: ['Plaintiff', 'Defendant', 'Petitioner', 'Respondent', 'Appellant', 'Complainant', 'Accused', 'Other'],
+      enum: ['Plaintiff', 'Defendant', 'Petitioner', 'Respondent', 'Appellant', 'Complainant', 'Accused', 'Opposite Party', 'Other'],
       default: 'Plaintiff',
+      set: (val) => {
+        if (!val) return 'Plaintiff';
+        const trimmed = String(val).trim();
+        if (/opposite/i.test(trimmed)) return 'Opposite Party';
+        if (/petitioner/i.test(trimmed)) return 'Petitioner';
+        if (/respondent/i.test(trimmed)) return 'Respondent';
+        if (/plaintiff/i.test(trimmed)) return 'Plaintiff';
+        if (/defendant/i.test(trimmed)) return 'Defendant';
+        if (/appellant/i.test(trimmed)) return 'Appellant';
+        if (/complainant/i.test(trimmed)) return 'Complainant';
+        if (/accused/i.test(trimmed)) return 'Accused';
+        return trimmed;
+      },
     },
     oppositeParty: {
       type: String,
@@ -81,8 +94,21 @@ const caseSchema = new mongoose.Schema(
     },
     status: {
       type: String,
-      enum: ['New', 'Active', 'Pending', 'Hearing', 'Reserved', 'Disposed', 'Closed'],
+      enum: ['New', 'Active', 'Pending', 'Hearing', 'Reserved', 'Disposed', 'Closed', 'Stayed'],
       default: 'Active',
+      set: (val) => {
+        if (!val) return 'Active';
+        const str = String(val).trim().toLowerCase();
+        if (str === 'active') return 'Active';
+        if (str === 'pending') return 'Pending';
+        if (str === 'stayed') return 'Stayed';
+        if (str === 'hearing') return 'Hearing';
+        if (str === 'reserved') return 'Reserved';
+        if (str === 'disposed') return 'Disposed';
+        if (str === 'closed') return 'Closed';
+        if (str === 'new') return 'New';
+        return val.charAt(0).toUpperCase() + val.slice(1);
+      },
       index: true,
     },
     priority: {

@@ -10,9 +10,11 @@ const Hearing = require('../server/models/Hearing');
 const AuditLog = require('../server/models/AuditLog');
 
 let mongoServer;
+let superAdminCookie;
 let adminCookie;
 let clerkCookie;
 let testFirm;
+let superAdminUser;
 let adminUser;
 let clerkUser;
 
@@ -28,37 +30,53 @@ beforeAll(async () => {
     barCouncilRegistration: 'D/1429/2011',
   });
 
-  // Setup Admin user
-  const adminRes = await request(app)
-    .post('/api/auth/register')
+  const bcrypt = require('bcryptjs');
+  const salt = await bcrypt.genSalt(10);
+
+  // Setup Dedicated Super Admin user
+  const superHash = await bcrypt.hash('SuperAdminPassword@2026', salt);
+  superAdminUser = await User.create({
+    lawFirmId: testFirm._id,
+    name: 'Master Super Admin',
+    email: 'superadmin@digidiary.com',
+    passwordHash: superHash,
+    role: 'superadmin',
+    designation: 'Platform Super Administrator',
+    enrollmentNumber: 'D/ROOT/2026',
+    emailVerified: true,
+  });
+
+  const superLogin = await request(app)
+    .post('/api/auth/login')
     .send({
-      name: 'Adv. Rajesh Singhania',
-      email: 'rajesh.admin@singhania.law',
+      email: 'superadmin@digidiary.com',
       password: 'SuperAdminPassword@2026',
-      firmName: 'Singhania & Partners LLP',
-      barCouncilRegistration: 'D/1429/2011',
     });
+  superAdminCookie = superLogin.headers['set-cookie'];
 
-  // Elevate to admin role explicitly
-  adminUser = await User.findOne({ email: 'rajesh.admin@singhania.law' });
-  adminUser.role = 'admin';
-  await adminUser.save();
+  // Setup standard law firm Admin user
+  const adminHash = await bcrypt.hash('AdminPassword@2026', salt);
+  adminUser = await User.create({
+    lawFirmId: testFirm._id,
+    name: 'Adv. Rajesh Singhania',
+    email: 'rajesh.admin@singhania.law',
+    passwordHash: adminHash,
+    role: 'admin',
+    designation: 'Managing Partner',
+    enrollmentNumber: 'D/1429/2011',
+    emailVerified: true,
+  });
 
-  // Login as Admin
   const adminLogin = await request(app)
     .post('/api/auth/login')
     .send({
       email: 'rajesh.admin@singhania.law',
-      password: 'SuperAdminPassword@2026',
+      password: 'AdminPassword@2026',
     });
-
   adminCookie = adminLogin.headers['set-cookie'];
 
   // Setup Clerk user
-  const bcrypt = require('bcryptjs');
-  const salt = await bcrypt.genSalt(10);
   const clerkHash = await bcrypt.hash('ClerkPass@2026', salt);
-
   clerkUser = await User.create({
     lawFirmId: testFirm._id,
     name: 'Ramesh Clerk',
@@ -73,7 +91,6 @@ beforeAll(async () => {
       email: 'ramesh.clerk@singhania.law',
       password: 'ClerkPass@2026',
     });
-
   clerkCookie = clerkLogin.headers['set-cookie'];
 
   // Setup sample client
@@ -145,25 +162,38 @@ describe('Super Admin & Platform Telemetry Security & APIs', () => {
     expect(res.body.message).toMatch(/Forbidden/i);
   });
 
-  it('3. Admin can retrieve platform telemetry and metrics', async () => {
+  it('3. Standard Law Firm Admin request to /api/admin/telemetry returns 403 Forbidden (Only Super Admin Allowed)', async () => {
     const res = await request(app)
       .get('/api/admin/telemetry')
       .set('Cookie', adminCookie);
 
+    expect(res.status).toBe(403);
+    expect(res.body.success).toBe(false);
+    expect(res.body.message).toMatch(/Forbidden/i);
+  });
+
+  it('4. Super Admin can retrieve platform telemetry and metrics with 100% real data', async () => {
+    const res = await request(app)
+      .get('/api/admin/telemetry')
+      .set('Cookie', superAdminCookie);
+
     expect(res.status).toBe(200);
     expect(res.body.success).toBe(true);
     expect(res.body.data).toHaveProperty('advocateRoster');
-    expect(res.body.data.advocateRoster.total).toBeGreaterThanOrEqual(2);
+    expect(res.body.data.advocateRoster.total).toBeGreaterThanOrEqual(3);
     expect(res.body.data).toHaveProperty('totalPlatformViews');
+    expect(res.body.data.totalPlatformViews).toBeGreaterThanOrEqual(1);
     expect(res.body.data).toHaveProperty('activeConcurrent');
     expect(res.body.data).toHaveProperty('dataFootprintGB');
     expect(res.body.data).toHaveProperty('moduleTraffic');
+    expect(res.body.data.totalCases).toBeGreaterThanOrEqual(1);
+    expect(res.body.data.totalHearings).toBeGreaterThanOrEqual(1);
   });
 
-  it('4. Admin can list advocates with pagination and search', async () => {
+  it('5. Super Admin can list advocates with pagination and search', async () => {
     const res = await request(app)
       .get('/api/admin/advocates?search=Rajesh')
-      .set('Cookie', adminCookie);
+      .set('Cookie', superAdminCookie);
 
     expect(res.status).toBe(200);
     expect(res.body.success).toBe(true);
@@ -173,10 +203,10 @@ describe('Super Admin & Platform Telemetry Security & APIs', () => {
     expect(res.body.pagination).toHaveProperty('total');
   });
 
-  it('5. Admin can retrieve real-time live event feed from AuditLog', async () => {
+  it('6. Super Admin can retrieve real-time live event feed from AuditLog', async () => {
     const res = await request(app)
       .get('/api/admin/live-feed')
-      .set('Cookie', adminCookie);
+      .set('Cookie', superAdminCookie);
 
     expect(res.status).toBe(200);
     expect(res.body.success).toBe(true);
@@ -186,10 +216,10 @@ describe('Super Admin & Platform Telemetry Security & APIs', () => {
     expect(res.body.data[0]).toHaveProperty('icon');
   });
 
-  it('6. Admin can inspect system health and database status', async () => {
+  it('7. Super Admin can inspect system health and database status', async () => {
     const res = await request(app)
       .get('/api/admin/health-report')
-      .set('Cookie', adminCookie);
+      .set('Cookie', superAdminCookie);
 
     expect(res.status).toBe(200);
     expect(res.body.success).toBe(true);
@@ -200,10 +230,10 @@ describe('Super Admin & Platform Telemetry Security & APIs', () => {
     expect(res.body.data.documentCounts.cases).toBeGreaterThanOrEqual(1);
   });
 
-  it('7. Admin can invite and provision a new Chamber Head', async () => {
+  it('8. Super Admin can invite and provision a new Chamber Head', async () => {
     const res = await request(app)
       .post('/api/admin/invite')
-      .set('Cookie', adminCookie)
+      .set('Cookie', superAdminCookie)
       .send({
         name: 'Adv. Meenakshi Lekhi',
         email: 'm.lekhi.test@supremecourt.org',
@@ -223,20 +253,20 @@ describe('Super Admin & Platform Telemetry Security & APIs', () => {
     expect(created.name).toBe('Adv. Meenakshi Lekhi');
   });
 
-  it('8. Admin can trigger purge of stale temporary records', async () => {
+  it('9. Super Admin can trigger purge of stale temporary records', async () => {
     const res = await request(app)
       .post('/api/admin/purge-stale')
-      .set('Cookie', adminCookie);
+      .set('Cookie', superAdminCookie);
 
     expect(res.status).toBe(200);
     expect(res.body.success).toBe(true);
     expect(res.body).toHaveProperty('deletedCount');
   });
 
-  it('9. Admin can stream full audit logs as CSV without file persistence', async () => {
+  it('10. Super Admin can stream full audit logs as CSV without file persistence', async () => {
     const res = await request(app)
       .get('/api/admin/export-audit')
-      .set('Cookie', adminCookie);
+      .set('Cookie', superAdminCookie);
 
     expect(res.status).toBe(200);
     expect(res.headers['content-type']).toMatch(/text\/csv/);

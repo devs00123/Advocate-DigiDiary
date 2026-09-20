@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Profile — Advocate DigiDiary</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Plus+Jakarta+Sans:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+  <link rel="stylesheet" href="/css/variables.css">
+  <link rel="stylesheet" href="/css/global.css">
+  <link rel="stylesheet" href="/css/layout.css">
+  <link rel="stylesheet" href="/css/components.css">
+  <link rel="stylesheet" href="/css/responsive.css">
+  <style>
+    .profile-hero {
+      background: linear-gradient(135deg, var(--navy-900) 0%, var(--navy-800) 60%, #172554 100%);
+      border-radius: var(--radius-lg);
+      padding: 2rem;
+      color: white;
+      position: relative;
+      overflow: hidden;
+      margin-bottom: 1.75rem;
+      border: 1px solid rgba(197, 155, 39, 0.25);
+      box-shadow: var(--shadow-md);
+    }
+    .profile-hero::after {
+      content: "§";
+      position: absolute;
+      right: 20px;
+      bottom: -30px;
+      font-size: 14rem;
+      font-family: var(--font-headline);
+      color: rgba(197, 155, 39, 0.06);
+      pointer-events: none;
+      line-height: 1;
+    }
+    .profile-avatar-box {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background: var(--gold-600);
+      color: var(--navy-900);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      font-weight: 700;
+      font-family: var(--font-headline);
+      border: 3px solid rgba(255, 255, 255, 0.2);
+      box-shadow: 0 4px 14px rgba(0,0,0,0.25);
+      flex-shrink: 0;
+    }
+    .profile-meta-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      color: rgba(255, 255, 255, 0.85);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="app-container">
+    <!-- Sidebar -->
+    <aside class="sidebar" id="appSidebar">
+      <div class="sidebar-header">
+        <div class="brand-badge">
+          <div class="brand-logo-icon">
+            <img src="/img/logo.svg" alt="Advocate DigiDiary" style="width: 22px; height: 22px;">
+          </div>
+          <div class="brand-titles">
+            <div class="title">ADVOCATE DIGIDIARY</div>
+            <div class="subtitle">CHAMBERS SUITE</div>
+          </div>
+        </div>
+      </div>
+
+      <nav class="sidebar-nav">
+        <div class="nav-section-label" style="padding: 6px 14px 2px; font-size: 10px; font-weight: 700; color: rgba(255,255,255,0.4); text-transform: uppercase; letter-spacing: 0.05em;">Chamber</div>
+        <a href="/dashboard.html" class="nav-link">
+          <span class="material-symbols-outlined">dashboard</span>
+          <span>Dashboard</span>
+        </a>
+        <a href="/cases.html" class="nav-link">
+          <span class="material-symbols-outlined">gavel</span>
+          <span>Case Portfolio</span>
+        </a>
+        <a href="/hearings.html" class="nav-link">
+          <span class="material-symbols-outlined">calendar_today</span>
+          <span>Hearings & Cause List</span>
+        </a>
+        <a href="/calendar.html" class="nav-link">
+          <span class="material-symbols-outlined">calendar_month</span>
+          <span>Court Calendar</span>
+        </a>
+        <a href="/clients.html" class="nav-link">
+          <span class="material-symbols-outlined">groups</span>
+          <span>Client Roster</span>
+        </a>
+        <a href="/tasks.html" class="nav-link">
+          <span class="material-symbols-outlined">task_alt</span>
+          <span>Practice Tasks</span>
+        </a>
+        <a href="/reminders.html" class="nav-link">
+          <span class="material-symbols-outlined">alarm</span>
+          <span>Reminders Diary</span>
+        </a>
+        <a href="/notes.html" class="nav-link">
+          <span class="material-symbols-outlined">sticky_note_2</span>
+          <span>Legal Notes</span>
+        </a>
+
+        <div class="nav-section-label" style="padding: 12px 14px 2px; font-size: 10px; font-weight: 700; color: rgba(255,255,255,0.4); text-transform: uppercase; letter-spacing: 0.05em;">Management</div>
+        <a href="/fees.html" class="nav-link">
+          <span class="material-symbols-outlined">account_balance_wallet</span>
+          <span>Fee Ledger</span>
+        </a>
+        <a href="/expenses.html" class="nav-link">
+          <span class="material-symbols-outlined">receipt</span>
+          <span>Disbursements</span>
+        </a>
+        <a href="/reports.html" class="nav-link">
+          <span class="material-symbols-outlined">description</span>
+          <span>Reports</span>
+        </a>
+        <a href="/team.html" class="nav-link">
+          <span class="material-symbols-outlined">badge</span>
+          <span>Firm & Team</span>
+        </a>
+        <a href="/profile.html" class="nav-link active">
+          <span class="material-symbols-outlined">account_circle</span>
+          <span>My Profile</span>
+        </a>
+        <a href="/settings.html" class="nav-link">
+          <span class="material-symbols-outlined">settings</span>
+          <span>Settings</span>
+        </a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="user-profile-card" onclick="window.location.href='/profile.html'" style="cursor: pointer;">
+          <div class="user-profile-info">
+            <div class="user-name" id="sidebarUserName">Advocate</div>
+            <div class="firm-name" id="sidebarFirmName">Chambers</div>
+            <div class="bar-enrollment" id="sidebarBarEnrollment">Advocate</div>
+          </div>
+          <button class="btn btn-icon btn-sm logout-btn" id="logoutBtn" title="Sign Out" style="background: none; border: none; cursor: pointer;" onclick="event.stopPropagation();">
+            <span class="material-symbols-outlined" style="font-size: 18px; color: var(--on-tertiary-container);">logout</span>
+          </button>
+        </div>
+        <div class="sidebar-status-row">
+          <div class="status-indicator">
+            <div class="status-dot"></div>
+            <span>Atlas Connected</span>
+          </div>
+          <span class="role-tag" id="sidebarUserRole">ADVOCATE</span>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content Wrapper -->
+    <div class="main-wrapper">
+      <!-- Top Header -->
+      <header class="top-header">
+        <div style="display: flex; align-items: center; gap: 1rem;">
+          <button class="btn btn-icon btn-sm d-md-none" id="mobileMenuToggle" style="border: none; background: none; cursor: pointer;">
+            <span class="material-symbols-outlined">menu</span>
+          </button>
+          <div class="header-search">
+            <div class="search-input-wrapper">
+              <span class="material-symbols-outlined">search</span>
+              <input type="text" class="search-input" id="globalSearchTrigger" placeholder="Search cases, clients, hearings, notes..." readonly>
+              <div class="search-shortcut">Ctrl+K</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="header-actions">
+          <a href="/settings.html" class="btn btn-sm btn-outline">
+            <span class="material-symbols-outlined" style="font-size: 16px;">lock_reset</span>
+            <span>Security & Password</span>
+          </a>
+        </div>
+      </header>
+
+      <!-- Main Content -->
+      <main class="main-content">
+        <!-- Page Title & Header -->
+        <div class="page-header" style="margin-bottom: 1.5rem;">
+          <h1 class="page-title" style="font-family: var(--font-headline); font-size: 1.75rem; color: var(--navy-900); margin-bottom: 0.25rem;">
+            Practitioner Profile & Credentials
+          </h1>
+          <p class="page-subtitle" style="color: var(--text-muted); font-size: 0.875rem;">
+            Your personal verified credentials, bar council record, chamber role, and practice affiliations
+          </p>
+        </div>
+
+        <!-- Profile Hero Banner -->
+        <div class="profile-hero">
+          <div style="display: flex; align-items: center; gap: 1.5rem; flex-wrap: wrap; position: relative; z-index: 2;">
+            <div class="profile-avatar-box" id="profileAvatarInitials">
+              AD
+            </div>
+            <div style="flex: 1; min-width: 260px;">
+              <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 4px; flex-wrap: wrap;">
+                <h2 id="profileHeroName" style="font-family: var(--font-headline); font-size: 1.65rem; font-weight: 700; margin: 0; color: #FFFFFF;">
+                  Advocate Name
+                </h2>
+                <span id="profileHeroRoleTag" class="badge badge-secondary" style="background: var(--gold-600); color: var(--navy-900); font-weight: 700; text-transform: uppercase;">
+                  ADVOCATE
+                </span>
+              </div>
+              <p id="profileHeroDesignation" style="font-size: 0.95rem; color: rgba(255, 255, 255, 0.85); margin: 0 0 0.75rem 0;">
+                Senior Counsel / Advocate at Law
+              </p>
+              <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                <div class="profile-meta-chip">
+                  <span class="material-symbols-outlined" style="font-size: 14px; color: var(--gold-400);">corporate_fare</span>
+                  <span id="profileHeroFirm">Chambers</span>
+                </div>
+                <div class="profile-meta-chip">
+                  <span class="material-symbols-outlined" style="font-size: 14px; color: var(--gold-400);">verified</span>
+                  <span id="profileHeroBar">Bar ID: Verified</span>
+                </div>
+                <div class="profile-meta-chip">
+                  <span class="material-symbols-outlined" style="font-size: 14px; color: var(--gold-400);">calendar_today</span>
+                  <span id="profileHeroMemberSince">Practicing Member</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-12 gap-6">
+          <!-- Left Column (8 cols): Practitioner Edit Form -->
+          <div class="col-span-8" style="display: flex; flex-direction: column; gap: 1.5rem;">
+            <div class="card">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem;">
+                <h3 style="font-family: var(--font-headline); font-size: 1.15rem; color: var(--navy-900); margin: 0;">
+                  Personal & Professional Details
+                </h3>
+                <span class="badge badge-neutral" style="font-size: 0.7rem;">Practitioner File</span>
+              </div>
+
+              <form id="profileForm">
+                <div class="grid grid-cols-2 gap-4">
+                  <div class="form-group">
+                    <label class="form-label" for="profileName">Full Legal Name</label>
+                    <input type="text" id="profileName" class="form-control" placeholder="Adv. Rajesh Singhania">
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label" for="profileDesignation">Professional Designation</label>
+                    <input type="text" id="profileDesignation" class="form-control" placeholder="Managing Partner / Senior Counsel">
+                  </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-4">
+                  <div class="form-group">
+                    <label class="form-label" for="profileEnrollment">Bar Council Enrollment ID</label>
+                    <input type="text" id="profileEnrollment" class="form-control font-mono" placeholder="D/1429/2011">
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label" for="profilePhone">Contact Mobile / Telephone</label>
+                    <input type="text" id="profilePhone" class="form-control" placeholder="+91 98110 12345">
+                  </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-4">
+                  <div class="form-group">
+                    <label class="form-label" for="profileEmail">Registered Email (Chamber Account)</label>
+                    <input type="email" id="profileEmail" class="form-control" readonly style="background: #F8FAFC; color: var(--text-muted);">
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label" for="profileRole">System Authorization Level</label>
+                    <input type="text" id="profileRole" class="form-control" readonly style="background: #F8FAFC; text-transform: uppercase; font-weight: 600;">
+                  </div>
+                </div>
+
+                <div style="display: flex; justify-content: flex-end; margin-top: 1rem;">
+                  <button type="submit" class="btn btn-primary" id="btnSaveProfile">
+                    <span class="material-symbols-outlined" style="font-size: 16px;">save</span>
+                    <span>Save Profile Changes</span>
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+
+          <!-- Right Column (4 cols): Affiliation & Security Overview -->
+          <div class="col-span-4" style="display: flex; flex-direction: column; gap: 1.5rem;">
+            <!-- Chamber Affiliation Card -->
+            <div class="card">
+              <h3 style="font-family: var(--font-headline); font-size: 1.1rem; color: var(--navy-900); margin-bottom: 1rem;">
+                Chamber Affiliation
+              </h3>
+              <div style="display: flex; flex-direction: column; gap: 0.75rem; font-size: 0.8125rem;">
+                <div style="display: flex; justify-content: space-between; border-bottom: 1px solid var(--border-light); padding-bottom: 6px;">
+                  <span style="color: var(--text-muted);">Firm / Chambers:</span>
+                  <strong style="color: var(--navy-900);" id="cardFirmName">Chambers</strong>
+                </div>
+                <div style="display: flex; justify-content: space-between; border-bottom: 1px solid var(--border-light); padding-bottom: 6px;">
+                  <span style="color: var(--text-muted);">Principal Seat:</span>
+                  <span style="font-weight: 500;" id="cardFirmCity">New Delhi</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; border-bottom: 1px solid var(--border-light); padding-bottom: 6px;">
+                  <span style="color: var(--text-muted);">Bar Reg. No:</span>
+                  <span style="font-family: monospace; font-weight: 600;" id="cardFirmBar">D/1429/2011</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; padding-top: 4px;">
+                  <span style="color: var(--text-muted);">Tenant Isolation:</span>
+                  <span style="color: var(--success); font-weight: 600; display: flex; align-items: center; gap: 4px;">
+                    <span class="status-dot"></span> Scoped Vault
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Password & Security Action Card -->
+            <div class="card" style="border: 1px solid rgba(197, 155, 39, 0.3); background: rgba(197, 155, 39, 0.03);">
+              <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 0.75rem;">
+                <span class="material-symbols-outlined" style="font-size: 20px; color: var(--gold-600);">security</span>
+                <h3 style="font-family: var(--font-headline); font-size: 1.05rem; color: var(--navy-900); margin: 0;">
+                  Security & Password
+                </h3>
+              </div>
+              <p style="font-size: 0.8125rem; color: var(--text-muted); line-height: 1.45; margin-bottom: 1rem;">
+                Manage your chamber password, credentials, and authentication preferences in the Settings console.
+              </p>
+              <a href="/settings.html" class="btn btn-outline btn-sm" style="width: 100%; justify-content: center;">
+                <span class="material-symbols-outlined" style="font-size: 16px;">lock_reset</span>
+                <span>Change Password in Settings</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script src="/js/ui.js"></script>
+  <script src="/js/api.js"></script>
+  <script src="/js/auth.js"></script>
+  <script src="/js/search.js"></script>
+  <script src="/js/profile.js"></script>
+</body>
+</html>

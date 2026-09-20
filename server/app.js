@@ -21,6 +21,7 @@ const auditRoutes = require('./routes/auditRoutes');
 const searchRoutes = require('./routes/searchRoutes');
 const healthRoutes = require('./routes/healthRoutes');
 const adminRoutes = require('./routes/adminRoutes');
+const aiRoutes = require('./routes/aiRoutes');
 
 const errorHandler = require('./middleware/errorHandler');
 
@@ -128,6 +129,7 @@ app.use('/api/audit-logs', auditRoutes);
 app.use('/api/audit', auditRoutes);
 app.use('/api/search', searchRoutes);
 app.use('/api/admin', adminRoutes);
+app.use('/api/ai', aiRoutes);
 
 // Fallback for SPA/HTML pages or 404 API handling
 app.use('/api/*', (req, res) => {

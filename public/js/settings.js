@@ -58,7 +58,7 @@ function setupEventListeners() {
 
     const payload = {
       name: document.getElementById('profName').value.trim(),
-      barEnrollmentNumber: document.getElementById('profBarEnrollment').value.trim() || undefined,
+      enrollmentNumber: document.getElementById('profBarEnrollment').value.trim() || undefined,
       phone: document.getElementById('profPhone').value.trim() || undefined
     };
 
@@ -74,4 +74,48 @@ function setupEventListeners() {
       btn.innerText = 'Update Profile';
     }
   });
+
+  const changePassForm = document.getElementById('changePasswordForm');
+  if (changePassForm) {
+    changePassForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const btn = document.getElementById('btnChangePassword');
+      const currentPassword = document.getElementById('currentPasswordInput').value;
+      const newPassword = document.getElementById('newPasswordInput').value;
+      const confirmPassword = document.getElementById('confirmPasswordInput').value;
+
+      if (!currentPassword || !newPassword) {
+        UI.showToast('Please enter both your current password and new password.', 'danger');
+        return;
+      }
+
+      if (newPassword.length < 6) {
+        UI.showToast('New password must be at least 6 characters long.', 'danger');
+        return;
+      }
+
+      if (newPassword !== confirmPassword) {
+        UI.showToast('New password and confirmation password do not match.', 'danger');
+        return;
+      }
+
+      btn.disabled = true;
+      btn.innerHTML = '<span>Updating Password...</span>';
+
+      try {
+        await API.auth.changePassword({
+          currentPassword,
+          newPassword,
+          confirmPassword,
+        });
+        UI.showToast('Password successfully updated! Your account is secure.', 'success');
+        changePassForm.reset();
+      } catch (err) {
+        UI.showToast(err.message || 'Failed to update password.', 'danger');
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = '<span class="material-symbols-outlined" style="font-size: 16px;">key</span><span>Update Password</span>';
+      }
+    });
+  }
 }

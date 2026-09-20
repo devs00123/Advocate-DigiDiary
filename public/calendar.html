@@ -107,6 +107,60 @@
       color: var(--gold-700);
       border-left: 3px solid var(--gold-600);
     }
+    .calendar-scroll-wrapper {
+      width: 100%;
+      overflow-x: auto;
+      overflow-y: hidden;
+      -webkit-overflow-scrolling: touch;
+      position: relative;
+      border-radius: var(--radius-lg);
+      padding-bottom: 6px;
+      scrollbar-width: thin;
+      scrollbar-color: var(--gold-600) #e2e8f0;
+    }
+    .calendar-scroll-wrapper::-webkit-scrollbar {
+      height: 10px;
+    }
+    .calendar-scroll-wrapper::-webkit-scrollbar-track {
+      background: #edf2f7;
+      border-radius: 5px;
+    }
+    .calendar-scroll-wrapper::-webkit-scrollbar-thumb {
+      background: var(--gold-600);
+      border-radius: 5px;
+      border: 2px solid #edf2f7;
+    }
+    .calendar-scroll-wrapper::-webkit-scrollbar-thumb:hover {
+      background: var(--navy-900);
+    }
+    .calendar-responsive-inner {
+      min-width: 760px;
+    }
+    .mobile-scroll-hint {
+      display: none;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.75rem;
+      color: var(--gold-700);
+      padding: 6px 12px;
+      background: rgba(197, 155, 39, 0.1);
+      border-radius: var(--radius-sm);
+      margin-bottom: 0.75rem;
+      font-weight: 500;
+    }
+    @media (max-width: 820px) {
+      .mobile-scroll-hint {
+        display: flex;
+      }
+      .calendar-day-cell {
+        min-height: 95px;
+        padding: 6px;
+      }
+      .event-pill {
+        font-size: 10px;
+        padding: 2px 4px;
+      }
+    }
   </style>
 </head>
 <body>
@@ -188,9 +242,17 @@
           <span class="material-symbols-outlined">history</span>
           <span>Audit Logs</span>
         </a>
+        <a href="/profile.html" class="nav-link">
+          <span class="material-symbols-outlined">account_circle</span>
+          <span>My Profile</span>
+        </a>
         <a href="/settings.html" class="nav-link">
           <span class="material-symbols-outlined">settings</span>
           <span>Settings</span>
+        </a>
+        <a href="/admin.html" class="nav-link admin-only" id="navAdminLink" style="display: none; color: var(--secondary);">
+          <span class="material-symbols-outlined" style="color: var(--secondary);">admin_panel_settings</span>
+          <span>Super Admin</span>
         </a>
       </nav>
 
@@ -278,19 +340,29 @@
           </div>
         </div>
 
-        <!-- Monthly Grid Card -->
+        <!-- Mobile Scroll Indicator -->
+        <div class="mobile-scroll-hint">
+          <span class="material-symbols-outlined" style="font-size: 16px;">swipe</span>
+          <span>Swipe horizontally to view all 7 days of the court calendar</span>
+        </div>
+
+        <!-- Monthly Grid Card with Responsive Scroll Container -->
         <div class="card" style="padding: 0; overflow: hidden; border-radius: var(--radius-lg); box-shadow: var(--shadow-sm);">
-          <div class="calendar-grid">
-            <div class="calendar-header-cell">Sun</div>
-            <div class="calendar-header-cell">Mon</div>
-            <div class="calendar-header-cell">Tue</div>
-            <div class="calendar-header-cell">Wed</div>
-            <div class="calendar-header-cell">Thu</div>
-            <div class="calendar-header-cell">Fri</div>
-            <div class="calendar-header-cell">Sat</div>
-          </div>
-          <div class="calendar-grid" id="calendarDaysGrid">
-            <!-- Populated via JS -->
+          <div class="calendar-scroll-wrapper">
+            <div class="calendar-responsive-inner">
+              <div class="calendar-grid">
+                <div class="calendar-header-cell">Sun</div>
+                <div class="calendar-header-cell">Mon</div>
+                <div class="calendar-header-cell">Tue</div>
+                <div class="calendar-header-cell">Wed</div>
+                <div class="calendar-header-cell">Thu</div>
+                <div class="calendar-header-cell">Fri</div>
+                <div class="calendar-header-cell">Sat</div>
+              </div>
+              <div class="calendar-grid" id="calendarDaysGrid">
+                <!-- Populated via JS -->
+              </div>
+            </div>
           </div>
         </div>
       </main>
@@ -299,9 +371,9 @@
 
   <!-- Event Details Modal -->
   <div class="modal-backdrop" id="eventModal">
-    <div class="modal-dialog" style="max-width: 480px;">
+    <div class="modal-dialog" style="max-width: 620px;">
       <div class="modal-header">
-        <h3 class="modal-title" style="font-family: var(--font-headline); font-size: 1.2rem;" id="eventModalTitle">Calendar Item</h3>
+        <h3 class="modal-title" style="font-family: var(--font-headline); font-size: 1.25rem;" id="eventModalTitle">Calendar Item</h3>
         <button class="modal-close" onclick="UI.closeModal('eventModal')">&times;</button>
       </div>
       <div class="modal-body" id="eventModalBody">

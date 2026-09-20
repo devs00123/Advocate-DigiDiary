@@ -11,8 +11,8 @@ const {
 } = require('../controllers/adminController');
 const { protect, requireRole } = require('../middleware/auth');
 
-// Super Admin routes - Protected and strictly restricted to admin role
-router.use(protect, requireRole('admin'));
+// Super Admin routes - Protected and strictly restricted to superadmin role
+router.use(protect, requireRole('superadmin'));
 
 router.get('/telemetry', getTelemetry);
 router.get('/advocates', listAdvocates);
