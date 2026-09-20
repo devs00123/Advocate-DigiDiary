@@ -3,13 +3,52 @@
   "version": "1.0.0",
   "description": "Advocate DigiDiary - Digital Legal Practice Companion & Court Diary",
   "main": "electron/main.js",
+  "author": "Advocate DigiDiary Team",
+  "license": "ISC",
   "scripts": {
     "start": "node server/server.js",
     "dev": "nodemon server/server.js",
     "desktop": "electron .",
+    "build": "electron-builder --win",
+    "build:dir": "electron-builder --win --dir",
     "seed": "node server/scripts/seed.js",
     "cleanup-demo": "node server/scripts/cleanup-demo.js",
     "test": "jest --runInBand --detectOpenHandles --forceExit"
+  },
+  "build": {
+    "appId": "com.advocatedigidiary.app",
+    "productName": "Advocate DigiDiary",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "electron/**/*",
+      "server/**/*",
+      "public/**/*",
+      "package.json"
+    ],
+    "extraResources": [
+      {
+        "from": ".env",
+        "to": ".env",
+        "filter": [".env"]
+      }
+    ],
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": ["x64"]
+        }
+      ]
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "Advocate DigiDiary"
+    }
   },
   "keywords": [
     "legal",
@@ -18,8 +57,6 @@
     "advocate",
     "law-firm"
   ],
-  "author": "Advocate DigiDiary Team",
-  "license": "ISC",
   "dependencies": {
     "@google/generative-ai": "^0.24.1",
     "bcryptjs": "^2.4.3",
@@ -39,6 +76,7 @@
   },
   "devDependencies": {
     "electron": "^33.4.11",
+    "electron-builder": "^26.15.3",
     "jest": "^29.7.0",
     "mongodb-memory-server": "^9.4.0",
     "nodemon": "^3.1.4",
