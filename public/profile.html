@@ -13,57 +13,6 @@
   <link rel="stylesheet" href="/css/layout.css">
   <link rel="stylesheet" href="/css/components.css">
   <link rel="stylesheet" href="/css/responsive.css">
-  <style>
-    .profile-hero {
-      background: linear-gradient(135deg, var(--navy-900) 0%, var(--navy-800) 60%, #172554 100%);
-      border-radius: var(--radius-lg);
-      padding: 2rem;
-      color: white;
-      position: relative;
-      overflow: hidden;
-      margin-bottom: 1.75rem;
-      border: 1px solid rgba(197, 155, 39, 0.25);
-      box-shadow: var(--shadow-md);
-    }
-    .profile-hero::after {
-      content: "§";
-      position: absolute;
-      right: 20px;
-      bottom: -30px;
-      font-size: 14rem;
-      font-family: var(--font-headline);
-      color: rgba(197, 155, 39, 0.06);
-      pointer-events: none;
-      line-height: 1;
-    }
-    .profile-avatar-box {
-      width: 80px;
-      height: 80px;
-      border-radius: 50%;
-      background: var(--gold-600);
-      color: var(--navy-900);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 2rem;
-      font-weight: 700;
-      font-family: var(--font-headline);
-      border: 3px solid rgba(255, 255, 255, 0.2);
-      box-shadow: 0 4px 14px rgba(0,0,0,0.25);
-      flex-shrink: 0;
-    }
-    .profile-meta-chip {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      background: rgba(255, 255, 255, 0.08);
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      padding: 4px 10px;
-      border-radius: 20px;
-      font-size: 0.75rem;
-      color: rgba(255, 255, 255, 0.85);
-    }
-  </style>
 </head>
 <body>
 
@@ -204,15 +153,13 @@
 
         <!-- Profile Hero Banner -->
         <div class="profile-hero">
-          <div style="display: flex; align-items: center; gap: 1.5rem; flex-wrap: wrap; position: relative; z-index: 2;">
+          <div class="profile-content-row">
             <div class="profile-avatar-box" id="profileAvatarInitials">
               AD
             </div>
-            <div style="flex: 1; min-width: 260px;">
-              <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 4px; flex-wrap: wrap;">
-                <h2 id="profileHeroName" style="font-family: var(--font-headline); font-size: 1.65rem; font-weight: 700; margin: 0; color: #FFFFFF;">
-                  Advocate Name
-                </h2>
+            <div class="profile-info-col">
+              <div class="profile-name-row">
+                <h2 id="profileHeroName">Advocate Name</h2>
                 <span id="profileHeroRoleTag" class="badge badge-secondary" style="background: var(--gold-600); color: var(--navy-900); font-weight: 700; text-transform: uppercase;">
                   ADVOCATE
                 </span>
@@ -220,7 +167,7 @@
               <p id="profileHeroDesignation" style="font-size: 0.95rem; color: rgba(255, 255, 255, 0.85); margin: 0 0 0.75rem 0;">
                 Senior Counsel / Advocate at Law
               </p>
-              <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+              <div class="profile-chips-row">
                 <div class="profile-meta-chip">
                   <span class="material-symbols-outlined" style="font-size: 14px; color: var(--gold-400);">corporate_fare</span>
                   <span id="profileHeroFirm">Chambers</span>

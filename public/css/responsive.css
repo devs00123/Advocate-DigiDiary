@@ -97,8 +97,11 @@
    ========================================================================== */
 @media (max-width: 767px) {
   .top-header {
-    height: 56px;
-    padding: 0 16px;
+    height: auto;
+    min-height: 56px;
+    padding: 8px 16px;
+    flex-wrap: wrap;
+    gap: 8px;
   }
 
   .main-content {
@@ -140,6 +143,12 @@
 
   .page-title {
     font-size: 1.4rem;
+  }
+
+  /* Header actions wrap on mobile */
+  .header-actions {
+    flex-wrap: wrap;
+    gap: 6px;
   }
 
   /* Mobile Header Details */
@@ -207,12 +216,24 @@
     border-radius: var(--radius-lg);
   }
 
-  .table-container {
+  /* Table responsive — ensure horizontal scroll works */
+  .card > .table-container,
+  .card > div > .table-container {
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
     border-radius: var(--radius-lg);
     margin-left: -2px;
     margin-right: -2px;
+  }
+
+  .table-container {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    border-radius: var(--radius-lg);
+  }
+
+  .data-table {
+    min-width: 600px;
   }
 
   .data-table th, .data-table td {
@@ -259,7 +280,7 @@
 
   /* Notebook responsive layout */
   .notebook-container {
-    flex-direction: column;
+    grid-template-columns: 1fr;
     height: auto;
     min-height: 500px;
   }
@@ -268,7 +289,7 @@
     width: 100%;
     max-height: 240px;
     border-right: none;
-    border-bottom: 1px solid var(--outline-variant);
+    border-bottom: 1px solid var(--border-light);
   }
 
   .note-editor-pane {
@@ -294,6 +315,40 @@
     width: 100%;
   }
 
+  /* Filter toolbar stacking */
+  .filter-toolbar {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .filter-toolbar .btn {
+    flex: 1;
+    min-width: 0;
+    justify-content: center;
+  }
+
+  /* Profile page responsive */
+  .profile-hero {
+    padding: 1.5rem;
+  }
+
+  .profile-hero .profile-content-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .profile-hero .profile-info-col {
+    min-width: 0;
+    width: 100%;
+  }
+
+  .profile-avatar-box {
+    width: 64px;
+    height: 64px;
+    font-size: 1.5rem;
+  }
+
   /* Toast notification on mobile */
   .toast-container {
     left: 14px;
@@ -306,6 +361,20 @@
     min-width: unset;
     width: 100%;
     max-width: 100%;
+  }
+
+  /* Settings page */
+  .settings-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  /* Detail rows wrap */
+  .detail-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
   }
 }
 
@@ -352,6 +421,64 @@
   .mobile-header-title {
     max-width: 120px;
     font-size: 13px;
+  }
+
+  .profile-hero {
+    padding: 1.25rem;
+  }
+
+  .profile-hero::after {
+    font-size: 8rem;
+    right: 10px;
+    bottom: -20px;
+  }
+
+  .profile-avatar-box {
+    width: 56px;
+    height: 56px;
+    font-size: 1.25rem;
+  }
+
+  .profile-meta-chip {
+    font-size: 0.6875rem;
+    padding: 3px 8px;
+  }
+
+  .kpi-value-lg {
+    font-size: 1.5rem;
+  }
+
+  .dash-card-header {
+    padding: 1rem;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .dash-section-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+  }
+
+  .fin-summary-box {
+    padding: 0.75rem;
+  }
+
+  .modal-dialog {
+    width: 100%;
+    max-width: 100%;
+    margin: 8px;
+    border-radius: var(--radius-lg);
+  }
+
+  .data-table {
+    min-width: 500px;
+  }
+
+  .data-table th, .data-table td {
+    padding: 7px 8px;
+    font-size: 11px;
   }
 }
 
