@@ -99,6 +99,34 @@ Thank you for your query regarding: **"${query.length > 60 ? query.substring(0, 
 *(Disclaimer: For chamber research and drafting assistance only. Not a substitute for formal legal opinion.)*`;
 }
 
+// Candidate models in order of priority (supporting latest gemini-3.6-flash with fallbacks)
+const CANDIDATE_MODELS = [
+  process.env.GEMINI_MODEL,
+  'gemini-3.6-flash',
+  'gemini-2.5-flash',
+  'gemini-1.5-flash',
+  'gemini-2.0-flash',
+].filter(Boolean);
+
+async function generateWithModelFallback(genAI, contentPayload) {
+  let lastErr = null;
+  for (const modelName of CANDIDATE_MODELS) {
+    try {
+      const model = genAI.getGenerativeModel({
+        model: modelName,
+        systemInstruction: SYSTEM_PROMPT,
+      });
+      const result = await model.generateContent(contentPayload);
+      const text = result.response.text();
+      return { text, modelName };
+    } catch (err) {
+      lastErr = err;
+      console.warn(`[AI CONTROLLER] Model ${modelName} failed (${err.message}). Trying next candidate...`);
+    }
+  }
+  throw lastErr;
+}
+
 // POST /api/ai/chat
 exports.chatWithAI = async (req, res) => {
   try {
@@ -116,10 +144,6 @@ exports.chatWithAI = async (req, res) => {
     if (isKeyConfigured(apiKey)) {
       try {
         const genAI = new GoogleGenerativeAI(apiKey.trim());
-        const model = genAI.getGenerativeModel({
-          model: 'gemini-2.0-flash',
-          systemInstruction: SYSTEM_PROMPT,
-        });
 
         // Format history for Gemini API
         const contents = [];
@@ -140,14 +164,13 @@ exports.chatWithAI = async (req, res) => {
           parts: [{ text: prompt.trim() }],
         });
 
-        const result = await model.generateContent({ contents });
-        const responseText = result.response.text();
+        const { text: responseText, modelName } = await generateWithModelFallback(genAI, { contents });
 
         return res.json({
           success: true,
           data: {
             reply: responseText,
-            source: 'gemini-2.0-flash',
+            source: modelName,
           },
         });
       } catch (geminiErr) {
@@ -191,10 +214,6 @@ exports.summarizeDocument = async (req, res) => {
     if (isKeyConfigured(apiKey)) {
       try {
         const genAI = new GoogleGenerativeAI(apiKey.trim());
-        const model = genAI.getGenerativeModel({
-          model: 'gemini-2.0-flash',
-          systemInstruction: SYSTEM_PROMPT,
-        });
 
         const base64Data = file.buffer.toString('base64');
         const filePart = {
@@ -219,8 +238,7 @@ Please provide:
 Use clear Markdown headings and bullet points.`,
         };
 
-        const result = await model.generateContent([filePart, promptPart]);
-        const summaryText = result.response.text();
+        const { text: summaryText, modelName } = await generateWithModelFallback(genAI, [filePart, promptPart]);
 
         return res.json({
           success: true,
@@ -229,7 +247,7 @@ Use clear Markdown headings and bullet points.`,
             fileSize: file.size,
             mimeType: file.mimetype,
             summary: summaryText,
-            source: 'gemini-2.0-flash',
+            source: modelName,
           },
         });
       } catch (geminiErr) {

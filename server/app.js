@@ -27,6 +27,9 @@ const errorHandler = require('./middleware/errorHandler');
 
 const app = express();
 
+// Trust reverse proxy headers (e.g. Render, Heroku, Nginx) so client IP is accurately recognized
+app.set('trust proxy', 1);
+
 // Security Headers (configured to allow Google Fonts, Material Icons, Chart.js CDN, and inline event handlers)
 app.use(
   helmet({
@@ -82,6 +85,7 @@ const apiLimiter = rateLimit({
   max: 500, // 500 requests per window
   standardHeaders: true,
   legacyHeaders: false,
+  validate: { xForwardedForHeader: false },
   message: {
     success: false,
     message: 'Too many requests from this IP, please try again after 15 minutes.',
@@ -93,6 +97,7 @@ const authLimiter = rateLimit({
   max: 30, // 30 login/register attempts per 15 min
   standardHeaders: true,
   legacyHeaders: false,
+  validate: { xForwardedForHeader: false },
   message: {
     success: false,
     message: 'Too many authentication attempts. Please try again after 15 minutes.',
