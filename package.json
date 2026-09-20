@@ -2,10 +2,11 @@
   "name": "advocate-digidiary",
   "version": "1.0.0",
   "description": "Advocate DigiDiary - Digital Legal Practice Companion & Court Diary",
-  "main": "server/server.js",
+  "main": "electron/main.js",
   "scripts": {
     "start": "node server/server.js",
     "dev": "nodemon server/server.js",
+    "desktop": "electron .",
     "seed": "node server/scripts/seed.js",
     "cleanup-demo": "node server/scripts/cleanup-demo.js",
     "test": "jest --runInBand --detectOpenHandles --forceExit"
@@ -37,6 +38,7 @@
     "uuid": "^10.0.0"
   },
   "devDependencies": {
+    "electron": "^33.4.11",
     "jest": "^29.7.0",
     "mongodb-memory-server": "^9.4.0",
     "nodemon": "^3.1.4",
