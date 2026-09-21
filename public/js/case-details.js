@@ -83,10 +83,10 @@ function renderCaseHeader(c) {
   document.getElementById('caseStatusBadge').innerHTML = UI.getStatusBadge(c.status);
 
   document.getElementById('caseCourtDisplay').innerText = c.court;
-  document.getElementById('caseCourtRoomDisplay').innerText = c.courtRoom || 'Main Bench';
+  document.getElementById('caseCourtRoomDisplay').innerText = c.courtroom || c.courtRoom || 'Main Bench';
   document.getElementById('caseClientDisplay').innerText = c.clientId ? c.clientId.name : 'Unknown';
-  document.getElementById('caseRoleDisplay').innerText = c.partyRole || 'Petitioner';
-  document.getElementById('caseStageDisplay').innerText = c.stage || 'Hearing';
+  document.getElementById('caseRoleDisplay').innerText = c.clientRepresentation || c.partyRole || 'Petitioner';
+  document.getElementById('caseStageDisplay').innerText = c.currentStage || c.stage || 'Hearing';
 
   const nextDateEl = document.getElementById('caseNextHearingDisplay');
   const nextSubEl = document.getElementById('caseNextHearingSub');
@@ -103,14 +103,22 @@ function renderCaseHeader(c) {
 function renderOverview(c) {
   document.getElementById('caseDescriptionText').innerText = c.description || 'No description provided for this matter.';
   document.getElementById('overviewClientName').innerText = c.clientId ? c.clientId.name : '-';
-  document.getElementById('overviewClientRole').innerText = `Represented Side: ${c.partyRole || 'Petitioner'}`;
-  document.getElementById('overviewOpponentName').innerText = c.opponentParty || 'Not recorded';
-  document.getElementById('overviewOpponentCounsel').innerText = c.opponentAdvocate ? `Counsel: ${c.opponentAdvocate}` : 'Counsel not recorded';
+  document.getElementById('overviewClientRole').innerText = `Represented Side: ${c.clientRepresentation || c.partyRole || 'Petitioner'}`;
+  document.getElementById('overviewOpponentName').innerText = c.oppositeParty || c.opponentParty || 'Not recorded';
+  document.getElementById('overviewOpponentCounsel').innerText = (c.oppositeCounsel || c.opponentAdvocate) ? `Counsel: ${c.oppositeCounsel || c.opponentAdvocate}` : 'Counsel not recorded';
 
   document.getElementById('overviewCourt').innerText = c.court;
-  document.getElementById('overviewCourtRoom').innerText = c.courtRoom || '-';
+  document.getElementById('overviewCourtRoom').innerText = c.courtroom || c.courtRoom || '-';
   document.getElementById('overviewCnr').innerText = c.cnrNumber || 'N/A';
   document.getElementById('overviewFilingDate').innerText = c.filingDate ? UI.formatDate(c.filingDate) : 'Not specified';
+
+  // Hearing dates
+  const lastHearingEl = document.getElementById('overviewLastHearing');
+  const currentHearingEl = document.getElementById('overviewCurrentHearing');
+  const nextHearingEl = document.getElementById('overviewNextHearing');
+  if (lastHearingEl) lastHearingEl.innerText = c.lastHearingDate ? UI.formatDate(c.lastHearingDate) : 'Not recorded';
+  if (currentHearingEl) currentHearingEl.innerText = c.currentHearingDate ? UI.formatDate(c.currentHearingDate) : 'Not recorded';
+  if (nextHearingEl) nextHearingEl.innerText = c.nextHearingDate ? UI.formatDate(c.nextHearingDate) : 'Not scheduled';
 }
 
 // 2. Timeline
@@ -179,7 +187,7 @@ async function loadHearings() {
           <tr>
             <td>${itemNo}</td>
             <td>
-              <div style="font-weight: 600; color: var(--navy-900);">${UI.formatDate(h.hearingDate)}</div>
+              <div style="font-weight: 600; color: var(--navy-900);">${UI.formatDate(h.date || h.hearingDate)}</div>
               ${h.time ? `<div style="font-size: 0.75rem; color: var(--text-muted);">${h.time}</div>` : ''}
             </td>
             <td>

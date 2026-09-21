@@ -14,6 +14,40 @@ exports.listHearings = async (req, res, next) => {
     const startOfToday = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 0);
     const endOfToday = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 23, 59, 59, 999);
 
+    // Auto-advance: mark past scheduled hearings as Completed if their date has passed
+    const pastScheduled = await Hearing.find({
+      lawFirmId: req.user.lawFirmId,
+      status: 'Scheduled',
+      date: { $lt: startOfToday },
+    });
+
+    for (const h of pastScheduled) {
+      h.status = 'Completed';
+      h.outcome = h.outcome || 'Completed (auto-advanced)';
+      await h.save();
+
+      // Sync case: if this was the nextHearingDate, advance to nextDate or clear
+      if (h.caseId) {
+        const foundCase = await Case.findOne({ _id: h.caseId, lawFirmId: req.user.lawFirmId });
+        if (foundCase && foundCase.nextHearingDate) {
+          const caseNext = new Date(foundCase.nextHearingDate);
+          if (caseNext.getTime() <= startOfToday.getTime()) {
+            if (h.nextDate) {
+              foundCase.nextHearingDate = h.nextDate;
+              foundCase.currentHearingDate = foundCase.nextHearingDate;
+              foundCase.lastHearingDate = h.date;
+            } else {
+              foundCase.lastHearingDate = foundCase.nextHearingDate;
+              foundCase.nextHearingDate = null;
+              foundCase.currentHearingDate = null;
+            }
+            foundCase.currentStage = h.nextStage || foundCase.currentStage;
+            await foundCase.save();
+          }
+        }
+      }
+    }
+
     if (view === 'today') {
       query.date = { $gte: startOfToday, $lte: endOfToday };
     } else if (view === 'tomorrow') {
@@ -34,6 +68,8 @@ exports.listHearings = async (req, res, next) => {
       query.date = { $gte: new Date(startDate), $lte: new Date(endDate) };
     } else if (view === 'upcoming') {
       query.date = { $gte: startOfToday };
+    } else if (view === 'past') {
+      query.date = { $lt: startOfToday };
     }
 
     if (court && court !== 'All Courts' && court !== 'All') {
@@ -352,6 +388,39 @@ exports.getCauseList = async (req, res, next) => {
     const startOfToday = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 0);
     const endOfToday = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 23, 59, 59, 999);
 
+    // Auto-advance: mark past scheduled hearings as Completed
+    const pastScheduled = await Hearing.find({
+      lawFirmId: req.user.lawFirmId,
+      status: 'Scheduled',
+      date: { $lt: startOfToday },
+    });
+
+    for (const h of pastScheduled) {
+      h.status = 'Completed';
+      h.outcome = h.outcome || 'Completed (auto-advanced)';
+      await h.save();
+
+      if (h.caseId) {
+        const foundCase = await Case.findOne({ _id: h.caseId, lawFirmId: req.user.lawFirmId });
+        if (foundCase && foundCase.nextHearingDate) {
+          const caseNext = new Date(foundCase.nextHearingDate);
+          if (caseNext.getTime() <= startOfToday.getTime()) {
+            if (h.nextDate) {
+              foundCase.nextHearingDate = h.nextDate;
+              foundCase.currentHearingDate = foundCase.nextHearingDate;
+              foundCase.lastHearingDate = h.date;
+            } else {
+              foundCase.lastHearingDate = foundCase.nextHearingDate;
+              foundCase.nextHearingDate = null;
+              foundCase.currentHearingDate = null;
+            }
+            foundCase.currentStage = h.nextStage || foundCase.currentStage;
+            await foundCase.save();
+          }
+        }
+      }
+    }
+
     const query = { lawFirmId: req.user.lawFirmId };
     if (range === 'today') {
       query.date = { $gte: startOfToday, $lte: endOfToday };
@@ -371,6 +440,8 @@ exports.getCauseList = async (req, res, next) => {
       query.date = { $gte: startOfMonth, $lte: endOfMonth };
     } else if (range === 'all' || range === 'upcoming') {
       query.date = { $gte: startOfToday };
+    } else if (range === 'past') {
+      query.date = { $lt: startOfToday };
     }
 
     if (court && court !== 'All') query.court = new RegExp(court, 'i');

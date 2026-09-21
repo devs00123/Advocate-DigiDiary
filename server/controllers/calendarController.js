@@ -1,4 +1,5 @@
 const Hearing = require('../models/Hearing');
+const Case = require('../models/Case');
 const Task = require('../models/Task');
 const Reminder = require('../models/Reminder');
 
@@ -17,8 +18,44 @@ exports.getCalendarEvents = async (req, res, next) => {
       const now = new Date();
       const y = parseInt(year, 10) || now.getFullYear();
       const m = parseInt(month, 10) !== undefined ? parseInt(month, 10) : now.getMonth();
-      startDate = new Date(y, m - 1, 1, 0, 0, 0, 0); // Previous month buffer
-      endDate = new Date(y, m + 2, 0, 23, 59, 59, 999); // Next month buffer
+      startDate = new Date(y, m - 1, 1, 0, 0, 0, 0);
+      endDate = new Date(y, m + 2, 0, 23, 59, 59, 999);
+    }
+
+    const startOfToday = new Date();
+    startOfToday.setHours(0, 0, 0, 0);
+
+    // Auto-advance past scheduled hearings
+    const pastScheduled = await Hearing.find({
+      lawFirmId: req.user.lawFirmId,
+      status: 'Scheduled',
+      date: { $lt: startOfToday },
+    });
+
+    for (const h of pastScheduled) {
+      h.status = 'Completed';
+      h.outcome = h.outcome || 'Completed (auto-advanced)';
+      await h.save();
+
+      if (h.caseId) {
+        const foundCase = await Case.findOne({ _id: h.caseId, lawFirmId: req.user.lawFirmId });
+        if (foundCase && foundCase.nextHearingDate) {
+          const caseNext = new Date(foundCase.nextHearingDate);
+          if (caseNext.getTime() <= startOfToday.getTime()) {
+            if (h.nextDate) {
+              foundCase.nextHearingDate = h.nextDate;
+              foundCase.currentHearingDate = foundCase.nextHearingDate;
+              foundCase.lastHearingDate = h.date;
+            } else {
+              foundCase.lastHearingDate = foundCase.nextHearingDate;
+              foundCase.nextHearingDate = null;
+              foundCase.currentHearingDate = null;
+            }
+            foundCase.currentStage = h.nextStage || foundCase.currentStage;
+            await foundCase.save();
+          }
+        }
+      }
     }
 
     const [hearings, tasks, reminders] = await Promise.all([
@@ -38,7 +75,6 @@ exports.getCalendarEvents = async (req, res, next) => {
 
     const events = [];
 
-    // Enrich hearings with previous hearing date, next hearing date, appearingFor, and remarks
     for (const h of hearings) {
       let lastHearingDate = null;
       if (h.caseId && h.caseId._id) {
@@ -84,7 +120,7 @@ exports.getCalendarEvents = async (req, res, next) => {
         description: `${h.purpose || 'Hearing'}${h.benchNotes ? ' — ' + h.benchNotes : ''}`,
         status: h.status || 'Scheduled',
         caseId: h.caseId,
-        color: '#C59B27', // Antique Gold
+        color: '#C59B27',
       });
     }
 

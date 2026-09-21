@@ -44,6 +44,20 @@
   .header-search {
     max-width: 360px;
   }
+
+  .top-header {
+    padding: 0 16px;
+    gap: 12px;
+  }
+
+  .header-actions {
+    gap: 8px;
+  }
+
+  .header-actions .btn {
+    padding: 6px 12px;
+    font-size: 12px;
+  }
 }
 
 /* ==========================================================================
@@ -75,6 +89,7 @@
 
   .top-header {
     left: 0;
+    padding: 0 16px;
   }
 
   .mobile-menu-toggle {
@@ -84,8 +99,17 @@
     cursor: pointer;
   }
 
+  .header-left-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex: 1;
+    min-width: 0;
+  }
+
   .header-search {
     max-width: 280px;
+    flex: 1;
   }
 
   .chamber-text {
@@ -99,6 +123,33 @@
   .grid-12 {
     gap: 16px;
   }
+
+  .page-header {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .page-header > div:last-child {
+    width: 100%;
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+
+  .page-header > div:last-child .btn {
+    flex: 1;
+    min-width: 0;
+    justify-content: center;
+  }
+
+  .header-actions {
+    gap: 6px;
+  }
+
+  .header-actions .btn {
+    padding: 6px 10px;
+    font-size: 12px;
+  }
 }
 
 /* ==========================================================================
@@ -108,14 +159,17 @@
   .top-header {
     height: auto;
     min-height: 56px;
-    padding: 8px 16px;
+    padding: 8px 12px;
     flex-wrap: wrap;
     gap: 8px;
   }
 
-  .top-header .flex-center {
+  .top-header .flex-center,
+  .header-left-group {
     flex-wrap: wrap;
     gap: 8px;
+    flex: 1;
+    min-width: 0;
   }
 
   .top-header .header-actions {
@@ -126,8 +180,8 @@
   }
 
   .main-content {
-    margin-top: 56px;
-    padding: 16px 14px 80px;
+    margin-top: auto;
+    padding: 14px 12px 80px;
     min-height: calc(100vh - 56px);
   }
 
@@ -160,6 +214,19 @@
     align-items: flex-start;
     gap: 12px;
     margin-bottom: 16px;
+  }
+
+  .page-header > div:last-child {
+    width: 100%;
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+
+  .page-header > div:last-child .btn {
+    flex: 1;
+    min-width: 0;
+    justify-content: center;
   }
 
   .page-title {
