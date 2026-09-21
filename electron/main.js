@@ -1,7 +1,47 @@
 const { app, BrowserWindow, shell, dialog } = require('electron');
 const path = require('path');
+const fs = require('fs');
 const http = require('http');
+const dotenv = require('dotenv');
 const { autoUpdater } = require('electron-updater');
+
+// Early environment initialization across development and packaged builds
+function loadEnvironment() {
+  const possiblePaths = [];
+
+  // When packaged, check extraResources and app root
+  if (process.resourcesPath) {
+    possiblePaths.push(path.join(process.resourcesPath, '.env'));
+    possiblePaths.push(path.join(process.resourcesPath, 'app', '.env'));
+  }
+  if (app && typeof app.getAppPath === 'function') {
+    try {
+      possiblePaths.push(path.join(app.getAppPath(), '.env'));
+    } catch (_) {}
+  }
+
+  // Development paths
+  possiblePaths.push(path.join(__dirname, '..', '.env'));
+  possiblePaths.push(path.join(process.cwd(), '.env'));
+
+  let loaded = false;
+  for (const envFile of possiblePaths) {
+    try {
+      if (fs.existsSync(envFile)) {
+        dotenv.config({ path: envFile });
+        console.log(`[Electron] Loaded environment from: ${envFile}`);
+        loaded = true;
+        break;
+      }
+    } catch (_) {}
+  }
+
+  if (!loaded) {
+    dotenv.config();
+  }
+}
+
+loadEnvironment();
 
 let mainWindow;
 let httpServer;
@@ -64,9 +104,7 @@ function createWindow() {
 async function startServer() {
   console.log(`[Electron] Packaged: ${app.isPackaged}`);
 
-  if (!app.isPackaged) {
-    require('dotenv').config();
-  }
+  loadEnvironment();
 
   process.env.PORT = String(PORT);
   if (!process.env.NODE_ENV) {

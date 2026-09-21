@@ -96,7 +96,8 @@ const connectDB = async () => {
     try {
       console.log(`[DATABASE] Connecting to MongoDB in development (${uri.replace(/:([^:@]{3,})@/, ':****@')})...`);
       await mongoose.connect(uri, {
-        serverSelectionTimeoutMS: 4000,
+        serverSelectionTimeoutMS: 8000,
+        connectTimeoutMS: 10000,
       });
       console.log('[DATABASE] Successfully connected to MongoDB.');
       return mongoose.connection;
