@@ -177,13 +177,26 @@ function renderSearchResults(data, container, closeFn) {
     hearings.forEach((h) => {
       const caseId = h.caseId ? (h.caseId._id || h.caseId) : null;
       const caseTitle = (h.caseId && h.caseId.title) ? h.caseId.title : (h.court || 'Court Appearance');
-      const caseHref = caseId ? `/calendar.html?caseId=${caseId}&date=${new Date(h.date).toISOString().split('T')[0]}` : '/calendar.html';
-      const hearingDateStr = h.date ? new Date(h.date).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' }) : '';
+      const hearingDay = h.date && !isNaN(new Date(h.date).getTime())
+        ? new Date(h.date).toISOString().split('T')[0]
+        : '';
+      const caseHref = caseId
+        ? `/calendar.html?caseId=${caseId}${hearingDay ? `&date=${hearingDay}` : ''}`
+        : '/calendar.html';
+      const hearingDateStr = hearingDay ? new Date(h.date).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' }) : '';
+      let whenStr = '';
+      if (hearingDateStr && h.time) {
+        whenStr = ` (${hearingDateStr} at ${escapeHTML(h.time)})`;
+      } else if (hearingDateStr) {
+        whenStr = ` (${hearingDateStr})`;
+      } else if (h.time) {
+        whenStr = ` (${escapeHTML(h.time)})`;
+      }
       html += `
         <a href="${caseHref}" class="search-result-row" style="display: flex; align-items: center; justify-content: space-between; padding: 8px 10px; border-radius: var(--radius-md); background: var(--surface-low); color: var(--on-surface); text-decoration: none; transition: background 0.15s;">
           <div>
             <div style="font-weight: 600;">${escapeHTML(caseTitle)}</div>
-            <div style="font-size: 11px; color: var(--on-surface-variant);">${escapeHTML(h.court || '')} • ${escapeHTML(h.purpose || 'Hearing')} (${hearingDateStr}${h.time ? ' at ' + h.time : ''})</div>
+            <div style="font-size: 11px; color: var(--on-surface-variant);">${escapeHTML(h.court || '')} • ${escapeHTML(h.purpose || 'Hearing')}${whenStr}</div>
           </div>
           <span class="badge badge-scheduled" style="font-size: 10px;">${escapeHTML(h.status || 'Scheduled')}</span>
         </a>

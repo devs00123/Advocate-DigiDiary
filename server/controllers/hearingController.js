@@ -329,7 +329,8 @@ exports.updateHearing = async (req, res, next) => {
       if (foundCase) {
         foundCase.currentHearingDate = new Date(req.body.date);
         if (req.body.time) foundCase.hearingTime = req.body.time;
-        if (req.body.benchNotes || req.body.remarks) foundCase.currentStage = req.body.benchNotes || req.body.remarks;
+        const stageVal = nextStageVal || req.body.purpose;
+        if (stageVal) foundCase.currentStage = stageVal;
         await foundCase.save();
       }
     }

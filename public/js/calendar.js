@@ -571,7 +571,7 @@
       items.forEach(function(item) {
         var caseId = item.caseId ? (item.caseId._id || item.caseId) : null;
         var cnrHtml = item.cnrNumber
-          ? '<div class="causelist-cnr-pill" onclick="copyCNR(event, \'' + item.cnrNumber + '\')" title="Click to Copy 16-Digit CNR">' +
+          ? '<div class="causelist-cnr-pill js-copy-cnr" data-cnr="' + UI.escapeHTML(item.cnrNumber) + '" title="Click to Copy 16-Digit CNR">' +
               '<span class="material-symbols-outlined">content_copy</span>' +
               '<span>' + UI.escapeHTML(item.cnrNumber) + '</span>' +
             '</div>'
@@ -819,7 +819,7 @@
 
     if (ev.cnrNumber) {
       metaHtml +=
-        '<div class="causelist-cnr-pill" style="background: rgba(255,255,255,0.15); color: #FFFFFF; border-color: rgba(255,255,255,0.3);" onclick="copyCNR(event, \'' + ev.cnrNumber + '\')" title="Click to Copy 16-Digit CNR">' +
+        '<div class="causelist-cnr-pill js-copy-cnr" style="background: rgba(255,255,255,0.15); color: #FFFFFF; border-color: rgba(255,255,255,0.3);" data-cnr="' + UI.escapeHTML(ev.cnrNumber) + '" title="Click to Copy 16-Digit CNR">' +
           '<span class="material-symbols-outlined" style="font-size: 13px;">content_copy</span>' +
           '<span>CNR: ' + UI.escapeHTML(ev.cnrNumber) + '</span>' +
         '</div>';
@@ -1048,7 +1048,7 @@
   }
 
   window.copyCNR = function(e, cnr) {
-    if (e) e.stopPropagation();
+    if (e && e.stopPropagation) e.stopPropagation();
     if (!cnr) return;
     navigator.clipboard.writeText(cnr).then(function() {
       UI.showToast('16-Digit CNR Copied: ' + cnr, 'success');
@@ -1062,5 +1062,14 @@
       UI.showToast('16-Digit CNR Copied: ' + cnr, 'success');
     });
   };
+
+  // Delegated click handler for CNR copy pills
+  document.addEventListener('click', function(e) {
+    var pill = e.target.closest('.js-copy-cnr');
+    if (pill) {
+      var cnr = pill.getAttribute('data-cnr');
+      if (cnr) window.copyCNR(e, cnr);
+    }
+  });
 
 })();

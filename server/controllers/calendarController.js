@@ -194,8 +194,40 @@ exports.getCalendarEvents = async (req, res, next) => {
         const clientName = (c.clientId && c.clientId.name) ? c.clientId.name : '';
         const appearingFor = c.clientRepresentation || c.partyRole || 'Counsel';
 
+        // Atomic idempotent backfill to guarantee unique hearing document and obtain Hearing ID
+        let hearingDoc = null;
+        try {
+          hearingDoc = await Hearing.findOneAndUpdate(
+            {
+              lawFirmId: req.user.lawFirmId,
+              caseId: c._id,
+              date: c.currentHearingDate,
+            },
+            {
+              $setOnInsert: {
+                lawFirmId: req.user.lawFirmId,
+                caseId: c._id,
+                clientId: c.clientId ? (c.clientId._id || c.clientId) : undefined,
+                date: c.currentHearingDate,
+                time: resolvedTime,
+                court: c.court || 'District Court',
+                courtroom: c.courtroom || '',
+                judge: c.judge || '',
+                purpose: c.currentStage || 'Regular Hearing',
+                status: 'Scheduled',
+                createdBy: req.user._id,
+              },
+            },
+            { upsert: true, new: true }
+          );
+        } catch (upsertErr) {
+          console.error('[CALENDAR] Hearing backfill upsert error:', upsertErr.message);
+        }
+
+        const eventId = hearingDoc ? hearingDoc._id : c._id;
+
         events.push({
-          id: c._id,
+          id: eventId,
           type: 'hearing',
           title: `${c.title} (${resolvedTime})`,
           caseTitle: c.title,
@@ -231,21 +263,6 @@ exports.getCalendarEvents = async (req, res, next) => {
           caseId: c,
           color: '#C59B27',
         });
-
-        // Background auto-sync of hearing document
-        Hearing.create({
-          lawFirmId: req.user.lawFirmId,
-          caseId: c._id,
-          clientId: c.clientId ? (c.clientId._id || c.clientId) : undefined,
-          date: c.currentHearingDate,
-          time: resolvedTime,
-          court: c.court,
-          courtroom: c.courtroom,
-          judge: c.judge,
-          purpose: c.currentStage || 'Regular Hearing',
-          status: 'Scheduled',
-          createdBy: req.user._id,
-        }).catch(() => {});
       }
     }
 

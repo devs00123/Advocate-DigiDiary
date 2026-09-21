@@ -250,7 +250,7 @@ function renderCardsView(cases) {
             <span class="case-card__cnr-code">${cnr ? UI.escapeHTML(cnr) : '<span style="color: #94A3B8; font-style: italic;">Not Assigned</span>'}</span>
           </div>
           ${cnr ? `
-            <button type="button" class="case-card__copy-btn" onclick="copyCNR('${UI.escapeHTML(cnr)}', this)" title="Copy 16-Digit CNR">
+            <button type="button" class="case-card__copy-btn js-copy-cnr" data-cnr="${UI.escapeHTML(cnr)}" title="Copy 16-Digit CNR">
               <span class="material-symbols-outlined" style="font-size: 14px;">content_copy</span>
               <span>Copy</span>
             </button>
@@ -339,10 +339,10 @@ function renderCardsView(cases) {
             <a href="/case-details.html?id=${caseId}" class="btn btn-sm btn-ghost" title="Open Full Case Docket" style="padding: 4px 8px;">
               <span class="material-symbols-outlined" style="font-size: 16px;">visibility</span>
             </a>
-            <button class="btn btn-sm btn-ghost" title="Edit Case Details" onclick="openEditCaseModal('${caseId}')" style="padding: 4px 8px;">
+            <button class="btn btn-sm btn-ghost js-edit-case" data-id="${caseId}" title="Edit Case Details" style="padding: 4px 8px;">
               <span class="material-symbols-outlined" style="font-size: 16px;">edit</span>
             </button>
-            <button class="btn btn-sm btn-ghost text-danger" title="Delete Case" onclick="deleteCase('${caseId}', '${UI.escapeHTML(caseNumber)}')" style="padding: 4px 8px;">
+            <button class="btn btn-sm btn-ghost text-danger js-delete-case" data-id="${caseId}" data-case-number="${UI.escapeHTML(caseNumber)}" title="Delete Case" style="padding: 4px 8px;">
               <span class="material-symbols-outlined" style="font-size: 16px; color: var(--danger);">delete</span>
             </button>
           </div>
@@ -438,10 +438,10 @@ function renderTableView(cases) {
             <a href="/case-details.html?id=${caseId}" class="btn btn-sm btn-ghost" title="Open Case Docket" style="padding: 4px 6px;">
               <span class="material-symbols-outlined" style="font-size: 16px;">visibility</span>
             </a>
-            <button class="btn btn-sm btn-ghost" title="Edit Case" onclick="openEditCaseModal('${caseId}')" style="padding: 4px 6px;">
+            <button class="btn btn-sm btn-ghost js-edit-case" data-id="${caseId}" title="Edit Case" style="padding: 4px 6px;">
               <span class="material-symbols-outlined" style="font-size: 16px;">edit</span>
             </button>
-            <button class="btn btn-sm btn-ghost text-danger" title="Delete Case" onclick="deleteCase('${caseId}', '${UI.escapeHTML(caseNumber)}')" style="padding: 4px 6px;">
+            <button class="btn btn-sm btn-ghost text-danger js-delete-case" data-id="${caseId}" data-case-number="${UI.escapeHTML(caseNumber)}" title="Delete Case" style="padding: 4px 6px;">
               <span class="material-symbols-outlined" style="font-size: 16px; color: var(--danger);">delete</span>
             </button>
           </div>
@@ -469,6 +469,29 @@ window.copyCNR = function(cnr, btnElement) {
     UI.showToast(`CNR: ${cnr}`, 'info');
   });
 };
+
+// Delegated click handler for cases actions (copy CNR, edit case, delete case)
+document.addEventListener('click', (e) => {
+  const copyBtn = e.target.closest('.js-copy-cnr');
+  if (copyBtn) {
+    const cnr = copyBtn.getAttribute('data-cnr');
+    if (cnr) window.copyCNR(cnr, copyBtn);
+    return;
+  }
+  const editBtn = e.target.closest('.js-edit-case');
+  if (editBtn) {
+    const caseId = editBtn.getAttribute('data-id');
+    if (caseId) window.openEditCaseModal(caseId);
+    return;
+  }
+  const deleteBtn = e.target.closest('.js-delete-case');
+  if (deleteBtn) {
+    const caseId = deleteBtn.getAttribute('data-id');
+    const caseNumber = deleteBtn.getAttribute('data-case-number');
+    if (caseId) window.deleteCase(caseId, caseNumber);
+    return;
+  }
+});
 
 /**
  * Switch view mode between Cards Grid and Data Table
