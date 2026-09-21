@@ -378,16 +378,17 @@
 
   <!-- Global Quick Add Case Modal -->
   <div class="modal-backdrop" id="caseModal">
-    <div class="modal-dialog" style="max-width: 600px;">
+    <div class="modal-dialog" style="max-width: 680px;">
       <div class="modal-header">
         <h3 class="modal-title">Add New Legal Matter</h3>
         <button class="modal-close" onclick="UI.closeModal('caseModal')">&times;</button>
       </div>
       <form id="quickCaseForm">
-        <div class="modal-body">
+        <input type="hidden" id="editCaseId">
+        <div class="modal-body" style="max-height: 75vh; overflow-y: auto;">
           <div class="form-group">
             <label class="form-label" for="caseTitle">Case Title / Cause Title</label>
-            <input type="text" id="caseTitle" class="form-control" placeholder="e.g. Acme Corp vs. State of Delhi">
+            <input type="text" id="caseTitle" class="form-control" placeholder="e.g. Ramesh Kumar vs. State of Delhi & Anr.">
           </div>
 
           <div class="grid grid-cols-2 gap-4">
@@ -396,23 +397,23 @@
               <input type="text" id="caseNumber" class="form-control" placeholder="WP(C) 12450/2024">
             </div>
             <div class="form-group">
-              <label class="form-label" for="caseCnr">CNR Number</label>
-              <input type="text" id="caseCnr" class="form-control" placeholder="DLDH010023452024">
+              <label class="form-label" for="caseCnr">CNR Number (16-Digit)</label>
+              <input type="text" id="caseCnr" class="form-control font-mono" placeholder="DLDH010023452024" maxlength="16">
             </div>
           </div>
 
           <div class="grid grid-cols-2 gap-4">
             <div class="form-group">
               <label class="form-label" for="caseCourt">Court / Forum</label>
-              <input type="text" id="caseCourt" class="form-control" placeholder="Delhi High Court">
+              <input type="text" id="caseCourt" class="form-control" placeholder="High Court of Delhi">
             </div>
             <div class="form-group">
-              <label class="form-label" for="caseCourtRoom">Court Room No.</label>
-              <input type="text" id="caseCourtRoom" class="form-control" placeholder="Court No. 14">
+              <label class="form-label" for="caseCourtRoom">Court Room / Bench</label>
+              <input type="text" id="caseCourtRoom" class="form-control" placeholder="Court No. 14, Hon'ble DB-I">
             </div>
           </div>
 
-          <div class="grid grid-cols-2 gap-4">
+          <div class="grid grid-cols-3 gap-4">
             <div class="form-group">
               <label class="form-label" for="caseType">Matter Type</label>
               <select id="caseType" class="form-control">
@@ -431,9 +432,6 @@
                 <option value="">Select client...</option>
               </select>
             </div>
-          </div>
-
-          <div class="grid grid-cols-2 gap-4">
             <div class="form-group">
               <label class="form-label" for="casePartyRole">Representing</label>
               <select id="casePartyRole" class="form-control">
@@ -443,10 +441,59 @@
                 <option value="Opposite Party">Opposite Party</option>
               </select>
             </div>
+          </div>
+
+          <div class="grid grid-cols-2 gap-4">
+            <div class="form-group">
+              <label class="form-label" for="caseOpponent">Opposite Party Name</label>
+              <input type="text" id="caseOpponent" class="form-control" placeholder="Union of India & Ors.">
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="caseOpponentAdvocate">Opposite Advocate / Counsel</label>
+              <input type="text" id="caseOpponentAdvocate" class="form-control" placeholder="Senior Standing Counsel">
+            </div>
+          </div>
+
+          <div class="grid grid-cols-3 gap-4">
+            <div class="form-group">
+              <label class="form-label" for="caseStage">Current Stage</label>
+              <input type="text" id="caseStage" class="form-control" placeholder="Arguments / Notice / Evidence" value="Preliminary Hearing">
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="caseStatus">Status</label>
+              <select id="caseStatus" class="form-control">
+                <option value="Active">Active</option>
+                <option value="Pending">Pending Admission</option>
+                <option value="Hearing">Hearing</option>
+                <option value="Stayed">Stayed</option>
+                <option value="Disposed">Disposed</option>
+                <option value="Closed">Closed</option>
+              </select>
+            </div>
             <div class="form-group">
               <label class="form-label" for="caseAgreedFee">Agreed Professional Fee (₹)</label>
-              <input type="number" id="caseAgreedFee" class="form-control" placeholder="0" min="0">
+              <input type="number" id="caseAgreedFee" class="form-control" placeholder="e.g. 75000" min="0">
             </div>
+          </div>
+
+          <div class="grid grid-cols-3 gap-4">
+            <div class="form-group">
+              <label class="form-label" for="caseLastHearing">Last Hearing Date</label>
+              <input type="date" id="caseLastHearing" class="form-control">
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="caseCurrentHearing">Current Hearing Date</label>
+              <input type="date" id="caseCurrentHearing" class="form-control">
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="caseNextHearing">Next Hearing Date</label>
+              <input type="date" id="caseNextHearing" class="form-control">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="caseDescription">Matter Synopsis / Chamber Notes</label>
+            <textarea id="caseDescription" class="form-control" rows="3" placeholder="Brief facts of the matter, instructions from client, and relevant statutory provisions..."></textarea>
           </div>
         </div>
         <div class="modal-footer">

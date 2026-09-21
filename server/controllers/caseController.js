@@ -377,6 +377,41 @@ exports.updateCase = async (req, res, next) => {
 
     await foundCase.save();
 
+    // Sync hearing record when nextHearingDate changes
+    if (req.body.nextHearingDate !== undefined) {
+      const newDate = req.body.nextHearingDate ? new Date(req.body.nextHearingDate) : null;
+      if (newDate) {
+        const existingHearing = await Hearing.findOne({
+          caseId: foundCase._id,
+          lawFirmId: req.user.lawFirmId,
+          status: { $in: ['Scheduled', 'InProgress'] },
+        }).sort({ date: -1 });
+
+        if (existingHearing) {
+          existingHearing.date = newDate;
+          existingHearing.court = foundCase.court || existingHearing.court;
+          existingHearing.courtroom = foundCase.courtroom || existingHearing.courtroom;
+          existingHearing.judge = foundCase.judge || existingHearing.judge;
+          existingHearing.purpose = foundCase.currentStage || existingHearing.purpose;
+          await existingHearing.save();
+        } else {
+          await Hearing.create({
+            lawFirmId: req.user.lawFirmId,
+            caseId: foundCase._id,
+            clientId: foundCase.clientId,
+            date: newDate,
+            time: '10:00 AM',
+            court: foundCase.court,
+            courtroom: foundCase.courtroom,
+            judge: foundCase.judge,
+            purpose: foundCase.currentStage || 'Admission / Regular Hearing',
+            status: 'Scheduled',
+            createdBy: req.user._id,
+          });
+        }
+      }
+    }
+
     await logAudit({
       lawFirmId: req.user.lawFirmId,
       userId: req.user._id,

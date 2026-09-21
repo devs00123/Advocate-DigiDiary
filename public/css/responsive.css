@@ -54,10 +54,19 @@
     transform: translateX(-100%);
     box-shadow: var(--shadow-2xl);
     z-index: 50;
+    max-height: 100vh;
+    height: 100vh;
   }
 
   .sidebar.mobile-open {
     transform: translateX(0);
+  }
+
+  .sidebar-nav {
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    flex: 1;
+    min-height: 0;
   }
 
   .main-wrapper {
@@ -102,6 +111,18 @@
     padding: 8px 16px;
     flex-wrap: wrap;
     gap: 8px;
+  }
+
+  .top-header .flex-center {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .top-header .header-actions {
+    flex-wrap: wrap;
+    gap: 6px;
+    width: 100%;
+    justify-content: flex-end;
   }
 
   .main-content {
@@ -376,6 +397,73 @@
     align-items: flex-start;
     gap: 4px;
   }
+
+  /* Form responsive — single column on mobile */
+  .form-group {
+    margin-bottom: 12px;
+  }
+
+  .form-label {
+    font-size: 12px;
+    margin-bottom: 4px;
+  }
+
+  .form-control {
+    font-size: 14px;
+    padding: 8px 12px;
+  }
+
+  .form-row {
+    flex-direction: column;
+  }
+
+  .grid-cols-2,
+  .grid-cols-3,
+  .grid-cols-4 {
+    grid-template-columns: 1fr !important;
+    gap: 10px !important;
+  }
+
+  /* Modal forms — ensure footer always visible */
+  .modal-dialog {
+    max-height: 95vh;
+    margin: 4px;
+  }
+
+  .modal-body {
+    max-height: 60vh !important;
+    overflow-y: auto;
+  }
+
+  .modal-footer {
+    padding: 10px 16px;
+    min-height: 48px;
+    flex-shrink: 0;
+    justify-content: space-between;
+  }
+
+  .modal-footer .btn {
+    min-width: 0;
+    flex: 1;
+    justify-content: center;
+  }
+
+  /* Filter toolbar stacks */
+  .filter-toolbar,
+  .grid-cols-12 {
+    grid-template-columns: 1fr !important;
+    gap: 10px !important;
+  }
+
+  .grid-cols-12 > [class*="col-span-"] {
+    grid-column: span 1 !important;
+  }
+
+  /* Buttons full width in forms on mobile */
+  .modal-footer .btn {
+    padding: 10px 14px;
+    font-size: 13px;
+  }
 }
 
 /* ==========================================================================
@@ -468,8 +556,17 @@
   .modal-dialog {
     width: 100%;
     max-width: 100%;
-    margin: 8px;
+    margin: 4px;
     border-radius: var(--radius-lg);
+  }
+
+  .modal-body {
+    padding: 12px;
+  }
+
+  .modal-footer {
+    padding: 10px 12px;
+    gap: 8px;
   }
 
   .data-table {
@@ -479,6 +576,26 @@
   .data-table th, .data-table td {
     padding: 7px 8px;
     font-size: 11px;
+  }
+
+  /* Forms — full width inputs on small screens */
+  .grid-cols-2,
+  .grid-cols-3,
+  .grid-cols-4 {
+    grid-template-columns: 1fr !important;
+    gap: 8px !important;
+  }
+
+  /* Top header wraps on very small screens */
+  .top-header {
+    padding: 6px 12px;
+    gap: 6px;
+  }
+
+  /* Sidebar nav scrollable */
+  .sidebar-nav {
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
   }
 }
 

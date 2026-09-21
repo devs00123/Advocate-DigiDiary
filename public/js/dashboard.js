@@ -324,7 +324,15 @@ function setupQuickActionModals() {
           caseType: document.getElementById('caseType').value,
           clientId: document.getElementById('caseClientSelect').value,
           partyRole: document.getElementById('casePartyRole').value,
-          totalAgreedFee: Number(document.getElementById('caseAgreedFee').value) || 0
+          oppositeParty: document.getElementById('caseOpponent').value.trim() || undefined,
+          oppositeCounsel: document.getElementById('caseOpponentAdvocate').value.trim() || undefined,
+          currentStage: document.getElementById('caseStage').value.trim() || undefined,
+          status: document.getElementById('caseStatus').value,
+          agreedFee: Number(document.getElementById('caseAgreedFee').value) || 0,
+          lastHearingDate: document.getElementById('caseLastHearing').value || undefined,
+          currentHearingDate: document.getElementById('caseCurrentHearing').value || undefined,
+          nextHearingDate: document.getElementById('caseNextHearing').value || undefined,
+          description: document.getElementById('caseDescription').value.trim() || undefined
         };
 
         const res = await API.cases.create(payload);

@@ -597,7 +597,7 @@ input[type="number"].form-control::-webkit-inner-spin-button {
   flex-direction: column;
   transform: scale(0.95);
   transition: transform var(--transition-normal);
-  overflow: hidden;
+  overflow: visible;
 }
 
 .modal-backdrop.active .modal-dialog {
@@ -611,6 +611,7 @@ input[type="number"].form-control::-webkit-inner-spin-button {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  flex-shrink: 0;
 }
 
 .modal-title {
@@ -678,6 +679,7 @@ input[type="number"].form-control::-webkit-inner-spin-button {
   align-items: center;
   justify-content: flex-end;
   gap: 10px;
+  flex-shrink: 0;
 }
 
 /* 8. Tabs & Pills */
