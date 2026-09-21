@@ -42,15 +42,6 @@
       "node_modules/exceljs/**",
       "server/**/*"
     ],
-    "extraResources": [
-      {
-        "from": ".env",
-        "to": ".env",
-        "filter": [
-          ".env"
-        ]
-      }
-    ],
     "win": {
       "target": [
         {
