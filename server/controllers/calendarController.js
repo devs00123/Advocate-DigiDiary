@@ -2,6 +2,7 @@ const Hearing = require('../models/Hearing');
 const Case = require('../models/Case');
 const Task = require('../models/Task');
 const Reminder = require('../models/Reminder');
+const Client = require('../models/Client');
 
 function toDateKey(d) {
   if (!d) return '';
