@@ -974,9 +974,17 @@
   }
 
   // Initialize on DOM ready
+  function safeInit() {
+    try {
+      createAIWidget();
+    } catch (err) {
+      console.error('[DigiDiary AI] Init error:', err);
+    }
+  }
+
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', createAIWidget);
+    document.addEventListener('DOMContentLoaded', safeInit);
   } else {
-    createAIWidget();
+    safeInit();
   }
 })();
