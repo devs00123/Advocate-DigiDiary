@@ -29,15 +29,34 @@ exports.listCases = async (req, res, next) => {
 
     if (search && search.trim()) {
       const s = search.trim();
-      query.$or = [
-        { title: new RegExp(s, 'i') },
-        { caseNumber: new RegExp(s, 'i') },
-        { cnrNumber: new RegExp(s, 'i') },
-        { court: new RegExp(s, 'i') },
-        { judge: new RegExp(s, 'i') },
-        { oppositeParty: new RegExp(s, 'i') },
-        { oppositeCounsel: new RegExp(s, 'i') },
+      const safePattern = String(s).replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
+      const safeRegex = new RegExp(safePattern, 'i');
+
+      // Also search matching clients so searching client name matches their cases
+      const matchingClients = await Client.find({
+        lawFirmId: req.user.lawFirmId,
+        $or: [{ name: safeRegex }, { phone: safeRegex }, { email: safeRegex }],
+      }).select('_id');
+      const matchedClientIds = matchingClients.map((c) => c._id);
+
+      const orConditions = [
+        { title: safeRegex },
+        { caseNumber: safeRegex },
+        { cnrNumber: safeRegex },
+        { court: safeRegex },
+        { judge: safeRegex },
+        { courtroom: safeRegex },
+        { oppositeParty: safeRegex },
+        { oppositeCounsel: safeRegex },
+        { currentStage: safeRegex },
+        { description: safeRegex },
       ];
+
+      if (matchedClientIds.length > 0) {
+        orConditions.push({ clientId: { $in: matchedClientIds } });
+      }
+
+      query.$or = orConditions;
     }
 
     const sortOptions = {};

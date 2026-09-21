@@ -62,18 +62,25 @@ function initGlobalSearch() {
     }
   });
 
-  // Top header search click trigger
-  const headerSearchInput = document.querySelector('.search-input');
-  if (headerSearchInput) {
-    headerSearchInput.addEventListener('click', (e) => {
+  // Backdrop click to dismiss
+  searchModal.addEventListener('click', (e) => {
+    if (e.target === searchModal) {
+      closeSearch();
+    }
+  });
+
+  // Top header search click trigger across all pages
+  const triggers = document.querySelectorAll('.search-input, #globalSearchTrigger, .header-search');
+  triggers.forEach((trigger) => {
+    trigger.addEventListener('click', (e) => {
       e.preventDefault();
       openSearch();
     });
-    headerSearchInput.addEventListener('focus', (e) => {
+    trigger.addEventListener('focus', (e) => {
       e.preventDefault();
       openSearch();
     });
-  }
+  });
 
   // Debounced search query
   let debounceTimeout = null;
@@ -135,12 +142,12 @@ function renderSearchResults(data, container, closeFn) {
     html += `<div style="font-family: var(--font-label); font-size: 11px; font-weight: 700; text-transform: uppercase; color: var(--secondary); margin-bottom: 6px; letter-spacing: 0.04em;">Cases (${cases.length})</div><div style="display: flex; flex-direction: column; gap: 4px; margin-bottom: 14px;">`;
     cases.forEach((c) => {
       html += `
-        <a href="/case-details.html?id=${c._id}" class="search-result-row" style="display: flex; align-items: center; justify-content: space-between; padding: 8px 10px; border-radius: var(--radius-md); background: var(--surface-low); color: var(--on-surface); text-decoration: none; transition: background 0.15s;">
+        <a href="/cases.html?caseId=${c._id}" class="search-result-row" style="display: flex; align-items: center; justify-content: space-between; padding: 8px 10px; border-radius: var(--radius-md); background: var(--surface-low); color: var(--on-surface); text-decoration: none; transition: background 0.15s;">
           <div>
             <div style="font-weight: 600;">${escapeHTML(c.title)}</div>
-            <div style="font-size: 11px; color: var(--on-surface-variant);">${escapeHTML(c.caseNumber)} • ${escapeHTML(c.court)}</div>
+            <div style="font-size: 11px; color: var(--on-surface-variant);">${escapeHTML(c.caseNumber || 'No Pet. No.')} • ${escapeHTML(c.court || 'Court')}</div>
           </div>
-          <span class="badge badge-gold" style="font-size: 10px;">${escapeHTML(c.status)}</span>
+          <span class="badge badge-gold" style="font-size: 10px;">${escapeHTML(c.status || 'Active')}</span>
         </a>
       `;
     });
@@ -152,10 +159,10 @@ function renderSearchResults(data, container, closeFn) {
     html += `<div style="font-family: var(--font-label); font-size: 11px; font-weight: 700; text-transform: uppercase; color: var(--secondary); margin-bottom: 6px; letter-spacing: 0.04em;">Clients (${clients.length})</div><div style="display: flex; flex-direction: column; gap: 4px; margin-bottom: 14px;">`;
     clients.forEach((cl) => {
       html += `
-        <a href="/client-details.html?id=${cl._id}" class="search-result-row" style="display: flex; align-items: center; justify-content: space-between; padding: 8px 10px; border-radius: var(--radius-md); background: var(--surface-low); color: var(--on-surface); text-decoration: none; transition: background 0.15s;">
+        <a href="/clients.html?id=${cl._id}" class="search-result-row" style="display: flex; align-items: center; justify-content: space-between; padding: 8px 10px; border-radius: var(--radius-md); background: var(--surface-low); color: var(--on-surface); text-decoration: none; transition: background 0.15s;">
           <div>
             <div style="font-weight: 600;">${escapeHTML(cl.name)}</div>
-            <div style="font-size: 11px; color: var(--on-surface-variant);">${escapeHTML(cl.phone || cl.email || 'No contact')} • ${escapeHTML(cl.clientType)}</div>
+            <div style="font-size: 11px; color: var(--on-surface-variant);">${escapeHTML(cl.phone || cl.email || 'No contact')} • ${escapeHTML(cl.clientType || 'Client')}</div>
           </div>
           <span class="material-symbols-outlined" style="font-size: 16px; color: var(--outline);">chevron_right</span>
         </a>
@@ -167,21 +174,42 @@ function renderSearchResults(data, container, closeFn) {
   // 3. Hearings
   if (hearings.length > 0) {
     html += `<div style="font-family: var(--font-label); font-size: 11px; font-weight: 700; text-transform: uppercase; color: var(--secondary); margin-bottom: 6px; letter-spacing: 0.04em;">Hearings (${hearings.length})</div><div style="display: flex; flex-direction: column; gap: 4px; margin-bottom: 14px;">`;
-      const caseHref = h.caseId ? `/case-details.html?id=${h.caseId._id || h.caseId}` : '/cases.html';
+    hearings.forEach((h) => {
+      const caseId = h.caseId ? (h.caseId._id || h.caseId) : null;
+      const caseTitle = (h.caseId && h.caseId.title) ? h.caseId.title : (h.court || 'Court Appearance');
+      const caseHref = caseId ? `/calendar.html?caseId=${caseId}&date=${new Date(h.date).toISOString().split('T')[0]}` : '/calendar.html';
+      const hearingDateStr = h.date ? new Date(h.date).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' }) : '';
       html += `
         <a href="${caseHref}" class="search-result-row" style="display: flex; align-items: center; justify-content: space-between; padding: 8px 10px; border-radius: var(--radius-md); background: var(--surface-low); color: var(--on-surface); text-decoration: none; transition: background 0.15s;">
           <div>
             <div style="font-weight: 600;">${escapeHTML(caseTitle)}</div>
-            <div style="font-size: 11px; color: var(--on-surface-variant);">${escapeHTML(h.court)} • ${escapeHTML(h.purpose)} (${new Date(h.date).toLocaleDateString()})</div>
+            <div style="font-size: 11px; color: var(--on-surface-variant);">${escapeHTML(h.court || '')} • ${escapeHTML(h.purpose || 'Hearing')} (${hearingDateStr}${h.time ? ' at ' + h.time : ''})</div>
           </div>
-          <span class="badge badge-scheduled" style="font-size: 10px;">${escapeHTML(h.status)}</span>
+          <span class="badge badge-scheduled" style="font-size: 10px;">${escapeHTML(h.status || 'Scheduled')}</span>
         </a>
       `;
     });
     html += `</div>`;
   }
 
-  // 4. Notes
+  // 4. Tasks
+  if (tasks.length > 0) {
+    html += `<div style="font-family: var(--font-label); font-size: 11px; font-weight: 700; text-transform: uppercase; color: var(--secondary); margin-bottom: 6px; letter-spacing: 0.04em;">Tasks (${tasks.length})</div><div style="display: flex; flex-direction: column; gap: 4px; margin-bottom: 14px;">`;
+    tasks.forEach((t) => {
+      html += `
+        <a href="/tasks.html?id=${t._id}" class="search-result-row" style="display: flex; align-items: center; justify-content: space-between; padding: 8px 10px; border-radius: var(--radius-md); background: var(--surface-low); color: var(--on-surface); text-decoration: none; transition: background 0.15s;">
+          <div>
+            <div style="font-weight: 600;">${escapeHTML(t.title)}</div>
+            <div style="font-size: 11px; color: var(--on-surface-variant);">${escapeHTML(t.category || 'Practice Task')} • Due: ${t.dueDate ? new Date(t.dueDate).toLocaleDateString() : 'No date'}</div>
+          </div>
+          <span class="badge badge-warning" style="font-size: 10px;">${escapeHTML(t.status || 'Pending')}</span>
+        </a>
+      `;
+    });
+    html += `</div>`;
+  }
+
+  // 5. Notes
   if (notes.length > 0) {
     html += `<div style="font-family: var(--font-label); font-size: 11px; font-weight: 700; text-transform: uppercase; color: var(--secondary); margin-bottom: 6px; letter-spacing: 0.04em;">Legal Notes (${notes.length})</div><div style="display: flex; flex-direction: column; gap: 4px; margin-bottom: 14px;">`;
     notes.forEach((n) => {
@@ -189,7 +217,7 @@ function renderSearchResults(data, container, closeFn) {
         <a href="/notes.html?id=${n._id}" class="search-result-row" style="display: flex; align-items: center; justify-content: space-between; padding: 8px 10px; border-radius: var(--radius-md); background: var(--surface-low); color: var(--on-surface); text-decoration: none; transition: background 0.15s;">
           <div>
             <div style="font-weight: 600;">${escapeHTML(n.title)}</div>
-            <div style="font-size: 11px; color: var(--on-surface-variant);">${escapeHTML(n.citation || n.court || n.category)}</div>
+            <div style="font-size: 11px; color: var(--on-surface-variant);">${escapeHTML(n.citation || n.court || n.category || 'Note')}</div>
           </div>
           <span class="material-symbols-outlined" style="font-size: 16px; color: var(--secondary);">${n.pinned ? 'push_pin' : 'edit_note'}</span>
         </a>

@@ -14,6 +14,7 @@ const { enforceTenant } = require('../middleware/tenant');
 router.use(protect, enforceTenant);
 
 router.get('/cause-list', getCauseList);
+router.get('/causelist', getCauseList);
 
 router.route('/')
   .get(listHearings)

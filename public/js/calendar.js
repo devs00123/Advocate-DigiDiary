@@ -141,7 +141,15 @@
       debounceTimer = setTimeout(function() {
         filters.search = searchInput.value.trim().toLowerCase();
         updateViewDisplay();
-      }, 250);
+      }, 200);
+    });
+
+    searchInput.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') {
+        searchInput.value = '';
+        filters.search = '';
+        updateViewDisplay();
+      }
     });
 
     courtFilter.addEventListener('change', function() {
@@ -329,6 +337,22 @@
 
     var filteredEvents = getFilteredEvents();
 
+    if (filters.search) {
+      var banner = document.createElement('div');
+      banner.style = 'grid-column: 1 / -1; background: #FFF9E6; border: 1px solid #FFE082; border-radius: 8px; padding: 10px 16px; margin-bottom: 8px; display: flex; align-items: center; justify-content: space-between; font-size: 0.8125rem; color: #7F5A00;';
+      banner.innerHTML = '<span><span class="material-symbols-outlined" style="font-size: 16px; vertical-align: text-bottom; margin-right: 5px;">search</span>Showing listings matching "<strong>' + UI.escapeHTML(filters.search) + '</strong>": <strong>' + filteredEvents.length + '</strong> result(s) found across this month. Click any highlighted day to open its court board.</span><button type="button" id="gridClearSearchBtn" style="background: #fff; border: 1px solid #FFE082; border-radius: 4px; padding: 2px 8px; font-weight: 700; color: #7F5A00; cursor: pointer; font-size: 0.75rem;">Clear</button>';
+      grid.appendChild(banner);
+      setTimeout(function() {
+        var b = document.getElementById('gridClearSearchBtn');
+        if (b) b.onclick = function() {
+          var input = document.getElementById('calSearchInput');
+          if (input) input.value = '';
+          filters.search = '';
+          updateViewDisplay();
+        };
+      }, 0);
+    }
+
     var cellDate = new Date(startDate);
     for (var i = 0; i < 42; i++) {
       var dateKey = dateToStr(cellDate);
@@ -344,6 +368,11 @@
         (!isCurrentMonth ? ' cal-grid-cell--other' : '') +
         (isToday ? ' cal-grid-cell--today' : '');
       cell.setAttribute('data-date', dateKey);
+
+      if (filters.search && dayEvents.length > 0) {
+        cell.style.boxShadow = 'inset 0 0 0 2px var(--gold-500)';
+        cell.style.backgroundColor = 'rgba(212, 175, 55, 0.08)';
+      }
 
       var topHtml =
         '<div class="cal-grid-cell-top">' +
@@ -408,8 +437,7 @@
     }
   }
 
-  // -------------------------------------------------------------
-  // 5. View 2: Daily Cause List (Court Board) Renderer
+  // ------------------------------------------------------------  // 5. View 2: Daily Cause List (Court Board) Renderer
   // -------------------------------------------------------------
   function renderCauseList() {
     var container = document.getElementById('causeListContent');
@@ -421,46 +449,81 @@
       year: 'numeric',
     });
 
-    var filtered = getFilteredEvents().filter(function(ev) {
-      return getDateKey(ev) === selectedDateStr;
-    });
+    var isSearching = !!(filters.search && filters.search.trim());
+    var allFiltered = getFilteredEvents();
+
+    var filtered = isSearching
+      ? allFiltered
+      : allFiltered.filter(function(ev) { return getDateKey(ev) === selectedDateStr; });
 
     var hearings = filtered.filter(function(ev) { return (ev.type || '').toLowerCase() === 'hearing'; });
     var otherEvents = filtered.filter(function(ev) { return (ev.type || '').toLowerCase() !== 'hearing'; });
 
+    var bannerTitle = isSearching
+      ? 'SEARCH RESULTS: COURT HEARINGS &amp; BOARD'
+      : 'DAILY CAUSE LIST &amp; COURT BOARD';
+
+    var bannerSub = isSearching
+      ? '<span class="material-symbols-outlined" style="font-size: 18px;">search</span>' +
+        '<span>SEARCH FOR: "' + UI.escapeHTML(filters.search).toUpperCase() + '"</span>' +
+        '<span style="opacity: 0.5;">|</span>' +
+        '<span>' + hearings.length + ' Matching Brief' + (hearings.length === 1 ? '' : 's') + ' Found</span>'
+      : '<span class="material-symbols-outlined" style="font-size: 18px;">event</span>' +
+        '<span>' + dayFormatted.toUpperCase() + '</span>' +
+        '<span style="opacity: 0.5;">|</span>' +
+        '<span>' + hearings.length + ' Brief' + (hearings.length === 1 ? '' : 's') + ' Listed</span>';
+
+    var bannerActions = isSearching
+      ? '<button type="button" class="btn btn-sm btn-outline" id="calClearSearchBtn" style="background: #FFFFFF; color: var(--navy-900);">' +
+          '<span class="material-symbols-outlined icon-sm">close</span><span>Clear Search</span>' +
+        '</button>' +
+        '<button type="button" class="btn btn-sm btn-outline" id="causeListPrintTrigger" style="background: #FFFFFF; color: var(--navy-900);">' +
+          '<span class="material-symbols-outlined icon-sm">print</span><span>Print</span>' +
+        '</button>'
+      : '<input type="date" id="causeListDatePicker" class="form-control" value="' + selectedDateStr + '" style="background: #FFFFFF; color: var(--navy-900); padding: 6px 12px; font-weight: 600; width: auto;">' +
+        '<button type="button" class="btn btn-sm btn-outline" id="causeListPrintTrigger" style="background: #FFFFFF; color: var(--navy-900);">' +
+          '<span class="material-symbols-outlined icon-sm">print</span><span>Print Board</span>' +
+        '</button>';
+
     var html =
       '<div class="causelist-banner">' +
         '<div>' +
-          '<h2 class="causelist-banner-title">DAILY CAUSE LIST &amp; COURT BOARD</h2>' +
-          '<div class="causelist-banner-sub">' +
-            '<span class="material-symbols-outlined" style="font-size: 18px;">event</span>' +
-            '<span>' + dayFormatted.toUpperCase() + '</span>' +
-            '<span style="opacity: 0.5;">|</span>' +
-            '<span>' + hearings.length + ' Brief' + (hearings.length === 1 ? '' : 's') + ' Listed</span>' +
-          '</div>' +
+          '<h2 class="causelist-banner-title">' + bannerTitle + '</h2>' +
+          '<div class="causelist-banner-sub">' + bannerSub + '</div>' +
         '</div>' +
-        '<div class="causelist-banner-actions">' +
-          '<input type="date" id="causeListDatePicker" class="form-control" value="' + selectedDateStr + '" style="background: #FFFFFF; color: var(--navy-900); padding: 6px 12px; font-weight: 600; width: auto;">' +
-          '<button type="button" class="btn btn-sm btn-outline" id="causeListPrintTrigger" style="background: #FFFFFF; color: var(--navy-900);">' +
-            '<span class="material-symbols-outlined icon-sm">print</span><span>Print Board</span>' +
-          '</button>' +
-        '</div>' +
+        '<div class="causelist-banner-actions">' + bannerActions + '</div>' +
       '</div>';
 
     if (hearings.length === 0 && otherEvents.length === 0) {
-      html +=
-        '<div class="card" style="text-align: center; padding: 4rem 2rem; background: #FFFFFF; border: 1px solid var(--border-light); border-radius: 10px;">' +
-          '<div style="width: 64px; height: 64px; border-radius: 50%; background: rgba(10,17,40,0.06); display: flex; align-items: center; justify-content: center; margin: 0 auto 1.25rem;">' +
-            '<span class="material-symbols-outlined" style="font-size: 32px; color: var(--navy-900);">event_busy</span>' +
-          '</div>' +
-          '<h3 style="font-family: var(--font-headline); font-size: 1.375rem; color: var(--navy-900); margin-bottom: 0.5rem;">No Court Listings Scheduled</h3>' +
-          '<p style="color: var(--text-muted); max-width: 480px; margin: 0 auto 1.5rem; font-size: 0.875rem;">' +
-            'No hearings or court board items are scheduled for ' + dayFormatted + '. You can register a new matter or schedule a hearing from the Case Portfolio.' +
-          '</p>' +
-          '<a href="/cases.html" class="btn btn-primary btn-sm">' +
-            '<span class="material-symbols-outlined icon-sm">gavel</span><span>Go to Case Portfolio</span>' +
-          '</a>' +
-        '</div>';
+      if (isSearching) {
+        html +=
+          '<div class="card" style="text-align: center; padding: 4rem 2rem; background: #FFFFFF; border: 1px solid var(--border-light); border-radius: 10px;">' +
+            '<div style="width: 64px; height: 64px; border-radius: 50%; background: rgba(10,17,40,0.06); display: flex; align-items: center; justify-content: center; margin: 0 auto 1.25rem;">' +
+              '<span class="material-symbols-outlined" style="font-size: 32px; color: var(--navy-900);">search_off</span>' +
+            '</div>' +
+            '<h3 style="font-family: var(--font-headline); font-size: 1.375rem; color: var(--navy-900); margin-bottom: 0.5rem;">No Court Listings Matched "' + UI.escapeHTML(filters.search) + '"</h3>' +
+            '<p style="color: var(--text-muted); max-width: 480px; margin: 0 auto 1.5rem; font-size: 0.875rem;">' +
+              'No hearings or court board items match your search across this period. Check the spelling or try searching by case title, CNR, client, or courtroom.' +
+            '</p>' +
+            '<button type="button" class="btn btn-primary btn-sm" id="calClearSearchBtnEmpty">' +
+              '<span class="material-symbols-outlined icon-sm">restart_alt</span><span>Clear Search Filter</span>' +
+            '</button>' +
+          '</div>';
+      } else {
+        html +=
+          '<div class="card" style="text-align: center; padding: 4rem 2rem; background: #FFFFFF; border: 1px solid var(--border-light); border-radius: 10px;">' +
+            '<div style="width: 64px; height: 64px; border-radius: 50%; background: rgba(10,17,40,0.06); display: flex; align-items: center; justify-content: center; margin: 0 auto 1.25rem;">' +
+              '<span class="material-symbols-outlined" style="font-size: 32px; color: var(--navy-900);">event_busy</span>' +
+            '</div>' +
+            '<h3 style="font-family: var(--font-headline); font-size: 1.375rem; color: var(--navy-900); margin-bottom: 0.5rem;">No Court Listings Scheduled</h3>' +
+            '<p style="color: var(--text-muted); max-width: 480px; margin: 0 auto 1.5rem; font-size: 0.875rem;">' +
+              'No hearings or court board items are scheduled for ' + dayFormatted + '. You can register a new matter or schedule a hearing from the Case Portfolio.' +
+            '</p>' +
+            '<a href="/cases.html" class="btn btn-primary btn-sm">' +
+              '<span class="material-symbols-outlined icon-sm">gavel</span><span>Go to Case Portfolio</span>' +
+            '</a>' +
+          '</div>';
+      }
       container.innerHTML = html;
       attachCauseListListeners();
       return;
@@ -520,6 +583,7 @@
             '<td>' +
               '<div class="causelist-cause-title">' + UI.escapeHTML(item.caseTitle || item.title) + '</div>' +
               '<div style="font-size: 0.75rem; color: var(--gold-700); font-weight: 600;">' + UI.escapeHTML(item.caseType || 'Civil Suit') + '</div>' +
+              (isSearching ? '<div style="margin-top: 4px;"><span class="badge badge-gold" style="font-size: 0.6875rem; font-weight: 700;">📅 ' + formatDDMMYYYY(item.date || item.start || item.currentDate) + '</span></div>' : '') +
               (item.caseSynopsis ? '<div class="causelist-synopsis">' + UI.escapeHTML(item.caseSynopsis.substring(0, 100)) + (item.caseSynopsis.length > 100 ? '...' : '') + '</div>' : '') +
             '</td>' +
             '<td>' +
@@ -596,6 +660,19 @@
   }
 
   function attachCauseListListeners() {
+    function clearSearchAction() {
+      var searchInput = document.getElementById('calSearchInput');
+      if (searchInput) searchInput.value = '';
+      filters.search = '';
+      updateViewDisplay();
+    }
+
+    var clearSearchBtn = document.getElementById('calClearSearchBtn');
+    if (clearSearchBtn) clearSearchBtn.addEventListener('click', clearSearchAction);
+
+    var clearSearchBtnEmpty = document.getElementById('calClearSearchBtnEmpty');
+    if (clearSearchBtnEmpty) clearSearchBtnEmpty.addEventListener('click', clearSearchAction);
+
     var datePicker = document.getElementById('causeListDatePicker');
     if (datePicker) {
       datePicker.addEventListener('change', function() {

@@ -568,11 +568,36 @@ function setupEventListeners() {
     fetchCases();
   });
 
-  document.getElementById('caseSearchInput').addEventListener('keydown', (e) => {
-    if (e.key === 'Enter') {
-      currentPage = 1;
-      fetchCases();
-    }
+  // Debounced live typing search
+  let caseSearchDebounce = null;
+  const searchInputEl = document.getElementById('caseSearchInput');
+  if (searchInputEl) {
+    searchInputEl.addEventListener('input', () => {
+      clearTimeout(caseSearchDebounce);
+      caseSearchDebounce = setTimeout(() => {
+        currentPage = 1;
+        fetchCases();
+      }, 250);
+    });
+
+    searchInputEl.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        clearTimeout(caseSearchDebounce);
+        currentPage = 1;
+        fetchCases();
+      }
+    });
+  }
+
+  // Instant filter on dropdown selection change
+  document.getElementById('caseStatusFilter').addEventListener('change', () => {
+    currentPage = 1;
+    fetchCases();
+  });
+
+  document.getElementById('caseTypeFilter').addEventListener('change', () => {
+    currentPage = 1;
+    fetchCases();
   });
 
   // Modal open button
