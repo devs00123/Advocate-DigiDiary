@@ -183,7 +183,7 @@ function renderSearchResults(data, container, closeFn) {
       const caseHref = caseId
         ? `/calendar.html?caseId=${caseId}${hearingDay ? `&date=${hearingDay}` : ''}`
         : '/calendar.html';
-      const hearingDateStr = hearingDay ? new Date(h.date).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' }) : '';
+      const hearingDateStr = hearingDay ? new Date(h.date).toLocaleDateString('en-IN', { timeZone: 'UTC', day: 'numeric', month: 'short', year: 'numeric' }) : '';
       let whenStr = '';
       if (hearingDateStr && h.time) {
         whenStr = ` (${hearingDateStr} at ${escapeHTML(h.time)})`;
