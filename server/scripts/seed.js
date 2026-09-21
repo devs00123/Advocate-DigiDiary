@@ -215,7 +215,7 @@ const seedData = async () => {
       courtroom: 'Courtroom No. 12',
       judge: "Hon'ble Judge A. K. Mishra",
       filingDate: new Date('2024-02-15'),
-      nextHearingDate: new Date(today.getTime() + 9.5 * 3600 * 1000), // Today 9:30 AM
+      currentHearingDate: new Date(today.getTime() + 9.5 * 3600 * 1000), // Today 9:30 AM
       currentStage: 'Final Arguments (Part-Heard)',
       status: 'Active',
       priority: 'urgent',
@@ -239,7 +239,7 @@ const seedData = async () => {
       courtroom: 'Courtroom No. 04',
       judge: "Hon'ble ASJ Vikramjit Singh",
       filingDate: new Date('2025-05-10'),
-      nextHearingDate: new Date(today.getTime() + 11.25 * 3600 * 1000), // Today 11:15 AM
+      currentHearingDate: new Date(today.getTime() + 11.25 * 3600 * 1000), // Today 11:15 AM
       currentStage: 'Cross Examination of PW-3 (IO)',
       status: 'Hearing',
       priority: 'urgent',
@@ -263,7 +263,7 @@ const seedData = async () => {
       courtroom: 'Bench Courtroom 18',
       judge: "Hon'ble Justice Rajiv Sahai Endlaw",
       filingDate: new Date('2024-06-20'),
-      nextHearingDate: new Date(today.getTime() + 14 * 3600 * 1000), // Today 2:00 PM
+      currentHearingDate: new Date(today.getTime() + 14 * 3600 * 1000), // Today 2:00 PM
       currentStage: 'Framing of Issues / Interim Relief (O.39 R.1&2)',
       status: 'Active',
       priority: 'high',
@@ -287,7 +287,7 @@ const seedData = async () => {
       courtroom: 'Courtroom No. 09',
       judge: "Hon'ble ADJ Priya Sharma",
       filingDate: new Date('2021-09-12'),
-      nextHearingDate: new Date(today.getTime() + 15.75 * 3600 * 1000), // Today 3:45 PM
+      currentHearingDate: new Date(today.getTime() + 15.75 * 3600 * 1000), // Today 3:45 PM
       currentStage: 'Evidence by Affidavit & Cross',
       status: 'Active',
       priority: 'standard',
@@ -311,7 +311,7 @@ const seedData = async () => {
       courtroom: 'Courtroom No. 03 (Chief Court)',
       judge: "Hon'ble Chief Justice of India",
       filingDate: new Date('2026-01-08'),
-      nextHearingDate: new Date(today.getTime() + 2 * 24 * 3600 * 1000), // Day after tomorrow
+      currentHearingDate: new Date(today.getTime() + 2 * 24 * 3600 * 1000), // Day after tomorrow
       currentStage: 'Admission & Preliminary Hearing',
       status: 'Active',
       priority: 'high',

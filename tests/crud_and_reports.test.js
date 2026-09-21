@@ -91,11 +91,11 @@ describe('Core Practice CRUD & Business Workflows', () => {
     expect(res.body.success).toBe(true);
     createdHearingId = res.body.data._id;
 
-    // Verify case nextHearingDate was automatically updated
+    // Verify case currentHearingDate was automatically updated
     const caseRes = await request(app)
       .get(`/api/cases/${createdCaseId}`)
       .set('Cookie', authCookie);
-    expect(caseRes.body.data.nextHearingDate).toMatch(/2026-10-15/);
+    expect(caseRes.body.data.currentHearingDate).toMatch(/2026-10-15/);
   });
 
   it('4. Record Hearing Outcome and Reschedule Next Date', async () => {
@@ -105,18 +105,18 @@ describe('Core Practice CRUD & Business Workflows', () => {
       .send({
         status: 'completed',
         outcome: 'Claimants completed oral submissions. Matter fixed for Respondents arguments.',
-        nextHearingDate: '2026-11-05',
-        nextHearingPurpose: 'Respondent Oral Arguments'
+        nextDate: '2026-11-05',
+        nextStage: 'Respondent Oral Arguments'
       });
 
     expect(res.status).toBe(200);
     expect(res.body.success).toBe(true);
 
-    // Verify case nextHearingDate moved to the next scheduled date
+    // Verify case currentHearingDate moved to the next scheduled date
     const caseRes = await request(app)
       .get(`/api/cases/${createdCaseId}`)
       .set('Cookie', authCookie);
-    expect(caseRes.body.data.nextHearingDate).toMatch(/2026-11-05/);
+    expect(caseRes.body.data.currentHearingDate).toMatch(/2026-11-05/);
   });
 
   it('5. Create Task and Toggle Completion', async () => {

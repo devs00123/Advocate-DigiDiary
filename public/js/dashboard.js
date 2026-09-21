@@ -153,7 +153,7 @@ async function loadDashboardData() {
 
     if (casesRes && casesRes.success && casesRes.data && casesRes.data.length > 0) {
       tbody.innerHTML = casesRes.data.map(c => {
-        const nextDate = c.nextHearingDate ? UI.formatDate(c.nextHearingDate) : '<span style="color: var(--text-muted);">Not scheduled</span>';
+        const nextDate = c.currentHearingDate ? UI.formatDate(c.currentHearingDate) : '<span style="color: var(--text-muted);">Not scheduled</span>';
         return `
           <tr>
             <td style="font-family: monospace; font-size: 0.8125rem; font-weight: 600; color: var(--gold-700);">
@@ -331,7 +331,6 @@ function setupQuickActionModals() {
           agreedFee: Number(document.getElementById('caseAgreedFee').value) || 0,
           lastHearingDate: document.getElementById('caseLastHearing').value || undefined,
           currentHearingDate: document.getElementById('caseCurrentHearing').value || undefined,
-          nextHearingDate: document.getElementById('caseNextHearing').value || undefined,
           description: document.getElementById('caseDescription').value.trim() || undefined
         };
 

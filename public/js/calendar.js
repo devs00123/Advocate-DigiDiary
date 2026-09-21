@@ -242,7 +242,6 @@
       '<div class="cal-detail__timeline">' +
         '<div class="cal-detail__tl-cell"><span class="cal-detail__tl-label">Last Hearing</span><div class="cal-detail__tl-value">' + lastDateDisplay + '</div></div>' +
         '<div class="cal-detail__tl-cell cal-detail__tl-cell--current"><span class="cal-detail__tl-label">Current Hearing</span><div class="cal-detail__tl-value">' + currentDateDisplay + '</div></div>' +
-        '<div class="cal-detail__tl-cell"><span class="cal-detail__tl-label">Next Hearing</span><div class="cal-detail__tl-value">' + nextDateDisplay + '</div></div>' +
       '</div>' +
       '<div class="cal-detail__update">' +
         '<h4><span class="material-symbols-outlined">edit_calendar</span> Auto-Update Hearing Dates & Remarks</h4>' +

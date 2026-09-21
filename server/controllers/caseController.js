@@ -9,7 +9,7 @@ const { logAudit } = require('../utils/auditLogger');
 
 exports.listCases = async (req, res, next) => {
   try {
-    const { search, status, court, priority, caseType, sort = 'nextHearingDate', order = 'asc', page = 1, limit = 15 } = req.query;
+    const { search, status, court, priority, caseType, sort = 'currentHearingDate', order = 'asc', page = 1, limit = 15 } = req.query;
 
     const query = { lawFirmId: req.user.lawFirmId };
 
@@ -41,7 +41,7 @@ exports.listCases = async (req, res, next) => {
     }
 
     const sortOptions = {};
-    const sortField = sort === 'title' ? 'title' : sort === 'createdAt' ? 'createdAt' : 'nextHearingDate';
+    const sortField = sort === 'title' ? 'title' : sort === 'createdAt' ? 'createdAt' : 'currentHearingDate';
     sortOptions[sortField] = order === 'desc' ? -1 : 1;
 
     const pageNum = Math.max(1, parseInt(page, 10) || 1);
@@ -220,7 +220,6 @@ exports.createCase = async (req, res, next) => {
       firstHearingDate,
       lastHearingDate,
       currentHearingDate,
-      nextHearingDate,
       priority,
       status,
       description,
@@ -272,7 +271,6 @@ exports.createCase = async (req, res, next) => {
       firstHearingDate: firstHearingDate || null,
       lastHearingDate: lastHearingDate || null,
       currentHearingDate: currentHearingDate || null,
-      nextHearingDate: nextHearingDate || null,
       currentStage: currentStage || 'Notice / Summons',
       priority: priority ? priority.toLowerCase() : 'standard',
       status: status || 'Active',
@@ -282,13 +280,13 @@ exports.createCase = async (req, res, next) => {
       createdBy: req.user._id,
     });
 
-    // If nextHearingDate was provided, automatically create scheduled hearing record
-    if (nextHearingDate) {
+    // If currentHearingDate was provided, automatically create scheduled hearing record
+    if (currentHearingDate) {
       await Hearing.create({
         lawFirmId: req.user.lawFirmId,
         caseId: newCase._id,
         clientId: client._id,
-        date: new Date(nextHearingDate),
+        date: new Date(currentHearingDate),
         time: '10:00 AM',
         court: newCase.court,
         courtroom: newCase.courtroom,
@@ -358,7 +356,6 @@ exports.updateCase = async (req, res, next) => {
     if (req.body.firstHearingDate !== undefined) foundCase.firstHearingDate = req.body.firstHearingDate;
     if (req.body.lastHearingDate !== undefined) foundCase.lastHearingDate = req.body.lastHearingDate;
     if (req.body.currentHearingDate !== undefined) foundCase.currentHearingDate = req.body.currentHearingDate;
-    if (req.body.nextHearingDate !== undefined) foundCase.nextHearingDate = req.body.nextHearingDate;
     if (req.body.currentStage !== undefined || req.body.stage !== undefined) {
       foundCase.currentStage = req.body.currentStage !== undefined ? req.body.currentStage : req.body.stage;
     }
@@ -377,9 +374,9 @@ exports.updateCase = async (req, res, next) => {
 
     await foundCase.save();
 
-    // Sync hearing record when nextHearingDate changes
-    if (req.body.nextHearingDate !== undefined) {
-      const newDate = req.body.nextHearingDate ? new Date(req.body.nextHearingDate) : null;
+    // Sync hearing record when currentHearingDate changes
+    if (req.body.currentHearingDate !== undefined) {
+      const newDate = req.body.currentHearingDate ? new Date(req.body.currentHearingDate) : null;
       if (newDate) {
         const existingHearing = await Hearing.findOne({
           caseId: foundCase._id,

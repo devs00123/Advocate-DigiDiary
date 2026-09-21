@@ -26,21 +26,14 @@ exports.listHearings = async (req, res, next) => {
       h.outcome = h.outcome || 'Completed (auto-advanced)';
       await h.save();
 
-      // Sync case: if this was the nextHearingDate, advance to nextDate or clear
+      // Sync case: if this was the currentHearingDate, move to lastHearingDate and clear
       if (h.caseId) {
         const foundCase = await Case.findOne({ _id: h.caseId, lawFirmId: req.user.lawFirmId });
-        if (foundCase && foundCase.nextHearingDate) {
-          const caseNext = new Date(foundCase.nextHearingDate);
-          if (caseNext.getTime() <= startOfToday.getTime()) {
-            if (h.nextDate) {
-              foundCase.nextHearingDate = h.nextDate;
-              foundCase.currentHearingDate = foundCase.nextHearingDate;
-              foundCase.lastHearingDate = h.date;
-            } else {
-              foundCase.lastHearingDate = foundCase.nextHearingDate;
-              foundCase.nextHearingDate = null;
-              foundCase.currentHearingDate = null;
-            }
+        if (foundCase && foundCase.currentHearingDate) {
+          const caseCurrent = new Date(foundCase.currentHearingDate);
+          if (caseCurrent.getTime() <= startOfToday.getTime()) {
+            foundCase.lastHearingDate = foundCase.currentHearingDate;
+            foundCase.currentHearingDate = null;
             foundCase.currentStage = h.nextStage || foundCase.currentStage;
             await foundCase.save();
           }
@@ -202,10 +195,11 @@ exports.createHearing = async (req, res, next) => {
       createdBy: req.user._id,
     });
 
-    // Update case nextHearingDate if hearing is in the future
+    // Update case currentHearingDate if hearing is in the future
     const hearingDateObj = new Date(hearingDate);
     if (!isNaN(hearingDateObj.getTime()) && hearingDateObj >= new Date()) {
-      foundCase.nextHearingDate = hearingDateObj;
+      foundCase.lastHearingDate = foundCase.currentHearingDate;
+      foundCase.currentHearingDate = hearingDateObj;
       foundCase.currentStage = hearing.purpose;
       await foundCase.save();
     }
@@ -295,11 +289,12 @@ exports.updateHearing = async (req, res, next) => {
 
     await hearing.save();
 
-    // If nextDate was provided, update Case's nextHearingDate and optionally create next hearing
+    // If nextDate was provided, shift currentHearingDate -> lastHearingDate and set new currentHearingDate
     if (nextDateVal) {
       const foundCase = await Case.findOne({ _id: hearing.caseId, lawFirmId: req.user.lawFirmId });
       if (foundCase) {
-        foundCase.nextHearingDate = new Date(nextDateVal);
+        foundCase.lastHearingDate = foundCase.currentHearingDate;
+        foundCase.currentHearingDate = new Date(nextDateVal);
         if (nextStageVal) foundCase.currentStage = nextStageVal;
         await foundCase.save();
 
@@ -402,18 +397,11 @@ exports.getCauseList = async (req, res, next) => {
 
       if (h.caseId) {
         const foundCase = await Case.findOne({ _id: h.caseId, lawFirmId: req.user.lawFirmId });
-        if (foundCase && foundCase.nextHearingDate) {
-          const caseNext = new Date(foundCase.nextHearingDate);
-          if (caseNext.getTime() <= startOfToday.getTime()) {
-            if (h.nextDate) {
-              foundCase.nextHearingDate = h.nextDate;
-              foundCase.currentHearingDate = foundCase.nextHearingDate;
-              foundCase.lastHearingDate = h.date;
-            } else {
-              foundCase.lastHearingDate = foundCase.nextHearingDate;
-              foundCase.nextHearingDate = null;
-              foundCase.currentHearingDate = null;
-            }
+        if (foundCase && foundCase.currentHearingDate) {
+          const caseCurrent = new Date(foundCase.currentHearingDate);
+          if (caseCurrent.getTime() <= startOfToday.getTime()) {
+            foundCase.lastHearingDate = foundCase.currentHearingDate;
+            foundCase.currentHearingDate = null;
             foundCase.currentStage = h.nextStage || foundCase.currentStage;
             await foundCase.save();
           }

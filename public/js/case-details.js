@@ -91,8 +91,8 @@ function renderCaseHeader(c) {
   const nextDateEl = document.getElementById('caseNextHearingDisplay');
   const nextSubEl = document.getElementById('caseNextHearingSub');
 
-  if (c.nextHearingDate) {
-    nextDateEl.innerText = UI.formatDate(c.nextHearingDate);
+  if (c.currentHearingDate) {
+    nextDateEl.innerText = UI.formatDate(c.currentHearingDate);
     nextSubEl.innerText = 'Listed on Cause List';
   } else {
     nextDateEl.innerText = 'Not scheduled';
@@ -118,7 +118,7 @@ function renderOverview(c) {
   const nextHearingEl = document.getElementById('overviewNextHearing');
   if (lastHearingEl) lastHearingEl.innerText = c.lastHearingDate ? UI.formatDate(c.lastHearingDate) : 'Not recorded';
   if (currentHearingEl) currentHearingEl.innerText = c.currentHearingDate ? UI.formatDate(c.currentHearingDate) : 'Not recorded';
-  if (nextHearingEl) nextHearingEl.innerText = c.nextHearingDate ? UI.formatDate(c.nextHearingDate) : 'Not scheduled';
+  if (nextHearingEl) nextHearingEl.innerText = c.currentHearingDate ? UI.formatDate(c.currentHearingDate) : 'Not scheduled';
 }
 
 // 2. Timeline
@@ -456,8 +456,8 @@ function setupActionModals() {
       await API.hearings.recordOutcome(hearingId, {
         status: document.getElementById('outcomeStatusSelect').value,
         outcome: document.getElementById('outcomeText').value.trim(),
-        nextHearingDate: document.getElementById('outcomeNextDate').value || undefined,
-        nextHearingPurpose: document.getElementById('outcomeNextPurpose').value.trim() || undefined
+        nextDate: document.getElementById('outcomeNextDate').value || undefined,
+        nextStage: document.getElementById('outcomeNextPurpose').value.trim() || undefined
       });
 
       UI.showToast('Outcome recorded successfully!', 'success');

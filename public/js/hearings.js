@@ -239,8 +239,8 @@ function setupModals() {
       await API.hearings.recordOutcome(hearingId, {
         status: document.getElementById('outcomeStatus').value,
         outcome: document.getElementById('outcomeSummary').value.trim(),
-        nextHearingDate: document.getElementById('nextDate').value || undefined,
-        nextHearingPurpose: document.getElementById('nextPurpose').value.trim() || undefined
+        nextDate: document.getElementById('nextDate').value || undefined,
+        nextStage: document.getElementById('nextPurpose').value.trim() || undefined
       });
 
       UI.showToast('Hearing outcome recorded!', 'success');

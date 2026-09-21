@@ -88,7 +88,7 @@ exports.exportCaseSummary = async (req, res, next) => {
     const [cases, firm] = await Promise.all([
       Case.find({ lawFirmId: req.user.lawFirmId })
         .populate('clientId', 'name phone')
-        .sort({ nextHearingDate: 1 }),
+        .sort({ currentHearingDate: 1 }),
       LawFirm.findById(req.user.lawFirmId),
     ]);
 
@@ -105,7 +105,7 @@ exports.exportCaseSummary = async (req, res, next) => {
       { label: 'Courtroom', value: (c) => c.courtRoom || c.courtroom || '' },
       { label: 'Stage', value: (c) => c.stage || c.currentStage || '' },
       { label: 'Status', value: 'status' },
-      { label: 'Next Hearing Date', value: (c) => (c.nextHearingDate ? new Date(c.nextHearingDate).toLocaleDateString() : 'N/A') },
+      { label: 'Current Hearing Date', value: (c) => (c.currentHearingDate ? new Date(c.currentHearingDate).toLocaleDateString() : 'N/A') },
       { label: 'Agreed Fee (INR)', value: (c) => c.totalAgreedFee || c.agreedFee || 0 },
     ];
 

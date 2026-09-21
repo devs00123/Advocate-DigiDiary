@@ -137,7 +137,7 @@ const generateCasesExcel = async (cases, firm, res) => {
     { header: 'Courtroom', key: 'courtroom', width: 15 },
     { header: 'Current Stage', key: 'stage', width: 20 },
     { header: 'Status', key: 'status', width: 15 },
-    { header: 'Next Hearing', key: 'nextHearingDate', width: 16 },
+    { header: 'Current Hearing', key: 'currentHearingDate', width: 16 },
     { header: 'Agreed Fee (INR)', key: 'totalAgreedFee', width: 18 },
   ];
 
@@ -159,7 +159,7 @@ const generateCasesExcel = async (cases, firm, res) => {
       courtroom: c.courtRoom || c.courtroom || 'N/A',
       stage: c.stage || c.currentStage || 'Hearing',
       status: c.status,
-      nextHearingDate: c.nextHearingDate ? new Date(c.nextHearingDate).toLocaleDateString() : 'N/A',
+      currentHearingDate: c.currentHearingDate ? new Date(c.currentHearingDate).toLocaleDateString() : 'N/A',
       totalAgreedFee: c.totalAgreedFee || c.agreedFee || 0,
     });
   });

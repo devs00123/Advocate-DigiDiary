@@ -89,10 +89,6 @@ const caseSchema = new mongoose.Schema(
     currentHearingDate: {
       type: Date,
     },
-    nextHearingDate: {
-      type: Date,
-      index: true,
-    },
     currentStage: {
       type: String,
       trim: true,
@@ -158,7 +154,7 @@ caseSchema.index({ lawFirmId: 1, caseNumber: 1 });
 caseSchema.index({ lawFirmId: 1, cnrNumber: 1 });
 caseSchema.index({ lawFirmId: 1, status: 1 });
 caseSchema.index({ lawFirmId: 1, court: 1 });
-caseSchema.index({ lawFirmId: 1, nextHearingDate: 1 });
+caseSchema.index({ lawFirmId: 1, currentHearingDate: 1 });
 caseSchema.index({ lawFirmId: 1, priority: 1 });
 caseSchema.index({ lawFirmId: 1, createdAt: -1 });
 

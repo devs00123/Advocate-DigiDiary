@@ -100,7 +100,7 @@ function renderCases(cases) {
   tbody.innerHTML = cases.map(c => {
     const clientName = c.clientId ? UI.escapeHTML(c.clientId.name) : '<span style="color: var(--text-muted);">No client</span>';
     const cnr = c.cnrNumber ? `<div style="font-size: 0.7rem; color: var(--text-muted); font-family: monospace;">CNR: ${UI.escapeHTML(c.cnrNumber)}</div>` : '';
-    const nextDate = c.nextHearingDate ? UI.formatDate(c.nextHearingDate) : '<span style="color: var(--text-muted); font-size: 0.75rem;">Not scheduled</span>';
+    const nextDate = c.currentHearingDate ? UI.formatDate(c.currentHearingDate) : '<span style="color: var(--text-muted); font-size: 0.75rem;">Not scheduled</span>';
     const feeBilled = c.totalAgreedFee || 0;
     const feePaid = c.totalPaidFee || 0;
     const feeDue = Math.max(0, feeBilled - feePaid);
@@ -248,7 +248,6 @@ function setupEventListeners() {
       description: document.getElementById('caseDescriptionInput').value.trim() || undefined,
       lastHearingDate: document.getElementById('caseLastHearingInput').value || undefined,
       currentHearingDate: document.getElementById('caseCurrentHearingInput').value || undefined,
-      nextHearingDate: document.getElementById('caseNextHearingInput').value || undefined,
     };
 
     try {
@@ -293,7 +292,6 @@ window.openEditCaseModal = async (id) => {
       document.getElementById('caseDescriptionInput').value = c.description || '';
       document.getElementById('caseLastHearingInput').value = c.lastHearingDate ? new Date(c.lastHearingDate).toISOString().split('T')[0] : '';
       document.getElementById('caseCurrentHearingInput').value = c.currentHearingDate ? new Date(c.currentHearingDate).toISOString().split('T')[0] : '';
-      document.getElementById('caseNextHearingInput').value = c.nextHearingDate ? new Date(c.nextHearingDate).toISOString().split('T')[0] : '';
 
       UI.openModal('caseModal');
     }

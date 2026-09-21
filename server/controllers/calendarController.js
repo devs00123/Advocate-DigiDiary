@@ -39,18 +39,11 @@ exports.getCalendarEvents = async (req, res, next) => {
 
       if (h.caseId) {
         const foundCase = await Case.findOne({ _id: h.caseId, lawFirmId: req.user.lawFirmId });
-        if (foundCase && foundCase.nextHearingDate) {
-          const caseNext = new Date(foundCase.nextHearingDate);
-          if (caseNext.getTime() <= startOfToday.getTime()) {
-            if (h.nextDate) {
-              foundCase.nextHearingDate = h.nextDate;
-              foundCase.currentHearingDate = foundCase.nextHearingDate;
-              foundCase.lastHearingDate = h.date;
-            } else {
-              foundCase.lastHearingDate = foundCase.nextHearingDate;
-              foundCase.nextHearingDate = null;
-              foundCase.currentHearingDate = null;
-            }
+        if (foundCase && foundCase.currentHearingDate) {
+          const caseCurrent = new Date(foundCase.currentHearingDate);
+          if (caseCurrent.getTime() <= startOfToday.getTime()) {
+            foundCase.lastHearingDate = foundCase.currentHearingDate;
+            foundCase.currentHearingDate = null;
             foundCase.currentStage = h.nextStage || foundCase.currentStage;
             await foundCase.save();
           }
@@ -62,7 +55,7 @@ exports.getCalendarEvents = async (req, res, next) => {
       Hearing.find({
         lawFirmId: req.user.lawFirmId,
         date: { $gte: startDate, $lte: endDate },
-      }).populate('caseId', 'title caseNumber court courtroom judge priority status clientRepresentation partyRole nextHearingDate'),
+      }).populate('caseId', 'title caseNumber court courtroom judge priority status clientRepresentation partyRole currentHearingDate'),
       Task.find({
         lawFirmId: req.user.lawFirmId,
         dueDate: { $gte: startDate, $lte: endDate },
@@ -107,7 +100,7 @@ exports.getCalendarEvents = async (req, res, next) => {
         date: h.date,
         currentDate: h.date,
         lastDate: lastHearingDate,
-        nextDate: h.nextDate || (h.caseId ? h.caseId.nextHearingDate : null),
+        nextDate: h.nextDate || null,
         appearingFor,
         remarks,
         benchNotes: h.benchNotes || '',
