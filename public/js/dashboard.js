@@ -407,7 +407,7 @@ function setupQuickActionModals() {
   }
 }
 
-// Global modal trigger for recording outcome
+// Global trigger for recording outcome - navigate to Case Portfolio
 window.openRecordOutcomeModal = (hearingId) => {
-  window.location.href = `/hearings.html?hearingId=${hearingId}&action=outcome`;
+  window.location.href = `/cases.html`;
 };

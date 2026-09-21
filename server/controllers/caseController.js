@@ -232,6 +232,7 @@ exports.createCase = async (req, res, next) => {
     const agreedFee = req.body.agreedFee !== undefined ? req.body.agreedFee : (req.body.totalAgreedFee || 0);
     const courtroom = req.body.courtroom || req.body.courtRoom || '';
     const currentStage = req.body.currentStage || req.body.stage || 'Preliminary Hearing';
+    const hearingTime = req.body.hearingTime || req.body.time || '10:00 AM';
 
     const finalCaseNumber = (caseNumber && String(caseNumber).trim()) ? String(caseNumber).trim() : ('MATTER-' + Date.now().toString().slice(-6));
     const finalTitle = (title && String(title).trim()) ? String(title).trim() : 'General Legal Matter';
@@ -271,6 +272,7 @@ exports.createCase = async (req, res, next) => {
       firstHearingDate: firstHearingDate || null,
       lastHearingDate: lastHearingDate || null,
       currentHearingDate: currentHearingDate || null,
+      hearingTime,
       currentStage: currentStage || 'Notice / Summons',
       priority: priority ? priority.toLowerCase() : 'standard',
       status: status || 'Active',
@@ -287,7 +289,7 @@ exports.createCase = async (req, res, next) => {
         caseId: newCase._id,
         clientId: client._id,
         date: new Date(currentHearingDate),
-        time: '10:00 AM',
+        time: hearingTime,
         court: newCase.court,
         courtroom: newCase.courtroom,
         judge: newCase.judge,
@@ -356,6 +358,9 @@ exports.updateCase = async (req, res, next) => {
     if (req.body.firstHearingDate !== undefined) foundCase.firstHearingDate = req.body.firstHearingDate;
     if (req.body.lastHearingDate !== undefined) foundCase.lastHearingDate = req.body.lastHearingDate;
     if (req.body.currentHearingDate !== undefined) foundCase.currentHearingDate = req.body.currentHearingDate;
+    if (req.body.hearingTime !== undefined || req.body.time !== undefined) {
+      foundCase.hearingTime = req.body.hearingTime || req.body.time || '10:00 AM';
+    }
     if (req.body.currentStage !== undefined || req.body.stage !== undefined) {
       foundCase.currentStage = req.body.currentStage !== undefined ? req.body.currentStage : req.body.stage;
     }
@@ -374,9 +379,9 @@ exports.updateCase = async (req, res, next) => {
 
     await foundCase.save();
 
-    // Sync hearing record when currentHearingDate changes
-    if (req.body.currentHearingDate !== undefined) {
-      const newDate = req.body.currentHearingDate ? new Date(req.body.currentHearingDate) : null;
+    // Sync hearing record when currentHearingDate or hearingTime changes
+    if (req.body.currentHearingDate !== undefined || req.body.hearingTime !== undefined || req.body.time !== undefined) {
+      const newDate = foundCase.currentHearingDate ? new Date(foundCase.currentHearingDate) : null;
       if (newDate) {
         const existingHearing = await Hearing.findOne({
           caseId: foundCase._id,
@@ -386,6 +391,7 @@ exports.updateCase = async (req, res, next) => {
 
         if (existingHearing) {
           existingHearing.date = newDate;
+          existingHearing.time = foundCase.hearingTime || existingHearing.time || '10:00 AM';
           existingHearing.court = foundCase.court || existingHearing.court;
           existingHearing.courtroom = foundCase.courtroom || existingHearing.courtroom;
           existingHearing.judge = foundCase.judge || existingHearing.judge;
@@ -397,7 +403,7 @@ exports.updateCase = async (req, res, next) => {
             caseId: foundCase._id,
             clientId: foundCase.clientId,
             date: newDate,
-            time: '10:00 AM',
+            time: foundCase.hearingTime || '10:00 AM',
             court: foundCase.court,
             courtroom: foundCase.courtroom,
             judge: foundCase.judge,

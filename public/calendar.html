@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Court Calendar — Advocate DigiDiary</title>
+  <title>Court Calendar &amp; Daily Cause List — Advocate DigiDiary</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Plus+Jakarta+Sans:wght@500;600;700&display=swap" rel="stylesheet">
@@ -18,6 +18,7 @@
 <body>
 
   <div class="app-container">
+    <!-- Sidebar -->
     <aside class="sidebar" id="appSidebar">
       <div class="sidebar-header">
         <div class="brand-badge">
@@ -30,28 +31,79 @@
           </div>
         </div>
       </div>
+
       <nav class="sidebar-nav">
         <div class="nav-section-label">Chamber</div>
-        <a href="/dashboard.html" class="nav-link"><span class="material-symbols-outlined">dashboard</span><span>Dashboard</span></a>
-        <a href="/cases.html" class="nav-link"><span class="material-symbols-outlined">gavel</span><span>Case Portfolio</span></a>
-        <a href="/hearings.html" class="nav-link"><span class="material-symbols-outlined">calendar_today</span><span>Hearing Diary</span></a>
-        <a href="/calendar.html" class="nav-link active"><span class="material-symbols-outlined">date_range</span><span>Court Calendar</span></a>
-        <a href="/notes.html" class="nav-link"><span class="material-symbols-outlined">edit_note</span><span>Legal Notebook</span></a>
+        <a href="/dashboard.html" class="nav-link">
+          <span class="material-symbols-outlined">dashboard</span>
+          <span>Dashboard</span>
+        </a>
+        <a href="/cases.html" class="nav-link">
+          <span class="material-symbols-outlined">gavel</span>
+          <span>Case Portfolio</span>
+        </a>
+        <a href="/calendar.html" class="nav-link active">
+          <span class="material-symbols-outlined">date_range</span>
+          <span>Court Calendar</span>
+        </a>
+        <a href="/notes.html" class="nav-link">
+          <span class="material-symbols-outlined">edit_note</span>
+          <span>Legal Notebook</span>
+        </a>
+
         <div class="nav-section-label spaced">Practice</div>
-        <a href="/clients.html" class="nav-link"><span class="material-symbols-outlined">group</span><span>Clients</span></a>
-        <a href="/tasks.html" class="nav-link"><span class="material-symbols-outlined">check_box</span><span>Tasks & Deadlines</span></a>
-        <a href="/fees.html" class="nav-link"><span class="material-symbols-outlined">payments</span><span>Fees & Ledger</span></a>
-        <a href="/expenses.html" class="nav-link"><span class="material-symbols-outlined">receipt_long</span><span>Expenses</span></a>
-        <a href="/reminders.html" class="nav-link"><span class="material-symbols-outlined">notifications</span><span>Reminders</span></a>
-        <div class="nav-section-label spaced">Firm & Insights</div>
-        <a href="/analytics.html" class="nav-link"><span class="material-symbols-outlined">insights</span><span>Analytics</span></a>
-        <a href="/reports.html" class="nav-link"><span class="material-symbols-outlined">description</span><span>Reports</span></a>
-        <a href="/team.html" class="nav-link"><span class="material-symbols-outlined">badge</span><span>Firm & Team</span></a>
-        <a href="/audit-logs.html" class="nav-link"><span class="material-symbols-outlined">history</span><span>Audit Logs</span></a>
-        <a href="/profile.html" class="nav-link"><span class="material-symbols-outlined">account_circle</span><span>My Profile</span></a>
-        <a href="/settings.html" class="nav-link"><span class="material-symbols-outlined">settings</span><span>Settings</span></a>
-        <a href="/admin.html" class="nav-link admin-only" id="navAdminLink"><span class="material-symbols-outlined">admin_panel_settings</span><span>Super Admin</span></a>
+        <a href="/clients.html" class="nav-link">
+          <span class="material-symbols-outlined">group</span>
+          <span>Clients</span>
+        </a>
+        <a href="/tasks.html" class="nav-link">
+          <span class="material-symbols-outlined">check_box</span>
+          <span>Tasks &amp; Deadlines</span>
+        </a>
+        <a href="/fees.html" class="nav-link">
+          <span class="material-symbols-outlined">payments</span>
+          <span>Fees &amp; Ledger</span>
+        </a>
+        <a href="/expenses.html" class="nav-link">
+          <span class="material-symbols-outlined">receipt_long</span>
+          <span>Expenses</span>
+        </a>
+        <a href="/reminders.html" class="nav-link">
+          <span class="material-symbols-outlined">notifications</span>
+          <span>Reminders</span>
+        </a>
+
+        <div class="nav-section-label spaced">Firm &amp; Insights</div>
+        <a href="/analytics.html" class="nav-link">
+          <span class="material-symbols-outlined">insights</span>
+          <span>Analytics</span>
+        </a>
+        <a href="/reports.html" class="nav-link">
+          <span class="material-symbols-outlined">description</span>
+          <span>Reports</span>
+        </a>
+        <a href="/team.html" class="nav-link">
+          <span class="material-symbols-outlined">badge</span>
+          <span>Firm &amp; Team</span>
+        </a>
+        <a href="/audit-logs.html" class="nav-link">
+          <span class="material-symbols-outlined">history</span>
+          <span>Audit Logs</span>
+        </a>
+        <a href="/profile.html" class="nav-link">
+          <span class="material-symbols-outlined">account_circle</span>
+          <span>My Profile</span>
+        </a>
+        <a href="/settings.html" class="nav-link">
+          <span class="material-symbols-outlined">settings</span>
+          <span>Settings</span>
+        </a>
+        <a href="/admin.html" class="nav-link admin-only" id="navAdminLink">
+          <span class="material-symbols-outlined">admin_panel_settings</span>
+          <span>Super Admin</span>
+        </a>
       </nav>
+
       <div class="sidebar-footer">
         <div class="user-profile-card">
           <div class="user-profile-info">
@@ -64,13 +116,18 @@
           </button>
         </div>
         <div class="sidebar-status-row">
-          <div class="status-indicator"><div class="status-dot"></div><span>Atlas Connected</span></div>
+          <div class="status-indicator">
+            <div class="status-dot"></div>
+            <span>Atlas Connected</span>
+          </div>
           <span class="role-tag" id="sidebarUserRole">ADVOCATE</span>
         </div>
       </div>
     </aside>
 
+    <!-- Main Content Wrapper -->
     <div class="main-wrapper">
+      <!-- Top Header -->
       <header class="top-header">
         <div class="header-left-group">
           <button class="btn btn-icon btn-sm d-md-none" id="mobileMenuToggle">
@@ -79,96 +136,386 @@
           <div class="header-search">
             <div class="search-input-wrapper">
               <span class="material-symbols-outlined">search</span>
-              <input type="text" class="search-input" id="globalSearchTrigger" placeholder="Search cases, clients, hearings, notes..." readonly>
+              <input type="text" class="search-input" id="globalSearchTrigger" placeholder="Search cases, CNR, clients, courts..." readonly>
               <div class="search-shortcut">Ctrl+K</div>
             </div>
           </div>
         </div>
+
         <div class="header-actions">
-          <button class="btn btn-sm btn-primary" onclick="window.location.href='/hearings.html'">
-            <span class="material-symbols-outlined icon-sm">add</span>
-            <span>Schedule Hearing</span>
+          <button class="btn btn-sm btn-outline" id="printCauseListBtn" title="Print Today's Court Board / Cause List">
+            <span class="material-symbols-outlined icon-sm">print</span>
+            <span>Print Cause List</span>
           </button>
+          <a href="/cases.html" class="btn btn-sm btn-primary">
+            <span class="material-symbols-outlined icon-sm">gavel</span>
+            <span>Case Portfolio</span>
+          </a>
         </div>
       </header>
 
+      <!-- Main Content -->
       <main class="main-content">
-        <div class="cal-card">
-          <div class="cal-toolbar">
-            <div class="cal-toolbar__left">
-              <h1 class="cal-title" id="calendarMonthTitle"></h1>
-              <div class="cal-nav">
-                <button class="cal-nav__btn" id="prevMonthBtn" title="Previous Month">
+        <!-- Page Title & Header -->
+        <div class="cal-page-header">
+          <div>
+            <h1 class="page-title">
+              Court Calendar &amp; Daily Cause List
+            </h1>
+            <p class="page-subtitle">
+              Chamber court appearances, daily cause list board, bench allocations, CNR tracking, and judicial hearing schedules.
+            </p>
+          </div>
+
+          <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+            <a href="/cases.html?action=new" class="btn btn-sm btn-primary">
+              <span class="material-symbols-outlined icon-sm">add</span>
+              <span>Register New Matter</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Metric Counter Strip (Matching Case Portfolio) -->
+        <div class="cal-metrics">
+          <div class="cal-metric-card">
+            <div class="cal-metric-icon cal-metric-icon--navy">
+              <span class="material-symbols-outlined">gavel</span>
+            </div>
+            <div>
+              <div class="cal-metric-value" id="calMetricMonthly">0</div>
+              <div class="cal-metric-label">Listings This Month</div>
+            </div>
+          </div>
+
+          <div class="cal-metric-card">
+            <div class="cal-metric-icon cal-metric-icon--gold">
+              <span class="material-symbols-outlined">today</span>
+            </div>
+            <div>
+              <div class="cal-metric-value" id="calMetricToday">0</div>
+              <div class="cal-metric-label">Today's Court Board</div>
+            </div>
+          </div>
+
+          <div class="cal-metric-card">
+            <div class="cal-metric-icon cal-metric-icon--blue">
+              <span class="material-symbols-outlined">account_balance</span>
+            </div>
+            <div>
+              <div class="cal-metric-value" id="calMetricSuperior">0</div>
+              <div class="cal-metric-label">High Court &amp; Supreme Court</div>
+            </div>
+          </div>
+
+          <div class="cal-metric-card">
+            <div class="cal-metric-icon cal-metric-icon--green">
+              <span class="material-symbols-outlined">balance</span>
+            </div>
+            <div>
+              <div class="cal-metric-value" id="calMetricSubordinate">0</div>
+              <div class="cal-metric-label">District Courts &amp; Tribunals</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Master Calendar Toolbar -->
+        <div class="cal-toolbar-card">
+          <!-- Top Row: Period Navigation & View Switcher -->
+          <div class="cal-toolbar-top">
+            <div class="cal-period-nav">
+              <h2 class="cal-period-title" id="calPeriodTitle">September 2026</h2>
+              <div class="cal-nav-btn-group">
+                <button type="button" class="cal-nav-btn" id="calPrevBtn" title="Previous">
                   <span class="material-symbols-outlined">chevron_left</span>
                 </button>
-                <button class="cal-nav__btn cal-nav__btn--today" id="todayBtn">Today</button>
-                <button class="cal-nav__btn" id="nextMonthBtn" title="Next Month">
+                <button type="button" class="cal-nav-btn cal-nav-btn--today" id="calTodayBtn">Today</button>
+                <button type="button" class="cal-nav-btn" id="calNextBtn" title="Next">
                   <span class="material-symbols-outlined">chevron_right</span>
                 </button>
               </div>
             </div>
-            <div class="cal-toolbar__right">
-              <label class="cal-filter">
-                <input type="checkbox" id="showHearingsCheck" checked>
-                <span class="cal-filter__dot cal-filter__dot--hearing"></span>
-                <span class="cal-filter__label">Hearings</span>
-              </label>
-              <label class="cal-filter">
-                <input type="checkbox" id="showTasksCheck" checked>
-                <span class="cal-filter__dot cal-filter__dot--task"></span>
-                <span class="cal-filter__label">Tasks</span>
-              </label>
-              <label class="cal-filter">
-                <input type="checkbox" id="showRemindersCheck" checked>
-                <span class="cal-filter__dot cal-filter__dot--reminder"></span>
-                <span class="cal-filter__label">Reminders</span>
-              </label>
+
+            <!-- View Switcher -->
+            <div class="cal-view-toggle">
+              <button type="button" class="cal-view-btn active" id="calViewMonthBtn" title="Judicial Month Grid">
+                <span class="material-symbols-outlined" style="font-size: 16px;">calendar_month</span>
+                <span>Month</span>
+              </button>
+              <button type="button" class="cal-view-btn" id="calViewCauseListBtn" title="Daily Cause List / Daily Board">
+                <span class="material-symbols-outlined" style="font-size: 16px;">view_agenda</span>
+                <span>Daily Cause List</span>
+              </button>
+              <button type="button" class="cal-view-btn" id="calViewAgendaBtn" title="Upcoming Agenda List">
+                <span class="material-symbols-outlined" style="font-size: 16px;">format_list_bulleted</span>
+                <span>Agenda</span>
+              </button>
             </div>
           </div>
 
-          <div class="cal-scroll-hint" id="scrollHint">
-            <span class="material-symbols-outlined">swipe</span>
-            <span>Swipe to see all 7 days</span>
-          </div>
-
-          <div class="cal-grid-wrap">
-            <div class="cal-grid" id="calendarGrid">
-              <div class="cal-head">Sun</div>
-              <div class="cal-head">Mon</div>
-              <div class="cal-head">Tue</div>
-              <div class="cal-head">Wed</div>
-              <div class="cal-head">Thu</div>
-              <div class="cal-head">Fri</div>
-              <div class="cal-head">Sat</div>
+          <!-- Bottom Row: Search, Court Filter, Matter Type & Categories -->
+          <div class="cal-toolbar-bottom">
+            <div class="cal-search-box">
+              <span class="material-symbols-outlined">search</span>
+              <input type="text" id="calSearchInput" placeholder="Search cause title, petition no, CNR, client, opposite party, court...">
             </div>
+
+            <div class="cal-filters-row">
+              <select id="calCourtFilter" class="cal-filter-select">
+                <option value="">All Courts / Forums</option>
+                <option value="Supreme Court">Supreme Court of India</option>
+                <option value="High Court">High Court of Delhi</option>
+                <option value="District Court">District Courts</option>
+                <option value="NCLT">NCLT / NCLAT</option>
+                <option value="DRT">DRT / DRAT</option>
+                <option value="Consumer">Consumer Forum / Commission</option>
+                <option value="Arbitration">Arbitration Tribunal</option>
+              </select>
+
+              <select id="calTypeFilter" class="cal-filter-select">
+                <option value="">All Matter Types</option>
+                <option value="Civil Suit">Civil Suit</option>
+                <option value="Criminal">Criminal</option>
+                <option value="Commercial">Commercial</option>
+                <option value="Arbitration">Arbitration</option>
+                <option value="Writ Petition">Writ Petition</option>
+                <option value="Special Leave Petition">SLP (Supreme Court)</option>
+                <option value="Taxation">Taxation</option>
+              </select>
+
+              <div class="cal-category-toggles">
+                <label class="cal-cat-check">
+                  <input type="checkbox" id="calCatHearings" checked>
+                  <span class="cal-cat-dot cal-cat-dot--hearing"></span>
+                  <span>Hearings</span>
+                </label>
+                <label class="cal-cat-check">
+                  <input type="checkbox" id="calCatTasks" checked>
+                  <span class="cal-cat-dot cal-cat-dot--task"></span>
+                  <span>Tasks</span>
+                </label>
+                <label class="cal-cat-check">
+                  <input type="checkbox" id="calCatReminders" checked>
+                  <span class="cal-cat-dot cal-cat-dot--reminder"></span>
+                  <span>Reminders</span>
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 1. Judicial Month Grid Container -->
+        <div id="calendarMonthContainer">
+          <div class="cal-month-wrap">
+            <div class="cal-month-scroll">
+              <div class="cal-month-grid" id="calendarMonthGrid">
+                <div class="cal-head-day cal-head-day--weekend">Sun</div>
+                <div class="cal-head-day">Mon</div>
+                <div class="cal-head-day">Tue</div>
+                <div class="cal-head-day">Wed</div>
+                <div class="cal-head-day">Thu</div>
+                <div class="cal-head-day">Fri</div>
+                <div class="cal-head-day cal-head-day--weekend">Sat</div>
+                <!-- Grid Days will be dynamically generated by JS -->
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2. Daily Cause List (Court Board) Container (Hidden by default) -->
+        <div id="calendarCauseListContainer" style="display: none;">
+          <div class="causelist-container" id="causeListContent">
+            <!-- Cause list content generated dynamically -->
+          </div>
+        </div>
+
+        <!-- 3. Upcoming Agenda Container (Hidden by default) -->
+        <div id="calendarAgendaContainer" style="display: none;">
+          <div class="agenda-container" id="agendaContent">
+            <!-- Agenda content generated dynamically -->
           </div>
         </div>
       </main>
     </div>
   </div>
 
-  <div class="modal-backdrop" id="eventModal">
-    <div class="modal-dialog cal-modal">
-      <div class="modal-header">
-        <h3 class="modal-title" id="eventModalTitle">Calendar Item</h3>
-        <button class="modal-close" onclick="UI.closeModal('eventModal')">&times;</button>
+  <!-- Comprehensive 17-Field Legal Docket Modal -->
+  <div class="modal-backdrop" id="calendarEventModal">
+    <div class="modal-dialog cal-modal-dialog">
+      <!-- Banner -->
+      <div class="cal-modal-banner">
+        <button type="button" class="modal-close" onclick="UI.closeModal('calendarEventModal')">&times;</button>
+        <h2 class="cal-modal-cause-title" id="calModalTitle">Case Title / Cause Title</h2>
+        <div class="cal-modal-meta-bar" id="calModalMetaBar">
+          <!-- Badges & CNR will be injected here -->
+        </div>
       </div>
-      <div class="modal-body" id="eventModalBody"></div>
-      <div class="modal-footer" id="eventModalFooter">
-        <button type="button" class="btn btn-outline" onclick="UI.closeModal('eventModal')">Close</button>
-      </div>
-    </div>
-  </div>
 
-  <div class="modal-backdrop" id="dayModal">
-    <div class="modal-dialog cal-modal cal-modal--day">
-      <div class="modal-header">
-        <h3 class="modal-title" id="dayModalTitle">Events</h3>
-        <button class="modal-close" onclick="UI.closeModal('dayModal')">&times;</button>
+      <!-- Section 1: Court Particulars & Bench -->
+      <div class="cal-modal-section">
+        <div class="cal-modal-section-title">
+          <span class="material-symbols-outlined" style="font-size: 16px; color: var(--gold-600);">account_balance</span>
+          <span>Court Particulars &amp; Bench Allocation</span>
+        </div>
+        <div class="cal-modal-grid-2">
+          <div>
+            <span class="cal-modal-field-label">Court / Forum</span>
+            <div class="cal-modal-field-value" id="calModalCourt">-</div>
+          </div>
+          <div>
+            <span class="cal-modal-field-label">Court Room / Bench</span>
+            <div class="cal-modal-field-value" id="calModalCourtroom">-</div>
+          </div>
+          <div>
+            <span class="cal-modal-field-label">Presiding Bench / Judge</span>
+            <div class="cal-modal-field-value" id="calModalJudge">-</div>
+          </div>
+          <div>
+            <span class="cal-modal-field-label">Matter Type</span>
+            <div class="cal-modal-field-value" id="calModalCaseType">-</div>
+          </div>
+        </div>
       </div>
-      <div class="modal-body" id="dayModalBody"></div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-outline" onclick="UI.closeModal('dayModal')">Close</button>
+
+      <!-- Section 2: Parties & Representation -->
+      <div class="cal-modal-section">
+        <div class="cal-modal-section-title">
+          <span class="material-symbols-outlined" style="font-size: 16px; color: var(--gold-600);">group</span>
+          <span>Parties &amp; Chamber Representation</span>
+        </div>
+        <div class="cal-modal-grid-2">
+          <div>
+            <span class="cal-modal-field-label">Client Name</span>
+            <div class="cal-modal-field-value" id="calModalClient">-</div>
+          </div>
+          <div>
+            <span class="cal-modal-field-label">Representing</span>
+            <div class="cal-modal-field-value cal-modal-field-value--gold" id="calModalRepresenting">-</div>
+          </div>
+          <div>
+            <span class="cal-modal-field-label">Opposite Party Name</span>
+            <div class="cal-modal-field-value" id="calModalOppParty">-</div>
+          </div>
+          <div>
+            <span class="cal-modal-field-label">Opposite Advocate / Counsel</span>
+            <div class="cal-modal-field-value" id="calModalOppCounsel">-</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section 3: Schedule & Professional Fees -->
+      <div class="cal-modal-section">
+        <div class="cal-modal-section-title">
+          <span class="material-symbols-outlined" style="font-size: 16px; color: var(--gold-600);">event_repeat</span>
+          <span>Hearing Schedule &amp; Professional Fee Journal</span>
+        </div>
+        <div class="cal-modal-timeline-box">
+          <div class="cal-modal-timeline-item">
+            <span class="cal-modal-field-label">Last Hearing Date</span>
+            <strong style="color: var(--navy-900); font-size: 0.9375rem;" id="calModalLastHearing">dd-mm-yyyy</strong>
+          </div>
+          <div class="cal-modal-timeline-item">
+            <span class="cal-modal-field-label">Current Hearing Date &amp; Time</span>
+            <strong style="color: var(--gold-700); font-size: 0.9375rem;" id="calModalCurrentHearing">dd-mm-yyyy</strong>
+          </div>
+        </div>
+        <div style="margin-top: 0.75rem; display: flex; justify-content: space-between; align-items: center;">
+          <span class="cal-modal-field-label" style="margin: 0;">Agreed Professional Fee (₹)</span>
+          <strong style="color: #059669; font-size: 1rem; font-family: var(--font-headline);" id="calModalFee">₹0</strong>
+        </div>
+      </div>
+
+      <!-- Section 4: Matter Synopsis / Chamber Notes -->
+      <div class="cal-modal-section">
+        <div class="cal-modal-section-title">
+          <span class="material-symbols-outlined" style="font-size: 16px; color: var(--gold-600);">notes</span>
+          <span>Matter Synopsis / Chamber Notes</span>
+        </div>
+        <blockquote class="cal-modal-notes-quote" id="calModalSynopsis">
+          No chamber notes recorded.
+        </blockquote>
+      </div>
+
+      <!-- Section 5: Auto-Update Hearing Schedule Form -->
+      <div class="cal-modal-section" id="calModalRescheduleSection">
+        <div class="cal-modal-reschedule">
+          <div class="cal-modal-reschedule-title">
+            <span class="material-symbols-outlined">edit_calendar</span>
+            <span>Record Court Directions &amp; Set Next Hearing Date</span>
+          </div>
+          <form id="calRescheduleForm">
+            <div class="cal-modal-grid-2" style="margin-bottom: 0.75rem;">
+              <div>
+                <label class="form-label" style="font-size: 0.75rem;">Next Hearing Date (dd-mm-yyyy)</label>
+                <input type="date" id="calFormNextDate" class="form-control" style="padding: 6px 10px; font-size: 0.8125rem;">
+              </div>
+              <div>
+                <label class="form-label" style="font-size: 0.75rem;">Next Hearing Time</label>
+                <input type="text" id="calFormNextTime" class="form-control" placeholder="10:00 AM" list="timePresetsCal" style="padding: 6px 10px; font-size: 0.8125rem;">
+                <datalist id="timePresetsCal">
+                  <option value="10:00 AM"></option>
+                  <option value="10:30 AM"></option>
+                  <option value="11:00 AM"></option>
+                  <option value="11:30 AM"></option>
+                  <option value="12:00 PM"></option>
+                  <option value="02:00 PM"></option>
+                  <option value="02:30 PM"></option>
+                  <option value="03:00 PM"></option>
+                  <option value="03:30 PM"></option>
+                  <option value="04:00 PM"></option>
+                </datalist>
+              </div>
+            </div>
+
+            <div class="cal-modal-grid-2" style="margin-bottom: 0.75rem;">
+              <div>
+                <label class="form-label" style="font-size: 0.75rem;">Next Procedural Stage</label>
+                <select id="calFormNextStage" class="form-control" style="padding: 6px 10px; font-size: 0.8125rem;">
+                  <option value="Notice / Summons">Notice / Summons</option>
+                  <option value="Pleadings / Written Statement">Pleadings / Written Statement</option>
+                  <option value="Admission / Denial of Documents">Admission / Denial</option>
+                  <option value="Framing of Issues">Framing of Issues</option>
+                  <option value="Plaintiff / Petitioner Evidence">Petitioner Evidence</option>
+                  <option value="Defendant / Respondent Evidence">Respondent Evidence</option>
+                  <option value="Final Arguments">Final Arguments</option>
+                  <option value="Reserved for Judgment / Orders">Reserved for Orders</option>
+                  <option value="Disposed / Decided">Disposed / Decided</option>
+                </select>
+              </div>
+              <div>
+                <label class="form-label" style="font-size: 0.75rem;">Current Hearing Status</label>
+                <select id="calFormHearingStatus" class="form-control" style="padding: 6px 10px; font-size: 0.8125rem;">
+                  <option value="Completed">Completed / Passed Over</option>
+                  <option value="Scheduled">Scheduled</option>
+                  <option value="Adjourned">Adjourned</option>
+                </select>
+              </div>
+            </div>
+
+            <div style="margin-bottom: 0.75rem;">
+              <label class="form-label" style="font-size: 0.75rem;">Bench Directions / Hearing Remarks</label>
+              <input type="text" id="calFormRemarks" class="form-control" placeholder="E.g., Notice issued returnable in 4 weeks, interim relief extended" style="padding: 6px 10px; font-size: 0.8125rem;">
+            </div>
+
+            <div style="display: flex; justify-content: flex-end;">
+              <button type="submit" class="btn btn-sm btn-primary" id="calSaveRescheduleBtn">
+                <span class="material-symbols-outlined" style="font-size: 16px;">sync</span>
+                <span>Save Court Directions &amp; Advance Case</span>
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <!-- Modal Footer -->
+      <div class="modal-footer" style="padding: 1rem 2rem; background: var(--surface-low); border-top: 1px solid var(--border-light); display: flex; justify-content: space-between; align-items: center;">
+        <div style="display: flex; gap: 0.5rem;" id="calModalActionLinks">
+          <a href="#" class="btn btn-primary btn-sm" id="calModalCasePortfolioLink">
+            <span class="material-symbols-outlined" style="font-size: 16px; margin-right: 4px;">gavel</span>
+            <span>View in Case Portfolio</span>
+          </a>
+          <a href="#" class="btn btn-outline btn-sm" id="calModalCaseDocketLink">Case Docket</a>
+        </div>
+        <button type="button" class="btn btn-outline btn-sm" onclick="UI.closeModal('calendarEventModal')">Close</button>
       </div>
     </div>
   </div>

@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Case Portfolio — Advocate DigiDiary</title>
+  <title>Case Portfolio &amp; Dockets — Advocate DigiDiary</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Plus+Jakarta+Sans:wght@500;600;700&display=swap" rel="stylesheet">
@@ -12,6 +12,7 @@
   <link rel="stylesheet" href="/css/global.css">
   <link rel="stylesheet" href="/css/layout.css">
   <link rel="stylesheet" href="/css/components.css">
+  <link rel="stylesheet" href="/css/cases.css">
   <link rel="stylesheet" href="/css/responsive.css">
 </head>
 <body>
@@ -41,10 +42,6 @@
           <span class="material-symbols-outlined">gavel</span>
           <span>Case Portfolio</span>
         </a>
-        <a href="/hearings.html" class="nav-link">
-          <span class="material-symbols-outlined">calendar_today</span>
-          <span>Hearing Diary</span>
-        </a>
         <a href="/calendar.html" class="nav-link">
           <span class="material-symbols-outlined">date_range</span>
           <span>Court Calendar</span>
@@ -61,11 +58,11 @@
         </a>
         <a href="/tasks.html" class="nav-link">
           <span class="material-symbols-outlined">check_box</span>
-          <span>Tasks & Deadlines</span>
+          <span>Tasks &amp; Deadlines</span>
         </a>
         <a href="/fees.html" class="nav-link">
           <span class="material-symbols-outlined">payments</span>
-          <span>Fees & Ledger</span>
+          <span>Fees &amp; Ledger</span>
         </a>
         <a href="/expenses.html" class="nav-link">
           <span class="material-symbols-outlined">receipt_long</span>
@@ -76,7 +73,7 @@
           <span>Reminders</span>
         </a>
 
-        <div class="nav-section-label spaced">Firm & Insights</div>
+        <div class="nav-section-label spaced">Firm &amp; Insights</div>
         <a href="/analytics.html" class="nav-link">
           <span class="material-symbols-outlined">insights</span>
           <span>Analytics</span>
@@ -87,7 +84,7 @@
         </a>
         <a href="/team.html" class="nav-link">
           <span class="material-symbols-outlined">badge</span>
-          <span>Firm & Team</span>
+          <span>Firm &amp; Team</span>
         </a>
         <a href="/audit-logs.html" class="nav-link">
           <span class="material-symbols-outlined">history</span>
@@ -135,16 +132,20 @@
           <div class="header-search">
             <div class="search-input-wrapper">
               <span class="material-symbols-outlined">search</span>
-              <input type="text" class="search-input" id="globalSearchTrigger" placeholder="Search cases, clients, hearings, notes..." readonly>
+              <input type="text" class="search-input" id="globalSearchTrigger" placeholder="Search cases, CNR, clients, courts..." readonly>
               <div class="search-shortcut">Ctrl+K</div>
             </div>
           </div>
         </div>
 
         <div class="header-actions">
+          <a href="/calendar.html" class="btn btn-sm btn-outline" title="View Court Calendar">
+            <span class="material-symbols-outlined icon-sm">date_range</span>
+            <span>Court Calendar</span>
+          </a>
           <button class="btn btn-sm btn-primary" id="openAddCaseBtn">
             <span class="material-symbols-outlined icon-sm">add</span>
-            <span>Register New Case</span>
+            <span>Register New Matter</span>
           </button>
         </div>
       </header>
@@ -152,172 +153,278 @@
       <!-- Main Content -->
       <main class="main-content">
         <!-- Page Title & Header -->
-        <div class="page-header" style="display: flex; justify-content: space-between; align-items: flex-start;">
+        <div class="page-header" style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 1rem;">
           <div>
             <h1 class="page-title">
-              Case Portfolio & Briefs
+              Case Portfolio &amp; Legal Dockets
             </h1>
             <p class="page-subtitle">
-              Manage active litigation, arbitration matters, appellate briefs and forums
+              Comprehensive chamber portfolio tracking court appearances, CNR registries, bench allocations, representation, and professional fee journals.
             </p>
           </div>
 
-          <div style="display: flex; gap: 0.5rem;">
-            <a href="/api/reports/case-summary?format=excel" target="_blank" class="btn btn-sm btn-outline">
+          <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+            <a href="/calendar.html" class="btn btn-sm btn-outline" style="background: #FFFFFF;">
+              <span class="material-symbols-outlined icon-sm" style="color: var(--gold-700);">calendar_month</span>
+              <span>Court Calendar</span>
+            </a>
+            <a href="/api/reports/case-summary?format=excel" target="_blank" class="btn btn-sm btn-outline" style="background: #FFFFFF;">
               <span class="material-symbols-outlined icon-sm">table_view</span>
               <span>Export Excel</span>
             </a>
-            <a href="/api/reports/case-summary?format=csv" target="_blank" class="btn btn-sm btn-outline">
+            <a href="/api/reports/case-summary?format=csv" target="_blank" class="btn btn-sm btn-outline" style="background: #FFFFFF;">
               <span class="material-symbols-outlined icon-sm">download</span>
               <span>CSV</span>
             </a>
           </div>
         </div>
 
-        <!-- Filter & Search Toolbar -->
-        <div class="card" style="padding: 1rem; margin-bottom: 1.5rem;">
-          <div class="grid grid-cols-12 gap-3" style="align-items: center;">
-            <div class="col-span-5">
-              <div class="input-wrapper">
-                <input type="text" id="caseSearchInput" class="form-control" placeholder="Search by case no, title, CNR, client, or court...">
-                <span class="material-symbols-outlined input-icon">search</span>
-              </div>
+        <!-- Metric Counter Strip -->
+        <div class="portfolio-metrics">
+          <div class="portfolio-metric-card">
+            <div class="portfolio-metric-icon portfolio-metric-icon--navy">
+              <span class="material-symbols-outlined">gavel</span>
             </div>
-
-            <div class="col-span-2">
-              <select id="caseStatusFilter" class="form-control">
-                <option value="">All Statuses</option>
-                <option value="active">Active</option>
-                <option value="pending">Pending Admission</option>
-                <option value="disposed">Disposed / Decided</option>
-                <option value="stayed">Stayed</option>
-                <option value="appealed">Appealed</option>
-                <option value="closed">Closed / Archived</option>
-              </select>
+            <div>
+              <div class="portfolio-metric-value" id="metricTotalCases">0</div>
+              <div class="portfolio-metric-label">Total Briefs Registered</div>
             </div>
+          </div>
 
-            <div class="col-span-2">
-              <select id="caseTypeFilter" class="form-control">
-                <option value="">All Types</option>
-                <option value="Civil">Civil</option>
-                <option value="Criminal">Criminal</option>
-                <option value="Commercial">Commercial</option>
-                <option value="Arbitration">Arbitration</option>
-                <option value="Constitutional">Constitutional</option>
-                <option value="Taxation">Taxation</option>
-              </select>
+          <div class="portfolio-metric-card">
+            <div class="portfolio-metric-icon portfolio-metric-icon--gold">
+              <span class="material-symbols-outlined">schedule</span>
             </div>
+            <div>
+              <div class="portfolio-metric-value" id="metricActiveCases">0</div>
+              <div class="portfolio-metric-label">Active Litigation Matters</div>
+            </div>
+          </div>
 
-            <div class="col-span-3" style="display: flex; justify-content: flex-end; gap: 0.5rem;">
-              <button class="btn btn-sm btn-outline" id="resetFiltersBtn">Reset</button>
-              <button class="btn btn-sm btn-primary" id="applyFiltersBtn">Apply Filters</button>
+          <div class="portfolio-metric-card">
+            <div class="portfolio-metric-icon portfolio-metric-icon--blue">
+              <span class="material-symbols-outlined">calendar_today</span>
+            </div>
+            <div>
+              <div class="portfolio-metric-value" id="metricUpcomingHearings">0</div>
+              <div class="portfolio-metric-label">Hearings Scheduled</div>
+            </div>
+          </div>
+
+          <div class="portfolio-metric-card">
+            <div class="portfolio-metric-icon portfolio-metric-icon--green">
+              <span class="material-symbols-outlined">payments</span>
+            </div>
+            <div>
+              <div class="portfolio-metric-value" id="metricTotalFees">₹0</div>
+              <div class="portfolio-metric-label">Agreed Professional Fees</div>
             </div>
           </div>
         </div>
 
-        <!-- Case Portfolio Table Card -->
-        <div class="card card--flush">
-          <div class="table-container table-container--flush">
-            <table class="data-table">
-              <thead>
-                <tr>
-                  <th style="width: 140px;">Case Identifier</th>
-                  <th>Title & Client</th>
-                  <th>Court & Bench</th>
-                  <th>Stage</th>
-                  <th>Current Hearing</th>
-                  <th>Fee Status</th>
-                  <th class="table-action-th">Action</th>
-                </tr>
-              </thead>
-              <tbody id="caseTableBody">
-                <tr>
-                  <td colspan="7" class="td-loading">
-                    Loading cases portfolio...
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
+        <!-- Filter & Search Toolbar -->
+        <div class="portfolio-toolbar">
+          <div class="portfolio-toolbar-row">
+            <div class="portfolio-search-group">
+              <span class="material-symbols-outlined input-icon">search</span>
+              <input type="text" id="caseSearchInput" class="form-control" placeholder="Search by case title, petition no, 16-digit CNR, client, opposite party, or court...">
+            </div>
 
-          <!-- Pagination Bar -->
-          <div style="padding: 1rem 1.5rem; border-top: 1px solid var(--border-light); display: flex; justify-content: space-between; align-items: center; background: #FAFBFD;">
-            <div style="font-size: 0.8125rem; color: var(--text-muted);" id="paginationInfo">
-              Showing 0-0 of 0 cases
+            <div class="portfolio-filters-group">
+              <select id="caseStatusFilter" class="form-control" style="width: auto; min-width: 140px;">
+                <option value="">All Statuses</option>
+                <option value="Active">Active</option>
+                <option value="Pending">Pending Admission</option>
+                <option value="Hearing">Hearing in Progress</option>
+                <option value="Reserved">Reserved for Orders</option>
+                <option value="Stayed">Stayed</option>
+                <option value="Disposed">Disposed / Decided</option>
+                <option value="Closed">Closed / Archived</option>
+              </select>
+
+              <select id="caseTypeFilter" class="form-control" style="width: auto; min-width: 130px;">
+                <option value="">All Matter Types</option>
+                <option value="Civil Suit">Civil Suit</option>
+                <option value="Criminal">Criminal</option>
+                <option value="Commercial">Commercial</option>
+                <option value="Arbitration">Arbitration</option>
+                <option value="Writ Petition">Writ Petition</option>
+                <option value="Special Leave Petition">SLP (Supreme Court)</option>
+                <option value="Taxation">Taxation</option>
+                <option value="Other">Other</option>
+              </select>
+
+              <button class="btn btn-sm btn-outline" id="resetFiltersBtn" title="Reset Filters">Reset</button>
+              <button class="btn btn-sm btn-primary" id="applyFiltersBtn">Apply</button>
+
+              <!-- View Switcher (Cards vs Table) -->
+              <div class="portfolio-view-toggle">
+                <button type="button" class="portfolio-view-btn active" id="viewCardsBtn" title="Grid Cards View">
+                  <span class="material-symbols-outlined" style="font-size: 16px;">grid_view</span>
+                  <span>Cards</span>
+                </button>
+                <button type="button" class="portfolio-view-btn" id="viewTableBtn" title="Data Table View">
+                  <span class="material-symbols-outlined" style="font-size: 16px;">table_rows</span>
+                  <span>Table</span>
+                </button>
+              </div>
             </div>
-            <div style="display: flex; gap: 0.5rem;" id="paginationControls">
-              <button class="btn btn-sm btn-outline" id="prevPageBtn" disabled>Previous</button>
-              <button class="btn btn-sm btn-outline" id="nextPageBtn" disabled>Next</button>
+          </div>
+        </div>
+
+        <!-- Portfolio Cards View Container -->
+        <div id="portfolioCardsContainer">
+          <div class="portfolio-grid" id="caseGridBody">
+            <div style="grid-column: 1 / -1; text-align: center; padding: 3rem; color: var(--text-muted);">
+              Loading legal portfolio...
             </div>
+          </div>
+        </div>
+
+        <!-- Portfolio Table View Container (Hidden by default) -->
+        <div id="portfolioTableContainer" style="display: none;">
+          <div class="card card--flush">
+            <div class="table-container table-container--flush">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th style="min-width: 200px;">Case Title &amp; Details</th>
+                    <th style="min-width: 150px;">Petition &amp; CNR No.</th>
+                    <th style="min-width: 180px;">Court &amp; Bench</th>
+                    <th style="min-width: 180px;">Client &amp; Representation</th>
+                    <th style="min-width: 160px;">Opposite Party &amp; Counsel</th>
+                    <th style="min-width: 130px;">Stage &amp; Status</th>
+                    <th style="min-width: 170px;">Hearing Dates &amp; Time</th>
+                    <th style="min-width: 130px;">Agreed Fee</th>
+                    <th class="table-action-th">Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="caseTableBody">
+                  <tr>
+                    <td colspan="9" class="td-loading">Loading legal cases...</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- Pagination Bar -->
+        <div class="card" style="margin-top: 1.25rem; padding: 0.875rem 1.25rem; display: flex; justify-content: space-between; align-items: center; background: #FAFBFD;">
+          <div style="font-size: 0.8125rem; color: var(--text-muted);" id="paginationInfo">
+            Showing 0-0 of 0 cases
+          </div>
+          <div style="display: flex; gap: 0.5rem;" id="paginationControls">
+            <button class="btn btn-sm btn-outline" id="prevPageBtn" disabled>Previous</button>
+            <button class="btn btn-sm btn-outline" id="nextPageBtn" disabled>Next</button>
           </div>
         </div>
       </main>
     </div>
   </div>
 
-  <!-- Add Case Modal -->
+  <!-- Register / Edit Case Modal (Includes all 17 fields) -->
   <div class="modal-backdrop" id="caseModal">
-    <div class="modal-dialog" style="max-width: 680px;">
+    <div class="modal-dialog" style="max-width: 840px;">
       <div class="modal-header">
         <h3 class="modal-title" id="modalCaseTitleText">Register New Matter</h3>
         <button class="modal-close" onclick="UI.closeModal('caseModal')">&times;</button>
       </div>
       <form id="caseForm">
         <input type="hidden" id="editCaseId">
-        <div class="modal-body" style="max-height: 75vh; overflow-y: auto;">
+        <div class="modal-body" style="max-height: 75vh; overflow-y: auto; padding: 1.5rem;">
+
+          <!-- Section 1: Case Identity & Forum -->
+          <div class="form-section-divider" style="margin-top: 0.5rem;">
+            <span>1. Case Identity &amp; Forum</span>
+          </div>
+
           <div class="form-group">
-            <label class="form-label" for="caseTitleInput">Case Title / Cause Title</label>
-            <input type="text" id="caseTitleInput" class="form-control" placeholder="e.g. Ramesh Kumar vs. State of Delhi & Anr.">
+            <label class="form-label" for="caseTitleInput">Case Title / Cause Title <span style="color: var(--danger);">*</span></label>
+            <input type="text" id="caseTitleInput" class="form-control" placeholder="e.g. Ramesh Kumar vs. State of Delhi &amp; Anr." required>
+            <span class="helper-text">Full title of the matter as filed in the court registry</span>
           </div>
 
           <div class="grid grid-cols-2 gap-4">
             <div class="form-group">
-              <label class="form-label" for="caseNumberInput">Case / Petition No.</label>
-              <input type="text" id="caseNumberInput" class="form-control" placeholder="WP(C) 12450/2024">
+              <label class="form-label" for="caseNumberInput">Case / Petition No. <span style="color: var(--danger);">*</span></label>
+              <input type="text" id="caseNumberInput" class="form-control" placeholder="e.g. WP(C) 12450/2024, CS(OS) 342/2023" required>
             </div>
             <div class="form-group">
               <label class="form-label" for="caseCnrInput">CNR Number (16-Digit)</label>
-              <input type="text" id="caseCnrInput" class="form-control font-mono" placeholder="DLDH010023452024" maxlength="16">
-            </div>
-          </div>
-
-          <div class="grid grid-cols-2 gap-4">
-            <div class="form-group">
-              <label class="form-label" for="caseCourtInput">Court / Forum</label>
-              <input type="text" id="caseCourtInput" class="form-control" placeholder="High Court of Delhi">
-            </div>
-            <div class="form-group">
-              <label class="form-label" for="caseCourtRoomInput">Court Room / Bench</label>
-              <input type="text" id="caseCourtRoomInput" class="form-control" placeholder="Court No. 14, Hon'ble DB-I">
+              <input type="text" id="caseCnrInput" class="form-control font-mono" placeholder="DLDH010023452024" maxlength="16" style="letter-spacing: 0.05em; text-transform: uppercase;">
+              <span class="helper-text">16-character unique national court identifier</span>
             </div>
           </div>
 
           <div class="grid grid-cols-3 gap-4">
             <div class="form-group">
+              <label class="form-label" for="caseCourtInput">Court / Forum <span style="color: var(--danger);">*</span></label>
+              <input type="text" id="caseCourtInput" class="form-control" placeholder="e.g. Supreme Court of India, High Court of Delhi" required list="courtSuggestions">
+              <datalist id="courtSuggestions">
+                <option value="Supreme Court of India"></option>
+                <option value="High Court of Delhi"></option>
+                <option value="High Court of Bombay"></option>
+                <option value="High Court of Punjab &amp; Haryana"></option>
+                <option value="High Court of Allahabad"></option>
+                <option value="National Company Law Tribunal (NCLT)"></option>
+                <option value="National Company Law Appellate Tribunal (NCLAT)"></option>
+                <option value="District &amp; Sessions Court, Saket"></option>
+                <option value="District &amp; Sessions Court, Tis Hazari"></option>
+                <option value="District &amp; Sessions Court, Patiala House"></option>
+                <option value="Debt Recovery Tribunal (DRT)"></option>
+                <option value="Consumer Disputes Redressal Commission"></option>
+                <option value="Arbitration Tribunal"></option>
+              </datalist>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="caseCourtRoomInput">Court Room / Bench</label>
+              <input type="text" id="caseCourtRoomInput" class="form-control" placeholder="e.g. Court No. 14, Hon'ble DB-I">
+            </div>
+
+            <div class="form-group">
               <label class="form-label" for="caseTypeSelect">Matter Type</label>
               <select id="caseTypeSelect" class="form-control">
-                <option value="Civil">Civil</option>
-                <option value="Criminal">Criminal</option>
-                <option value="Commercial">Commercial</option>
-                <option value="Arbitration">Arbitration</option>
-                <option value="Constitutional">Constitutional</option>
-                <option value="Taxation">Taxation</option>
-                <option value="Other">Other</option>
+                <option value="Civil Suit">Civil Suit</option>
+                <option value="Criminal">Criminal Case / Bail</option>
+                <option value="Commercial">Commercial Suit</option>
+                <option value="Arbitration">Arbitration &amp; Conciliation</option>
+                <option value="Writ Petition">Writ Petition</option>
+                <option value="Special Leave Petition">SLP (Supreme Court)</option>
+                <option value="Company / Insolvency">Company Law / IBC</option>
+                <option value="Taxation">Taxation / Customs</option>
+                <option value="Consumer">Consumer Dispute</option>
+                <option value="Matrimonial">Family / Matrimonial</option>
+                <option value="Other">Other Litigation</option>
               </select>
             </div>
+          </div>
+
+          <!-- Section 2: Parties & Representation -->
+          <div class="form-section-divider">
+            <span>2. Parties &amp; Chamber Representation</span>
+          </div>
+
+          <div class="grid grid-cols-2 gap-4">
             <div class="form-group">
-              <label class="form-label" for="caseClientSelect">Client</label>
-              <select id="caseClientSelect" class="form-control">
+              <label class="form-label" for="caseClientSelect">Client <span style="color: var(--danger);">*</span></label>
+              <select id="caseClientSelect" class="form-control" required>
                 <option value="">Select client...</option>
               </select>
             </div>
             <div class="form-group">
               <label class="form-label" for="casePartyRoleSelect">Representing</label>
               <select id="casePartyRoleSelect" class="form-control">
-                <option value="Petitioner">Petitioner / Plaintiff</option>
-                <option value="Respondent">Respondent / Defendant</option>
+                <option value="Petitioner">Petitioner</option>
+                <option value="Respondent">Respondent</option>
+                <option value="Plaintiff">Plaintiff</option>
+                <option value="Defendant">Defendant</option>
                 <option value="Appellant">Appellant</option>
+                <option value="Complainant">Complainant</option>
+                <option value="Accused">Accused / Applicant</option>
                 <option value="Opposite Party">Opposite Party</option>
+                <option value="Other">Other Counsel</option>
               </select>
             </div>
           </div>
@@ -325,58 +432,94 @@
           <div class="grid grid-cols-2 gap-4">
             <div class="form-group">
               <label class="form-label" for="caseOpponent">Opposite Party Name</label>
-              <input type="text" id="caseOpponent" class="form-control" placeholder="Union of India & Ors.">
+              <input type="text" id="caseOpponent" class="form-control" placeholder="e.g. Union of India &amp; Ors., M/s Global Corp">
             </div>
             <div class="form-group">
               <label class="form-label" for="caseOpponentAdvocate">Opposite Advocate / Counsel</label>
-              <input type="text" id="caseOpponentAdvocate" class="form-control" placeholder="Senior Standing Counsel">
+              <input type="text" id="caseOpponentAdvocate" class="form-control" placeholder="e.g. Senior Standing Counsel, Adv. Verma">
             </div>
+          </div>
+
+          <!-- Section 3: Procedural Stage, Status & Fees -->
+          <div class="form-section-divider">
+            <span>3. Current Stage, Status &amp; Financials</span>
           </div>
 
           <div class="grid grid-cols-3 gap-4">
             <div class="form-group">
               <label class="form-label" for="caseStageInput">Current Stage</label>
-              <input type="text" id="caseStageInput" class="form-control" placeholder="Arguments / Notice / Evidence" value="Preliminary Hearing">
+              <input type="text" id="caseStageInput" class="form-control" placeholder="e.g. Notice / Summons, Arguments, Evidence" value="Preliminary Hearing">
             </div>
             <div class="form-group">
               <label class="form-label" for="caseStatusSelect">Status</label>
               <select id="caseStatusSelect" class="form-control">
-                <option value="active">Active</option>
-                <option value="pending">Pending Admission</option>
-                <option value="stayed">Stayed</option>
-                <option value="disposed">Disposed</option>
-                <option value="closed">Closed</option>
+                <option value="Active">Active</option>
+                <option value="Pending">Pending Admission</option>
+                <option value="Hearing">Hearing in Progress</option>
+                <option value="Reserved">Reserved for Orders</option>
+                <option value="Stayed">Stayed</option>
+                <option value="Disposed">Disposed / Decided</option>
+                <option value="Closed">Closed / Archived</option>
               </select>
             </div>
             <div class="form-group">
               <label class="form-label" for="caseAgreedFeeInput">Agreed Professional Fee (₹)</label>
-              <input type="number" id="caseAgreedFeeInput" class="form-control" placeholder="e.g. 75000" min="0">
+              <input type="number" id="caseAgreedFeeInput" class="form-control" placeholder="e.g. 75000" min="0" value="0">
             </div>
+          </div>
+
+          <!-- Section 4: Hearing Schedule & Time -->
+          <div class="form-section-divider">
+            <span>4. Hearing Schedule &amp; Time (dd-mm-yyyy)</span>
           </div>
 
           <div class="grid grid-cols-3 gap-4">
             <div class="form-group">
               <label class="form-label" for="caseLastHearingInput">Last Hearing Date</label>
               <input type="date" id="caseLastHearingInput" class="form-control">
+              <span class="helper-text">Format: dd-mm-yyyy</span>
             </div>
             <div class="form-group">
               <label class="form-label" for="caseCurrentHearingInput">Current Hearing Date</label>
               <input type="date" id="caseCurrentHearingInput" class="form-control">
+              <span class="helper-text">Format: dd-mm-yyyy</span>
             </div>
             <div class="form-group">
-              <label class="form-label" for="caseCurrentHearingInput">Current Hearing Date</label>
-              <input type="date" id="caseCurrentHearingInput" class="form-control">
+              <label class="form-label" for="caseHearingTimeInput">Time:</label>
+              <input type="text" id="caseHearingTimeInput" class="form-control" placeholder="e.g. 10:30 AM" list="hearingTimeSuggestions" value="10:00 AM">
+              <datalist id="hearingTimeSuggestions">
+                <option value="10:00 AM"></option>
+                <option value="10:30 AM"></option>
+                <option value="11:00 AM"></option>
+                <option value="11:30 AM"></option>
+                <option value="12:00 PM"></option>
+                <option value="12:30 PM"></option>
+                <option value="02:00 PM"></option>
+                <option value="02:30 PM"></option>
+                <option value="03:00 PM"></option>
+                <option value="03:30 PM"></option>
+                <option value="04:00 PM"></option>
+              </datalist>
+              <span class="helper-text">Session / Court roster listing time</span>
             </div>
+          </div>
+
+          <!-- Section 5: Matter Synopsis / Chamber Notes -->
+          <div class="form-section-divider">
+            <span>5. Matter Synopsis / Chamber Notes</span>
           </div>
 
           <div class="form-group">
             <label class="form-label" for="caseDescriptionInput">Matter Synopsis / Chamber Notes</label>
-            <textarea id="caseDescriptionInput" class="form-control" rows="3" placeholder="Brief facts of the matter, instructions from client, and relevant statutory provisions..."></textarea>
+            <textarea id="caseDescriptionInput" class="form-control" rows="4" placeholder="Brief facts of the matter, instructions from client, relevant statutory citations, and court arguments outline..."></textarea>
           </div>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-outline" onclick="UI.closeModal('caseModal')">Cancel</button>
-          <button type="submit" class="btn btn-primary" id="saveCaseSubmitBtn">Save Matter</button>
+          <button type="submit" class="btn btn-primary" id="saveCaseSubmitBtn">
+            <span class="material-symbols-outlined icon-sm">save</span>
+            <span>Save Matter</span>
+          </button>
         </div>
       </form>
     </div>

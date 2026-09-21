@@ -167,10 +167,9 @@ function renderSearchResults(data, container, closeFn) {
   // 3. Hearings
   if (hearings.length > 0) {
     html += `<div style="font-family: var(--font-label); font-size: 11px; font-weight: 700; text-transform: uppercase; color: var(--secondary); margin-bottom: 6px; letter-spacing: 0.04em;">Hearings (${hearings.length})</div><div style="display: flex; flex-direction: column; gap: 4px; margin-bottom: 14px;">`;
-    hearings.forEach((h) => {
-      const caseTitle = h.caseId ? h.caseId.title : 'Court Matter';
+      const caseHref = h.caseId ? `/case-details.html?id=${h.caseId._id || h.caseId}` : '/cases.html';
       html += `
-        <a href="/hearings.html" class="search-result-row" style="display: flex; align-items: center; justify-content: space-between; padding: 8px 10px; border-radius: var(--radius-md); background: var(--surface-low); color: var(--on-surface); text-decoration: none; transition: background 0.15s;">
+        <a href="${caseHref}" class="search-result-row" style="display: flex; align-items: center; justify-content: space-between; padding: 8px 10px; border-radius: var(--radius-md); background: var(--surface-low); color: var(--on-surface); text-decoration: none; transition: background 0.15s;">
           <div>
             <div style="font-weight: 600;">${escapeHTML(caseTitle)}</div>
             <div style="font-size: 11px; color: var(--on-surface-variant);">${escapeHTML(h.court)} • ${escapeHTML(h.purpose)} (${new Date(h.date).toLocaleDateString()})</div>

@@ -113,6 +113,11 @@ app.use(express.json({ limit: '2mb' }));
 app.use(express.urlencoded({ extended: true, limit: '2mb' }));
 app.use(cookieParser(process.env.COOKIE_SECRET || 'cookie_secret_key_2026'));
 
+// Redirect removed hearing diary page to case portfolio
+app.get(['/hearings.html', '/hearings'], (req, res) => {
+  res.redirect(301, '/cases.html');
+});
+
 // Static files
 app.use(express.static(path.join(__dirname, '../public')));
 

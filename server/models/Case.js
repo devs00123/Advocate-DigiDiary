@@ -89,6 +89,11 @@ const caseSchema = new mongoose.Schema(
     currentHearingDate: {
       type: Date,
     },
+    hearingTime: {
+      type: String,
+      trim: true,
+      default: '10:00 AM',
+    },
     currentStage: {
       type: String,
       trim: true,

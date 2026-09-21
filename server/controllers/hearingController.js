@@ -26,15 +26,17 @@ exports.listHearings = async (req, res, next) => {
       h.outcome = h.outcome || 'Completed (auto-advanced)';
       await h.save();
 
-      // Sync case: if this was the currentHearingDate, move to lastHearingDate and clear
+      // Sync case: only advance if strictly in the past and nextDate is provided
       if (h.caseId) {
         const foundCase = await Case.findOne({ _id: h.caseId, lawFirmId: req.user.lawFirmId });
         if (foundCase && foundCase.currentHearingDate) {
           const caseCurrent = new Date(foundCase.currentHearingDate);
-          if (caseCurrent.getTime() <= startOfToday.getTime()) {
+          if (caseCurrent.getTime() < startOfToday.getTime()) {
             foundCase.lastHearingDate = foundCase.currentHearingDate;
-            foundCase.currentHearingDate = null;
-            foundCase.currentStage = h.nextStage || foundCase.currentStage;
+            if (h.nextDate && new Date(h.nextDate).getTime() >= startOfToday.getTime()) {
+              foundCase.currentHearingDate = h.nextDate;
+            }
+            if (h.nextStage) foundCase.currentStage = h.nextStage;
             await foundCase.save();
           }
         }
@@ -293,7 +295,7 @@ exports.updateHearing = async (req, res, next) => {
     if (nextDateVal) {
       const foundCase = await Case.findOne({ _id: hearing.caseId, lawFirmId: req.user.lawFirmId });
       if (foundCase) {
-        foundCase.lastHearingDate = foundCase.currentHearingDate;
+        foundCase.lastHearingDate = hearing.date || foundCase.currentHearingDate;
         foundCase.currentHearingDate = new Date(nextDateVal);
         if (nextStageVal) foundCase.currentStage = nextStageVal;
         await foundCase.save();
@@ -321,6 +323,14 @@ exports.updateHearing = async (req, res, next) => {
             createdBy: req.user._id,
           });
         }
+      }
+    } else if (req.body.date && hearing.caseId) {
+      const foundCase = await Case.findOne({ _id: hearing.caseId, lawFirmId: req.user.lawFirmId });
+      if (foundCase) {
+        foundCase.currentHearingDate = new Date(req.body.date);
+        if (req.body.time) foundCase.hearingTime = req.body.time;
+        if (req.body.benchNotes || req.body.remarks) foundCase.currentStage = req.body.benchNotes || req.body.remarks;
+        await foundCase.save();
       }
     }
 
@@ -399,10 +409,12 @@ exports.getCauseList = async (req, res, next) => {
         const foundCase = await Case.findOne({ _id: h.caseId, lawFirmId: req.user.lawFirmId });
         if (foundCase && foundCase.currentHearingDate) {
           const caseCurrent = new Date(foundCase.currentHearingDate);
-          if (caseCurrent.getTime() <= startOfToday.getTime()) {
+          if (caseCurrent.getTime() < startOfToday.getTime()) {
             foundCase.lastHearingDate = foundCase.currentHearingDate;
-            foundCase.currentHearingDate = null;
-            foundCase.currentStage = h.nextStage || foundCase.currentStage;
+            if (h.nextDate && new Date(h.nextDate).getTime() >= startOfToday.getTime()) {
+              foundCase.currentHearingDate = h.nextDate;
+            }
+            if (h.nextStage) foundCase.currentStage = h.nextStage;
             await foundCase.save();
           }
         }
