@@ -1,5 +1,41 @@
 /* Advocate DigiDiary — Responsive Design System */
 
+/* Universal anti-overflow and touch normalization */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html, body {
+  max-width: 100vw;
+  overflow-x: hidden;
+}
+
+img, svg, video, canvas, audio, iframe {
+  max-width: 100%;
+  height: auto;
+}
+
+input, select, textarea, button {
+  max-width: 100%;
+}
+
+/* Touch scrollbar normalization for tables and code blocks */
+.table-container::-webkit-scrollbar,
+.causelist-table-wrap::-webkit-scrollbar,
+.cal-month-scroll::-webkit-scrollbar,
+.portfolio-table-wrap::-webkit-scrollbar {
+  height: 6px;
+  width: 6px;
+}
+
+.table-container::-webkit-scrollbar-thumb,
+.causelist-table-wrap::-webkit-scrollbar-thumb,
+.cal-month-scroll::-webkit-scrollbar-thumb,
+.portfolio-table-wrap::-webkit-scrollbar-thumb {
+  background: rgba(10, 17, 40, 0.2);
+  border-radius: 999px;
+}
+
 /* ==========================================================================
    LAPTOP & SMALL DESKTOP (1280px - 1439px)
    ========================================================================== */
@@ -157,11 +193,16 @@
    ========================================================================== */
 @media (max-width: 767px) {
   .top-header {
+    position: sticky;
+    top: 0;
+    left: 0;
+    right: 0;
     height: auto;
     min-height: 56px;
     padding: 8px 12px;
     flex-wrap: wrap;
     gap: 8px;
+    z-index: 40;
   }
 
   .top-header .flex-center,
@@ -180,7 +221,7 @@
   }
 
   .main-content {
-    margin-top: auto;
+    margin-top: 0;
     padding: 14px 12px 80px;
     min-height: calc(100vh - 56px);
   }
@@ -493,13 +534,14 @@
 
   /* Modal forms — ensure footer always visible */
   .modal-dialog {
-    max-height: 95vh;
-    margin: 4px;
+    max-height: 94vh;
+    margin: 8px auto;
   }
 
   .modal-body {
-    max-height: 60vh !important;
+    max-height: calc(94vh - 130px) !important;
     overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
   }
 
   .modal-footer {
@@ -621,14 +663,18 @@
   }
 
   .modal-dialog {
-    width: 100%;
-    max-width: 100%;
-    margin: 4px;
+    width: 96% !important;
+    max-width: 96% !important;
+    max-height: 94vh !important;
+    margin: 6px auto !important;
     border-radius: var(--radius-lg);
   }
 
   .modal-body {
     padding: 12px;
+    max-height: calc(94vh - 110px) !important;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
   }
 
   .modal-footer {
@@ -670,5 +716,16 @@
   .mobile-header-brand,
   .mobile-user-avatar {
     display: none !important;
+  }
+}
+
+/* ==========================================================================
+   ULTRA-WIDE SCREENS (> 1600px / 4K)
+   ========================================================================== */
+@media (min-width: 1600px) {
+  .main-content {
+    max-width: 1720px;
+    margin-left: auto;
+    margin-right: auto;
   }
 }

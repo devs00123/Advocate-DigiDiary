@@ -6,7 +6,7 @@
 /* Metric Counter Strip */
 .portfolio-metrics {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
   gap: 1rem;
   margin-bottom: 1.5rem;
 }
@@ -99,7 +99,8 @@
 }
 
 .portfolio-search-group {
-  flex: 1 1 340px;
+  flex: 1 1 260px;
+  min-width: 0;
   position: relative;
 }
 
@@ -157,7 +158,7 @@
 /* Portfolio Card Grid */
 .portfolio-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 340px), 1fr));
   gap: 1.25rem;
 }
 
@@ -420,4 +421,122 @@
   color: var(--text-muted, #64748B);
   margin-top: 3px;
   display: block;
+}
+
+/* =============================================================
+   Responsive Adjustments for Case Portfolio
+   ============================================================= */
+
+@media (max-width: 991px) {
+  .portfolio-toolbar-row {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.75rem;
+  }
+
+  .portfolio-search-group {
+    width: 100%;
+    flex: 1 1 100%;
+  }
+
+  .portfolio-filters-group {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .portfolio-filters-group select {
+    flex: 1 1 140px;
+  }
+
+  .portfolio-view-toggle {
+    margin-left: auto;
+  }
+}
+
+@media (max-width: 767px) {
+  .portfolio-metrics {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.75rem;
+  }
+
+  .portfolio-metric-card {
+    padding: 0.875rem 1rem;
+    gap: 0.75rem;
+  }
+
+  .portfolio-metric-icon {
+    width: 40px;
+    height: 40px;
+    font-size: 20px;
+  }
+
+  .portfolio-metric-value {
+    font-size: 1.375rem;
+  }
+
+  .portfolio-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .case-card {
+    padding: 1rem;
+  }
+
+  .case-card__header {
+    flex-wrap: wrap;
+  }
+
+  .case-card__meta-grid {
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+  }
+
+  .case-card__footer {
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .portfolio-filters-group {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .portfolio-filters-group select,
+  .portfolio-filters-group .btn {
+    width: 100%;
+  }
+
+  .portfolio-view-toggle {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .portfolio-view-btn {
+    flex: 1;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .portfolio-metrics {
+    grid-template-columns: 1fr;
+    gap: 0.625rem;
+  }
+
+  .portfolio-metric-card {
+    padding: 0.75rem;
+  }
+
+  .case-card__cnr-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+
+  .case-card__copy-btn {
+    align-self: flex-end;
+  }
 }

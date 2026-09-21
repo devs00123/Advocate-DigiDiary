@@ -513,3 +513,58 @@
     padding: 32px 24px;
   }
 }
+
+@media (max-width: 480px) {
+  .auth-page {
+    padding: 16px 12px;
+  }
+
+  .login-container,
+  .register-container,
+  .auth-card {
+    border-radius: 14px;
+    margin: 0;
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .brand-showcase,
+  .login-container .brand-showcase {
+    padding: 24px 16px 18px;
+  }
+
+  .brand-title {
+    font-size: 20px;
+  }
+
+  .brand-tagline {
+    font-size: 12px;
+  }
+
+  .form-pane,
+  .login-container .form-pane {
+    padding: 24px 16px;
+  }
+
+  .form-title {
+    font-size: 20px;
+  }
+
+  .form-subtitle {
+    font-size: 12px;
+    margin-bottom: 18px;
+  }
+
+  .auth-content-body {
+    padding: 20px 16px;
+  }
+
+  .auth-tabs {
+    gap: 4px;
+  }
+
+  .auth-tab-btn {
+    padding: 8px 10px;
+    font-size: 12px;
+  }
+}

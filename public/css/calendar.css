@@ -15,7 +15,7 @@
 
 .cal-metrics {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
   gap: 1rem;
   margin-bottom: 1.5rem;
 }
@@ -948,20 +948,170 @@
 }
 
 /* -------------------------------------------------------------
-   8. Responsive Adjustments
+   8. Responsive Adjustments for Calendar & Daily Cause List
    ------------------------------------------------------------- */
+@media (max-width: 991px) {
+  .cal-toolbar-top {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.75rem;
+  }
+
+  .cal-period-nav {
+    justify-content: space-between;
+    width: 100%;
+  }
+
+  .cal-view-toggle {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .cal-view-btn {
+    flex: 1;
+    justify-content: center;
+  }
+
+  .cal-toolbar-bottom {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.75rem;
+  }
+
+  .cal-search-box {
+    max-width: 100%;
+    width: 100%;
+    min-width: 0;
+  }
+
+  .cal-filters-row {
+    width: 100%;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .cal-filter-select {
+    flex: 1 1 140px;
+  }
+
+  .cal-category-toggles {
+    width: 100%;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+}
+
 @media (max-width: 768px) {
+  .cal-metrics {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.75rem;
+  }
+
+  .cal-metric-card {
+    padding: 0.875rem 1rem;
+    gap: 0.75rem;
+  }
+
+  .cal-metric-icon {
+    width: 40px;
+    height: 40px;
+  }
+
+  .cal-metric-icon .material-symbols-outlined {
+    font-size: 20px;
+  }
+
+  .cal-metric-value {
+    font-size: 1.375rem;
+  }
+
+  .cal-toolbar-card {
+    padding: 1rem;
+  }
+
+  .cal-period-title {
+    font-size: 1.25rem;
+    min-width: 0;
+  }
+
+  .causelist-banner {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.75rem;
+    padding: 1rem;
+  }
+
+  .causelist-banner-actions {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .causelist-banner-actions input,
+  .causelist-banner-actions .btn {
+    flex: 1 1 auto;
+  }
+
   .cal-modal-grid-2,
   .cal-modal-grid-3 {
     grid-template-columns: 1fr;
   }
-  .cal-period-title {
-    min-width: unset;
-  }
+
   .cal-modal-banner {
     padding: 1.25rem 1rem;
   }
+
   .cal-modal-section {
     padding: 1rem;
+  }
+
+  .cal-grid-cell {
+    min-height: 100px;
+    padding: 4px;
+  }
+
+  .cal-chip {
+    font-size: 0.6875rem;
+    padding: 2px 4px;
+  }
+}
+
+@media (max-width: 480px) {
+  .cal-metrics {
+    grid-template-columns: 1fr;
+    gap: 0.625rem;
+  }
+
+  .cal-metric-card {
+    padding: 0.75rem;
+  }
+
+  .cal-view-btn {
+    padding: 6px 8px;
+    font-size: 0.75rem;
+  }
+
+  .cal-view-btn span:not(.material-symbols-outlined) {
+    font-size: 0.75rem;
+  }
+
+  .cal-month-grid {
+    min-width: 750px;
+  }
+
+  .cal-grid-cell {
+    min-height: 85px;
+  }
+
+  .causelist-court-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+  }
+
+  .causelist-court-badge {
+    align-self: flex-start;
   }
 }
