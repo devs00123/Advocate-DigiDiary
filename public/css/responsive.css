@@ -94,6 +94,168 @@ input, select, textarea, button {
     padding: 6px 12px;
     font-size: 12px;
   }
+
+  /* Forms — collapse 3-col grids to 2-col on compact laptops */
+  .modal-body .grid-cols-3 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* ==========================================================================
+   SMALL / 13-INCH LAPTOP — SHORT VIEWPORT (height ≤ 800px)
+   Ensures all modal & drawer forms are fully scrollable with sticky
+   header/footer, and form elements scale down to fit.
+   ========================================================================== */
+@media (max-height: 800px) {
+  /* Modal — shrink padding, ensure scrollability */
+  .modal-backdrop {
+    padding: 8px;
+    align-items: flex-start;
+    padding-top: 24px;
+  }
+
+  .modal-dialog {
+    max-height: calc(100vh - 48px);
+  }
+
+  .modal-header {
+    padding: 12px 20px;
+  }
+
+  .modal-title {
+    font-size: 1rem;
+  }
+
+  .modal-body {
+    max-height: none;
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    padding: 16px 20px;
+  }
+
+  /* Override any inline max-height on modal-body */
+  .modal-body[style*="max-height"] {
+    max-height: none !important;
+  }
+
+  .modal-footer {
+    padding: 10px 20px;
+  }
+
+  /* Drawer — same treatment */
+  .drawer-header {
+    padding: 14px 20px;
+  }
+
+  .drawer-body {
+    padding: 16px 20px;
+  }
+
+  .drawer-footer {
+    padding: 12px 20px;
+  }
+
+  /* Forms — tighten spacing */
+  .form-group {
+    margin-bottom: 10px;
+    gap: 4px;
+  }
+
+  .form-label {
+    font-size: 11.5px;
+  }
+
+  .form-control,
+  .form-input,
+  .form-select,
+  .form-textarea {
+    padding: 8px 12px;
+    font-size: 13px;
+  }
+
+  .form-textarea {
+    min-height: 60px;
+  }
+
+  .helper-text {
+    font-size: 0.625rem;
+    margin-top: 2px;
+  }
+
+  .form-section-divider {
+    margin: 0.875rem 0 0.75rem;
+  }
+
+  .form-section-divider span {
+    font-size: 0.625rem;
+    top: -9px;
+  }
+
+  /* Grid inside modals — collapse 3-col to 2-col */
+  .modal-body .grid-cols-3 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+  }
+
+  .modal-body .grid-cols-2 {
+    gap: 10px;
+  }
+
+  /* Settings page inline forms */
+  .settings-row {
+    gap: 6px;
+  }
+}
+
+/* Even shorter viewports (≤ 650px height, e.g. landscape phones, very small laptops) */
+@media (max-height: 650px) {
+  .modal-backdrop {
+    padding: 4px;
+    padding-top: 8px;
+  }
+
+  .modal-dialog {
+    max-height: calc(100vh - 16px);
+    border-radius: var(--radius-lg);
+  }
+
+  .modal-header {
+    padding: 10px 16px;
+  }
+
+  .modal-body {
+    padding: 12px 16px;
+  }
+
+  .modal-footer {
+    padding: 8px 16px;
+  }
+
+  .form-group {
+    margin-bottom: 8px;
+    gap: 3px;
+  }
+
+  .form-label {
+    font-size: 11px;
+  }
+
+  .form-control,
+  .form-input,
+  .form-select,
+  .form-textarea {
+    padding: 7px 10px;
+    font-size: 12.5px;
+  }
+
+  /* Collapse all multi-col form grids to single column */
+  .modal-body .grid-cols-2,
+  .modal-body .grid-cols-3 {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
 }
 
 /* ==========================================================================
@@ -185,6 +347,16 @@ input, select, textarea, button {
   .header-actions .btn {
     padding: 6px 10px;
     font-size: 12px;
+  }
+
+  /* Forms — collapse 3-col grids to 2-col on tablets */
+  .modal-body .grid-cols-3 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  /* Modal — adapt to tablet widths */
+  .modal-dialog {
+    max-width: 95%;
   }
 }
 
@@ -544,6 +716,11 @@ input, select, textarea, button {
     -webkit-overflow-scrolling: touch;
   }
 
+  /* Override inline max-height styles on modal-body */
+  .modal-body[style*="max-height"] {
+    max-height: calc(94vh - 130px) !important;
+  }
+
   .modal-footer {
     padding: 10px 16px;
     min-height: 48px;
@@ -572,6 +749,19 @@ input, select, textarea, button {
   .modal-footer .btn {
     padding: 10px 14px;
     font-size: 13px;
+  }
+
+  /* Auth form-grid-2 single column */
+  .form-grid-2 {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+
+  /* Drawer full width forms */
+  .drawer-body .grid-cols-2,
+  .drawer-body .grid-cols-3 {
+    grid-template-columns: 1fr;
+    gap: 10px;
   }
 }
 
@@ -697,6 +887,27 @@ input, select, textarea, button {
   .grid-cols-4 {
     grid-template-columns: 1fr !important;
     gap: 8px !important;
+  }
+
+  /* Form elements — compact for tiny screens */
+  .form-group {
+    margin-bottom: 10px;
+  }
+
+  .form-control,
+  .form-input,
+  .form-select,
+  .form-textarea {
+    padding: 8px 10px;
+    font-size: 13px;
+  }
+
+  .form-section-divider {
+    margin: 0.75rem 0;
+  }
+
+  .form-section-divider span {
+    font-size: 0.625rem;
   }
 
   /* Top header wraps on very small screens */
