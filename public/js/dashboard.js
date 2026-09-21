@@ -93,25 +93,28 @@ async function loadDashboardData() {
 
     if (hearings.length > 0) {
       tbody.innerHTML = hearings.map(h => {
-        const itemNo = h.itemNumber ? `<span class="badge badge-warning font-mono" style="font-size: 0.8125rem;">#${h.itemNumber}</span>` : '<span style="color: var(--text-muted);">-</span>';
+        const caseNum = (h.caseId && h.caseId.caseNumber) || h.caseNumber || '';
+        const itemNumBadge = h.itemNumber ? `<span class="badge badge-warning font-mono" style="font-size: 0.75rem; margin-right: 4px;">#${h.itemNumber}</span>` : '';
+        const caseNumDisplay = caseNum ? `<span style="font-family: var(--font-mono); font-size: 0.8125rem; font-weight: 600; color: var(--gold-700);">${UI.escapeHTML(caseNum)}</span>` : '<span style="color: var(--text-muted); font-size: 0.75rem;">—</span>';
         const courtRoom = (h.courtroom || h.courtRoom) ? ` (${UI.escapeHTML(h.courtroom || h.courtRoom)})` : '';
         const courtName = (h.court || (h.caseId ? h.caseId.court : 'Court')) + courtRoom;
         const caseTitle = h.caseId ? (h.caseId.title || 'Legal Matter') : (h.title || 'Legal Hearing');
-        const caseNum = h.caseId ? (h.caseId.caseNumber || '') : '';
         const caseId = h.caseId ? (h.caseId._id || h.caseId) : '';
         const hDate = h.date ? UI.formatDate(h.date) : 'Scheduled';
 
         return `
           <tr>
-            <td>${itemNo}</td>
+            <td>
+              ${itemNumBadge}${caseNumDisplay}
+            </td>
             <td>
               <div style="font-weight: 600; color: var(--navy-900);">
                 <a href="/case-details.html?id=${caseId}" style="color: inherit; text-decoration: none;">
                   ${UI.escapeHTML(caseTitle)}
                 </a>
               </div>
-              <div style="font-size: 0.75rem; color: var(--text-muted); font-family: monospace;">
-                ${caseNum ? UI.escapeHTML(caseNum) + ' &bull; ' : ''}${hDate}
+              <div style="font-size: 0.75rem; color: var(--text-muted);">
+                ${hDate}${h.time ? ' &bull; ' + UI.escapeHTML(h.time) : ''}
               </div>
             </td>
             <td>
@@ -124,9 +127,10 @@ async function loadDashboardData() {
             <td>
               ${UI.getStatusBadge(h.status)}
             </td>
-            <td style="text-align: right;">
-              <button class="btn btn-sm btn-outline" onclick="openRecordOutcomeModal('${h._id}')" style="padding: 4px 8px; font-size: 0.75rem;">
-                Outcome
+            <td class="table-action-td">
+              <button class="btn btn-sm btn-outline table-row-btn" onclick="openRecordOutcomeModal('${h._id}')" aria-label="Record hearing outcome for ${UI.escapeHTML(caseTitle)}">
+                <span class="material-symbols-outlined icon-sm">gavel</span>
+                <span>Outcome</span>
               </button>
             </td>
           </tr>
@@ -156,8 +160,8 @@ async function loadDashboardData() {
         const nextDate = c.currentHearingDate ? UI.formatDate(c.currentHearingDate) : '<span style="color: var(--text-muted);">Not scheduled</span>';
         return `
           <tr>
-            <td style="font-family: monospace; font-size: 0.8125rem; font-weight: 600; color: var(--gold-700);">
-              ${UI.escapeHTML(c.caseNumber)}
+            <td style="font-family: var(--font-mono); font-size: 0.8125rem; font-weight: 600; color: var(--gold-700);">
+              ${UI.escapeHTML(c.caseNumber || 'MATTER-000')}
             </td>
             <td>
               <div style="font-weight: 600; color: var(--navy-900);">
@@ -170,7 +174,7 @@ async function loadDashboardData() {
               </div>
             </td>
             <td>
-              <span style="font-size: 0.8125rem;">${UI.escapeHTML(c.court)}</span>
+              <span style="font-size: 0.8125rem;">${UI.escapeHTML(c.court || 'Court')}</span>
             </td>
             <td>
               <span style="font-size: 0.8125rem; font-weight: 500;">${nextDate}</span>
@@ -178,9 +182,10 @@ async function loadDashboardData() {
             <td>
               ${UI.getStatusBadge(c.status)}
             </td>
-            <td style="text-align: right;">
-              <a href="/case-details.html?id=${c._id}" class="btn btn-sm btn-ghost" style="padding: 4px 8px; font-size: 0.75rem;">
-                View &rarr;
+            <td class="table-action-td">
+              <a href="/case-details.html?id=${c._id}" class="btn btn-sm btn-outline table-row-btn" aria-label="View case details for ${UI.escapeHTML(c.title)}">
+                <span class="material-symbols-outlined icon-sm">visibility</span>
+                <span>View</span>
               </a>
             </td>
           </tr>

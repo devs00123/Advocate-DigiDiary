@@ -166,13 +166,6 @@
               Loading court calendar...
             </p>
           </div>
-
-          <div class="dash-page-actions">
-            <a href="/api/reports/cause-list?format=pdf" target="_blank" class="btn btn-sm btn-outline" id="downloadCauseListPdf">
-              <span class="material-symbols-outlined icon-sm">print</span>
-              <span>Today's Cause List (PDF)</span>
-            </a>
-          </div>
         </div>
 
         <!-- KPI Metrics Grid (4 Cards matching Stitch) -->
@@ -227,7 +220,7 @@
                 <span class="material-symbols-outlined icon-md">account_balance_wallet</span>
               </div>
             </div>
-            <div class="kpi-value-lg" id="kpiOutstandingFees" style="font-size: 1.75rem;">₹0</div>
+            <div class="kpi-value-lg" id="kpiOutstandingFees">₹0</div>
             <div class="kpi-subtext green" id="kpiCollectedFeesSub">
               Outstanding balance
             </div>
@@ -249,21 +242,27 @@
                   </div>
                   <p class="dash-card-subtitle">Supreme Court, High Court & District Court appearances</p>
                 </div>
-                <a href="/calendar.html" class="btn btn-sm btn-ghost" style="font-size: 0.8125rem;">View Court Calendar &rarr;</a>
+                <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+                  <a href="/api/reports/cause-list?format=pdf" target="_blank" class="btn btn-sm btn-outline" id="downloadCauseListPdf" aria-label="Download Today's Cause List PDF">
+                    <span class="material-symbols-outlined icon-sm">print</span>
+                    <span>PDF Cause List</span>
+                  </a>
+                  <a href="/calendar.html" class="dash-view-all">View Calendar</a>
+                </div>
               </div>
 
             <div class="table-container table-container--flush">
               <table class="data-table">
                 <thead>
                   <tr>
-                    <th style="width: 70px;">Item #</th>
-                    <th>Case & Parties</th>
-                    <th>Court & Bench</th>
+                    <th style="width: 110px;">Case Number</th>
+                    <th>Case &amp; Parties</th>
+                    <th>Court &amp; Bench</th>
                     <th>Purpose / Stage</th>
                     <th>Status</th>
                     <th class="table-action-th">Action</th>
-                    </tr>
-                  </thead>
+                  </tr>
+                </thead>
                   <tbody id="todayHearingsTableBody">
                     <tr>
                       <td colspan="6" class="dash-empty-state">
@@ -283,19 +282,19 @@
                   <h2 class="dash-card-title">Active Case Portfolio</h2>
                   <p class="dash-card-subtitle">Recently updated litigation and corporate briefs</p>
                 </div>
-                <a href="/cases.html" class="btn btn-sm btn-ghost" style="font-size: 0.8125rem;">Browse All Cases &rarr;</a>
+                <a href="/cases.html" class="dash-view-all">Browse All Cases</a>
               </div>
 
               <div class="table-container table-container--flush">
                 <table class="data-table">
                   <thead>
                     <tr>
-                      <th>Case Number</th>
-                      <th>Title & Parties</th>
-                      <th>Court</th>
-                      <th>Next Date</th>
-                      <th>Stage</th>
-                      <th class="table-action-th">Details</th>
+                      <th style="width: 110px;">Case Number</th>
+                      <th>Case &amp; Parties</th>
+                      <th>Court &amp; Bench</th>
+                      <th>Next Hearing Date</th>
+                      <th>Status</th>
+                      <th class="table-action-th">Action</th>
                     </tr>
                   </thead>
                   <tbody id="recentCasesTableBody">
@@ -331,7 +330,7 @@
             <div class="card">
               <div class="dash-section-header">
                 <h2 class="dash-section-title">Practice Ledger</h2>
-                <a href="/fees.html" class="dash-view-all">Full Ledger</a>
+                <a href="/fees.html" class="dash-view-all">View All</a>
               </div>
               <div class="fin-summary-box">
                 <div class="fin-row">
@@ -347,7 +346,7 @@
                   <span class="fin-value" id="finOutstanding">₹0</span>
                 </div>
               </div>
-              <button class="btn btn-sm btn-outline" style="width: 100%; justify-content: center;" onclick="window.location.href='/fees.html?action=record'">
+              <button class="btn btn-outline" style="width: 100%; min-height: 42px; justify-content: center;" onclick="window.location.href='/fees.html?action=record'">
                 <span class="material-symbols-outlined icon-sm">receipt</span>
                 <span>Record Client Payment</span>
               </button>
@@ -357,7 +356,7 @@
             <div class="card">
               <div class="dash-section-header">
                 <h2 class="dash-section-title">Legal Notebook</h2>
-                <a href="/notes.html" class="dash-view-all">Open Notes</a>
+                <a href="/notes.html" class="dash-view-all">View All</a>
               </div>
               <div id="pinnedNotesList" class="dash-stack" style="gap: 0.75rem;">
                 <div class="dash-empty-state" style="padding: 1.5rem; font-size: 0.8125rem;">
