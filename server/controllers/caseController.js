@@ -218,6 +218,8 @@ exports.createCase = async (req, res, next) => {
       judge,
       filingDate,
       firstHearingDate,
+      lastHearingDate,
+      currentHearingDate,
       nextHearingDate,
       priority,
       status,
@@ -268,6 +270,8 @@ exports.createCase = async (req, res, next) => {
       courtroom,
       filingDate: filingDate || new Date(),
       firstHearingDate: firstHearingDate || null,
+      lastHearingDate: lastHearingDate || null,
+      currentHearingDate: currentHearingDate || null,
       nextHearingDate: nextHearingDate || null,
       currentStage: currentStage || 'Notice / Summons',
       priority: priority ? priority.toLowerCase() : 'standard',
@@ -352,6 +356,8 @@ exports.updateCase = async (req, res, next) => {
     }
     if (req.body.filingDate !== undefined) foundCase.filingDate = req.body.filingDate;
     if (req.body.firstHearingDate !== undefined) foundCase.firstHearingDate = req.body.firstHearingDate;
+    if (req.body.lastHearingDate !== undefined) foundCase.lastHearingDate = req.body.lastHearingDate;
+    if (req.body.currentHearingDate !== undefined) foundCase.currentHearingDate = req.body.currentHearingDate;
     if (req.body.nextHearingDate !== undefined) foundCase.nextHearingDate = req.body.nextHearingDate;
     if (req.body.currentStage !== undefined || req.body.stage !== undefined) {
       foundCase.currentStage = req.body.currentStage !== undefined ? req.body.currentStage : req.body.stage;

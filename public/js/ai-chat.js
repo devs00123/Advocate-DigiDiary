@@ -49,13 +49,16 @@
       border: 1.5px solid #C59B27;
       border-radius: 999px;
       padding: 10px 18px 10px 14px;
-      cursor: pointer;
+      cursor: grab;
       box-shadow: 0 10px 25px -5px rgba(10, 17, 40, 0.4), 0 0 15px rgba(197, 155, 39, 0.3);
-      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      transition: box-shadow 0.25s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.25s;
       user-select: none;
+      touch-action: none;
+    }
+    .ai-assistant-fab:active {
+      cursor: grabbing;
     }
     .ai-assistant-fab:hover {
-      transform: translateY(-3px) scale(1.02);
       box-shadow: 0 14px 28px -4px rgba(10, 17, 40, 0.5), 0 0 20px rgba(197, 155, 39, 0.45);
       border-color: #DFB743;
     }
@@ -457,6 +460,10 @@
         bottom: 16px;
         right: 16px;
         padding: 8px 14px 8px 10px;
+        cursor: grab;
+      }
+      .ai-assistant-fab:active {
+        cursor: grabbing;
       }
       .ai-assistant-fab .fab-label {
         font-size: 12px;
@@ -632,8 +639,84 @@
 
     let selectedDocFile = null;
 
-    // Toggle window
-    fab.addEventListener('click', () => {
+    // ── Draggable FAB ──────────────────────────────────────────────────
+    let isDragging = false;
+    let hasMoved = false;
+    let dragStartX, dragStartY, fabStartX, fabStartY;
+
+    function loadFabPosition() {
+      try {
+        const saved = JSON.parse(localStorage.getItem('digidiary_ai_fab_pos'));
+        if (saved && typeof saved.bottom === 'number' && typeof saved.right === 'number') {
+          fab.style.bottom = saved.bottom + 'px';
+          fab.style.right = saved.right + 'px';
+        }
+      } catch (e) {}
+    }
+
+    function saveFabPosition() {
+      try {
+        const rect = fab.getBoundingClientRect();
+        localStorage.setItem('digidiary_ai_fab_pos', JSON.stringify({
+          bottom: window.innerHeight - rect.bottom - rect.height,
+          right: window.innerWidth - rect.right - rect.width,
+        }));
+      } catch (e) {}
+    }
+
+    loadFabPosition();
+
+    function onDragStart(e) {
+      isDragging = true;
+      hasMoved = false;
+      const point = e.touches ? e.touches[0] : e;
+      dragStartX = point.clientX;
+      dragStartY = point.clientY;
+      const rect = fab.getBoundingClientRect();
+      fabStartX = rect.left;
+      fabStartY = rect.top;
+      fab.style.transition = 'none';
+      fab.style.zIndex = '99999';
+      document.addEventListener('mousemove', onDragMove);
+      document.addEventListener('mouseup', onDragEnd);
+      document.addEventListener('touchmove', onDragMove, { passive: false });
+      document.addEventListener('touchend', onDragEnd);
+    }
+
+    function onDragMove(e) {
+      if (!isDragging) return;
+      e.preventDefault();
+      const point = e.touches ? e.touches[0] : e;
+      const dx = point.clientX - dragStartX;
+      const dy = point.clientY - dragStartY;
+      if (Math.abs(dx) > 3 || Math.abs(dy) > 3) hasMoved = true;
+      let newLeft = fabStartX + dx;
+      let newTop = fabStartY + dy;
+      newLeft = Math.max(0, Math.min(window.innerWidth - fab.offsetWidth, newLeft));
+      newTop = Math.max(0, Math.min(window.innerHeight - fab.offsetHeight, newTop));
+      fab.style.left = newLeft + 'px';
+      fab.style.top = newTop + 'px';
+      fab.style.right = 'auto';
+      fab.style.bottom = 'auto';
+    }
+
+    function onDragEnd() {
+      isDragging = false;
+      fab.style.transition = '';
+      fab.style.zIndex = '';
+      document.removeEventListener('mousemove', onDragMove);
+      document.removeEventListener('mouseup', onDragEnd);
+      document.removeEventListener('touchmove', onDragMove);
+      document.removeEventListener('touchend', onDragEnd);
+      if (hasMoved) saveFabPosition();
+    }
+
+    fab.addEventListener('mousedown', onDragStart);
+    fab.addEventListener('touchstart', onDragStart, { passive: false });
+
+    // Toggle window (only if not dragged)
+    fab.addEventListener('click', (e) => {
+      if (hasMoved) return;
       win.classList.toggle('open');
       if (win.classList.contains('open')) {
         chatInput.focus();

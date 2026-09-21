@@ -245,7 +245,10 @@ function setupEventListeners() {
       status: document.getElementById('caseStatusSelect').value || 'Active',
       totalAgreedFee: Number(document.getElementById('caseAgreedFeeInput').value) || 0,
       agreedFee: Number(document.getElementById('caseAgreedFeeInput').value) || 0,
-      description: document.getElementById('caseDescriptionInput').value.trim() || undefined
+      description: document.getElementById('caseDescriptionInput').value.trim() || undefined,
+      lastHearingDate: document.getElementById('caseLastHearingInput').value || undefined,
+      currentHearingDate: document.getElementById('caseCurrentHearingInput').value || undefined,
+      nextHearingDate: document.getElementById('caseNextHearingInput').value || undefined,
     };
 
     try {
@@ -288,6 +291,9 @@ window.openEditCaseModal = async (id) => {
       document.getElementById('caseStatusSelect').value = (c.status || 'Active').toLowerCase();
       document.getElementById('caseAgreedFeeInput').value = c.agreedFee !== undefined ? c.agreedFee : (c.totalAgreedFee || 0);
       document.getElementById('caseDescriptionInput').value = c.description || '';
+      document.getElementById('caseLastHearingInput').value = c.lastHearingDate ? new Date(c.lastHearingDate).toISOString().split('T')[0] : '';
+      document.getElementById('caseCurrentHearingInput').value = c.currentHearingDate ? new Date(c.currentHearingDate).toISOString().split('T')[0] : '';
+      document.getElementById('caseNextHearingInput').value = c.nextHearingDate ? new Date(c.nextHearingDate).toISOString().split('T')[0] : '';
 
       UI.openModal('caseModal');
     }

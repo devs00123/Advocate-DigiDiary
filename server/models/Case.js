@@ -83,6 +83,12 @@ const caseSchema = new mongoose.Schema(
     firstHearingDate: {
       type: Date,
     },
+    lastHearingDate: {
+      type: Date,
+    },
+    currentHearingDate: {
+      type: Date,
+    },
     nextHearingDate: {
       type: Date,
       index: true,
