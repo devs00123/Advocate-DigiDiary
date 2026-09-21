@@ -728,18 +728,26 @@
 .cal-modal-dialog {
   max-width: 780px;
   width: 92vw;
+  max-height: calc(100vh - 40px);
   background: #FFFFFF;
   border-radius: var(--radius-lg, 12px);
-  overflow: hidden;
   box-shadow: 0 20px 40px rgba(10, 17, 40, 0.2);
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto !important;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
 }
 
 .cal-modal-banner {
   background: linear-gradient(135deg, var(--navy-900, #0A1128) 0%, #1E293B 100%);
   color: #FFFFFF;
-  padding: 1.5rem 2rem;
+  padding: 1.25rem 1.75rem;
   border-bottom: 2px solid var(--gold-500, #D4AF37);
-  position: relative;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  flex-shrink: 0;
 }
 
 .cal-modal-banner .modal-close {

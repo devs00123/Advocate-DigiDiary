@@ -102,110 +102,191 @@ input, select, textarea, button {
 }
 
 /* ==========================================================================
-   SMALL / 13-INCH LAPTOP — SHORT VIEWPORT (height ≤ 800px)
-   Ensures all modal & drawer forms are fully scrollable with sticky
-   header/footer, and form elements scale down to fit.
+   13-INCH LAPTOP & SHORT/COMPACT VIEWPORT (height ≤ 860px or width 1024px-1440px)
+   Comprehensive layout, sizing & scrollability optimization for forms
+   across all modal dialogs, drawer panels, and inline page cards.
    ========================================================================== */
-@media (max-height: 800px) {
-  /* Modal — shrink padding, ensure scrollability */
+@media screen and (max-height: 860px), screen and (min-width: 1024px) and (max-width: 1440px) and (max-height: 900px) {
+  /* Modal Backdrop — center comfortably with clean padding */
   .modal-backdrop {
-    padding: 8px;
-    align-items: flex-start;
-    padding-top: 24px;
+    padding: 12px;
+    align-items: center;
+    justify-content: center;
   }
 
+  /* Modal Dialog — strictly constrained to viewport, rounded corners clip */
   .modal-dialog {
-    max-height: calc(100vh - 48px);
+    max-height: calc(100vh - 36px) !important;
+    display: flex !important;
+    flex-direction: column !important;
+    overflow: hidden !important;
+    border-radius: 12px !important;
   }
 
+  /* Form wrapper inside modal-dialog — flexes properly and does NOT push footer off-screen */
+  .modal-dialog > form,
+  .modal-dialog form {
+    display: flex !important;
+    flex-direction: column !important;
+    flex: 1 1 auto !important;
+    min-height: 0 !important;
+    max-height: 100% !important;
+    overflow: hidden !important;
+  }
+
+  /* Modal Header — compact, sticky at top, crisp title */
   .modal-header {
-    padding: 12px 20px;
+    padding: 10px 18px !important;
+    flex-shrink: 0 !important;
+    min-height: auto !important;
+    background-color: var(--surface-low);
+    border-bottom: 1px solid var(--outline-variant);
   }
 
   .modal-title {
-    font-size: 1rem;
+    font-size: 0.975rem !important;
+    line-height: 1.3 !important;
   }
 
+  .modal-close {
+    padding: 4px !important;
+    font-size: 18px !important;
+  }
+
+  /* Modal Body — scrollable viewport with smooth scrolling and contained bounce */
   .modal-body {
-    max-height: none;
-    flex: 1 1 auto;
-    min-height: 0;
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
-    padding: 16px 20px;
-  }
-
-  /* Override any inline max-height on modal-body */
-  .modal-body[style*="max-height"] {
     max-height: none !important;
+    flex: 1 1 auto !important;
+    min-height: 0 !important;
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
+    padding: 14px 18px !important;
+    scrollbar-width: thin;
+    scrollbar-color: #94a3b8 #f1f5f9;
   }
 
+  /* Force override any inline max-height or padding on modal-body */
+  .modal-body[style],
+  .modal-dialog .modal-body[style] {
+    max-height: none !important;
+    overflow-y: auto !important;
+    padding: 14px 18px !important;
+  }
+
+  /* Modal Footer — compact, sticky at bottom, buttons clearly accessible */
   .modal-footer {
-    padding: 10px 20px;
+    padding: 8px 18px !important;
+    flex-shrink: 0 !important;
+    min-height: auto !important;
+    gap: 8px !important;
+    background-color: var(--surface-low);
+    border-top: 1px solid var(--outline-variant);
   }
 
-  /* Drawer — same treatment */
+  .modal-footer .btn {
+    padding: 6px 14px !important;
+    font-size: 12.5px !important;
+    min-height: 34px !important;
+  }
+
+  /* Drawer panel optimization */
   .drawer-header {
-    padding: 14px 20px;
+    padding: 12px 18px !important;
+    flex-shrink: 0 !important;
   }
 
   .drawer-body {
-    padding: 16px 20px;
+    padding: 14px 18px !important;
+    flex: 1 1 auto !important;
+    min-height: 0 !important;
+    overflow-y: auto !important;
   }
 
   .drawer-footer {
-    padding: 12px 20px;
+    padding: 10px 18px !important;
+    flex-shrink: 0 !important;
   }
 
-  /* Forms — tighten spacing */
+  /* Form Elements — tightened vertical density for 13-inch laptop screens */
   .form-group {
-    margin-bottom: 10px;
-    gap: 4px;
+    margin-bottom: 8px !important;
+    gap: 3px !important;
   }
 
   .form-label {
-    font-size: 11.5px;
+    font-size: 11.5px !important;
+    font-weight: 600 !important;
+    margin-bottom: 1px !important;
+    line-height: 1.25 !important;
   }
 
   .form-control,
   .form-input,
-  .form-select,
-  .form-textarea {
-    padding: 8px 12px;
-    font-size: 13px;
+  .form-select {
+    height: 35px !important;
+    min-height: 35px !important;
+    padding: 6px 11px !important;
+    font-size: 12.5px !important;
+    line-height: 1.35 !important;
+    border-radius: 6px !important;
   }
 
   .form-textarea {
-    min-height: 60px;
+    min-height: 52px !important;
+    padding: 6px 11px !important;
+    font-size: 12.5px !important;
+    line-height: 1.35 !important;
+    border-radius: 6px !important;
   }
 
   .helper-text {
-    font-size: 0.625rem;
-    margin-top: 2px;
+    font-size: 10px !important;
+    margin-top: 1px !important;
+    line-height: 1.2 !important;
   }
 
   .form-section-divider {
-    margin: 0.875rem 0 0.75rem;
+    margin: 8px 0 6px 0 !important;
+    padding: 3px 6px !important;
   }
 
   .form-section-divider span {
-    font-size: 0.625rem;
-    top: -9px;
+    font-size: 10.5px !important;
+    top: -8px !important;
   }
 
-  /* Grid inside modals — collapse 3-col to 2-col */
-  .modal-body .grid-cols-3 {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 10px;
+  /* Form multi-column grid responsiveness */
+  .modal-body .grid-cols-4,
+  .modal-body .grid-cols-3,
+  form .grid-cols-4,
+  form .grid-cols-3 {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 8px 12px !important;
   }
 
-  .modal-body .grid-cols-2 {
-    gap: 10px;
+  .modal-body .grid-cols-2,
+  form .grid-cols-2 {
+    gap: 8px 12px !important;
   }
 
-  /* Settings page inline forms */
-  .settings-row {
-    gap: 6px;
+  /* Inline forms on pages (Settings, Profile, etc.) */
+  .card {
+    padding: 16px 20px !important;
+  }
+
+  .card form .form-group {
+    margin-bottom: 10px !important;
+    gap: 3px !important;
+  }
+
+  .card form .form-control,
+  .card form .form-input,
+  .card form .form-select {
+    height: 36px !important;
+    min-height: 36px !important;
+    padding: 6px 12px !important;
+    font-size: 13px !important;
   }
 }
 

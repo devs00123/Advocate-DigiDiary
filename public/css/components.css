@@ -619,7 +619,18 @@ input[type="number"].form-control::-webkit-inner-spin-button {
   flex-direction: column;
   transform: scale(0.95);
   transition: transform var(--transition-normal);
-  overflow: visible;
+  overflow: hidden;
+}
+
+/* Form element inside modal dialog flexes properly and does not overflow parent */
+.modal-dialog > form,
+.modal-dialog form {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  min-height: 0;
+  max-height: 100%;
+  overflow: hidden;
 }
 
 .modal-backdrop.active .modal-dialog {
