@@ -9,6 +9,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   setupRangeButtons();
   setupModals();
+  setupCaseAutoFill();
   await loadCasesDropdown();
   await fetchHearings();
 
@@ -49,7 +50,7 @@ async function loadCasesDropdown() {
     const res = await API.cases.getAll({ limit: 100 });
     if (res.success && res.data && res.data.length > 0) {
       select.innerHTML = '<option value="">Select case matter...</option>' +
-        res.data.map(c => `<option value="${c._id}">${UI.escapeHTML(c.caseNumber || 'MATTER')} — ${UI.escapeHTML(c.title || 'Untitled Case')}</option>`).join('');
+        res.data.map(c => `<option value="${c._id}" data-court="${UI.escapeHTML(c.court || '')}" data-courtroom="${UI.escapeHTML(c.courtroom || '')}" data-judge="${UI.escapeHTML(c.judge || '')}" data-stage="${UI.escapeHTML(c.currentStage || '')}" data-case-number="${UI.escapeHTML(c.caseNumber || '')}" data-title="${UI.escapeHTML(c.title || '')}">${UI.escapeHTML(c.caseNumber || 'MATTER')} — ${UI.escapeHTML(c.title || 'Untitled Case')}</option>`).join('');
     } else {
       select.innerHTML = '<option value="">No cases found (Register a case first)</option>';
     }
@@ -57,6 +58,32 @@ async function loadCasesDropdown() {
     console.error('Failed to load cases:', err);
     select.innerHTML = '<option value="">Error loading cases</option>';
   }
+}
+
+function setupCaseAutoFill() {
+  const select = document.getElementById('hCaseSelect');
+  if (!select) return;
+  select.addEventListener('change', () => {
+    const opt = select.options[select.selectedIndex];
+    const infoBox = document.getElementById('caseAutoFillInfo');
+    if (!opt || !opt.value) {
+      infoBox.style.display = 'none';
+      return;
+    }
+    const court = opt.getAttribute('data-court') || '-';
+    const courtRoom = opt.getAttribute('data-courtroom') || '-';
+    const judge = opt.getAttribute('data-judge') || '-';
+    const stage = opt.getAttribute('data-stage') || '-';
+    document.getElementById('autoFillCourt').textContent = court;
+    document.getElementById('autoFillCourtRoom').textContent = courtRoom;
+    document.getElementById('autoFillJudge').textContent = judge;
+    document.getElementById('autoFillStage').textContent = stage;
+    document.getElementById('hCourt').value = court !== '-' ? court : '';
+    document.getElementById('hCourtRoom').value = courtRoom !== '-' ? courtRoom : '';
+    document.getElementById('hJudge').value = judge !== '-' ? judge : '';
+    document.getElementById('hPurpose').value = stage !== '-' ? stage : '';
+    infoBox.style.display = 'block';
+  });
 }
 
 async function fetchHearings() {
@@ -177,17 +204,20 @@ function setupModals() {
     try {
       await API.hearings.create({
         caseId: document.getElementById('hCaseSelect').value,
-        hearingDate: document.getElementById('hDate').value,
+        date: document.getElementById('hDate').value,
         time: document.getElementById('hTime').value || undefined,
-        itemNumber: Number(document.getElementById('hItem').value) || undefined,
-        courtRoom: document.getElementById('hCourtRoom').value.trim() || undefined,
-        purpose: document.getElementById('hPurpose').value.trim(),
-        judge: document.getElementById('hJudge').value.trim() || undefined
+        court: document.getElementById('hCourt').value.trim() || undefined,
+        courtroom: document.getElementById('hCourtRoom').value.trim() || undefined,
+        judge: document.getElementById('hJudge').value.trim() || undefined,
+        itemNumber: document.getElementById('hItem').value.trim() || undefined,
+        purpose: document.getElementById('hPurpose').value.trim() || undefined,
+        benchNotes: document.getElementById('hNotes').value.trim() || undefined,
       });
 
       UI.showToast('Hearing scheduled successfully!', 'success');
       UI.closeModal('scheduleModal');
       document.getElementById('scheduleHearingForm').reset();
+      document.getElementById('caseAutoFillInfo').style.display = 'none';
       await fetchHearings();
     } catch (err) {
       UI.showToast(err.message || 'Failed to schedule hearing', 'danger');
