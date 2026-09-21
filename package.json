@@ -1,6 +1,6 @@
 {
   "name": "advocate-digidiary",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Advocate DigiDiary - Digital Legal Practice Companion & Court Diary",
   "main": "electron/main.js",
   "author": "Advocate DigiDiary Team",
