@@ -19,6 +19,11 @@ function loadEnvironment() {
       possiblePaths.push(path.join(app.getAppPath(), '.env'));
     } catch (_) {}
   }
+  if (app && typeof app.getPath === 'function') {
+    try {
+      possiblePaths.push(path.join(app.getPath('userData'), '.env'));
+    } catch (_) {}
+  }
 
   // Development paths
   possiblePaths.push(path.join(__dirname, '..', '.env'));
