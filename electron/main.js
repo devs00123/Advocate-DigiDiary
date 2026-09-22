@@ -2,6 +2,7 @@ const { app, BrowserWindow, shell, dialog } = require('electron');
 const path = require('path');
 const fs = require('fs');
 const http = require('http');
+const https = require('https');
 const dotenv = require('dotenv');
 const { autoUpdater } = require('electron-updater');
 
@@ -51,26 +52,183 @@ loadEnvironment();
 let mainWindow;
 let httpServer;
 
+const DEFAULT_CLOUD_URL = 'https://advocate-digidiary.onrender.com';
+const CLOUD_URL = process.env.CLOUD_URL || DEFAULT_CLOUD_URL;
 const PORT = parseInt(process.env.PORT, 10) || 5050;
-const SERVER_URL = `http://localhost:${PORT}`;
+const LOCAL_SERVER_URL = `http://localhost:${PORT}`;
 
-function waitForServer(url, maxAttempts = 90, interval = 1000) {
+// In packaged mode, connect to the shared Cloud Chamber practice on Render.
+// In dev mode (or if USE_LOCAL_SERVER=true), use the local Express server.
+const useCloud = (app.isPackaged || process.env.USE_CLOUD === 'true') && process.env.USE_LOCAL_SERVER !== 'true';
+const TARGET_URL = useCloud ? CLOUD_URL : LOCAL_SERVER_URL;
+
+function getSplashHtml(isCloud) {
+  const title = isCloud ? 'Connecting to Chamber Cloud...' : 'Starting Practice Server...';
+  const subtitle = isCloud ? 'Synchronizing with shared chamber database...' : 'Initializing local database...';
+  return `data:text/html;charset=utf-8,${encodeURIComponent(`<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Advocate DigiDiary</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: #0f172a;
+      color: #f8fafc;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      overflow: hidden;
+      user-select: none;
+    }
+    .container {
+      text-align: center;
+      max-width: 440px;
+      padding: 32px;
+    }
+    .logo-badge {
+      width: 72px;
+      height: 72px;
+      margin: 0 auto 20px;
+      background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+      border: 1px solid rgba(212, 175, 55, 0.4);
+      border-radius: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5), 0 0 20px rgba(212, 175, 55, 0.15);
+    }
+    .logo-badge svg {
+      width: 40px;
+      height: 40px;
+      stroke: #d4af37;
+    }
+    h1 {
+      font-size: 24px;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      margin-bottom: 6px;
+      background: linear-gradient(135deg, #ffffff 0%, #cbd5e1 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .tagline {
+      font-size: 13px;
+      color: #94a3b8;
+      margin-bottom: 28px;
+      letter-spacing: 0.3px;
+    }
+    .spinner-wrap {
+      position: relative;
+      width: 40px;
+      height: 40px;
+      margin: 0 auto 18px;
+    }
+    .spinner {
+      width: 100%;
+      height: 100%;
+      border: 3px solid rgba(212, 175, 55, 0.15);
+      border-top-color: #d4af37;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    .status-text {
+      font-size: 13px;
+      color: #cbd5e1;
+      font-weight: 500;
+      margin-bottom: 6px;
+    }
+    .sub-status {
+      font-size: 11px;
+      color: #64748b;
+      line-height: 1.5;
+    }
+    .retry-btn {
+      display: none;
+      margin-top: 18px;
+      padding: 9px 20px;
+      background: #d4af37;
+      color: #0f172a;
+      font-weight: 600;
+      font-size: 13px;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(212, 175, 55, 0.25);
+    }
+    .retry-btn:hover { opacity: 0.9; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="logo-badge">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+      </svg>
+    </div>
+    <h1>Advocate DigiDiary</h1>
+    <div class="tagline">Digital Legal Practice & Court Diary</div>
+    
+    <div class="spinner-wrap" id="spinner">
+      <div class="spinner"></div>
+    </div>
+    <div class="status-text" id="status">${title}</div>
+    <div class="sub-status" id="subStatus">${subtitle}</div>
+    <button class="retry-btn" id="retryBtn" onclick="window.location.reload()">Retry Connection</button>
+  </div>
+</body>
+</html>`)}`;
+}
+
+function waitForServer(urlStr, maxAttempts = 90, interval = 1200) {
   return new Promise((resolve) => {
     let attempts = 0;
+    const urlObj = new URL(urlStr);
+    const client = urlObj.protocol === 'https:' ? https : http;
+
     const check = () => {
       attempts++;
-      http.get(url, (res) => {
+      const req = client.get(urlStr, { timeout: 8000 }, (res) => {
         res.resume();
-        resolve();
-      }).on('error', () => {
+        if (res.statusCode >= 200 && res.statusCode < 500) {
+          console.log(`[Electron] Server ready at ${urlStr} (status: ${res.statusCode}, attempts: ${attempts})`);
+          resolve(true);
+        } else if (attempts < maxAttempts) {
+          setTimeout(check, interval);
+        } else {
+          console.warn(`[Electron] Server responded with status ${res.statusCode} after max attempts`);
+          resolve(false);
+        }
+      });
+
+      req.on('error', (err) => {
+        if (attempts % 5 === 0) {
+          console.log(`[Electron] Waiting for server (${attempts}/${maxAttempts})...`);
+        }
         if (attempts < maxAttempts) {
           setTimeout(check, interval);
         } else {
-          console.error('[Electron] Server did not respond after 90 seconds');
-          resolve();
+          console.error(`[Electron] Server not reachable after ${maxAttempts} attempts:`, err.message);
+          resolve(false);
+        }
+      });
+
+      req.on('timeout', () => {
+        req.destroy();
+        if (attempts < maxAttempts) {
+          setTimeout(check, interval);
+        } else {
+          resolve(false);
         }
       });
     };
+
     check();
   });
 }
@@ -82,6 +240,7 @@ function createWindow() {
     minWidth: 1024,
     minHeight: 700,
     title: 'Advocate DigiDiary',
+    backgroundColor: '#0f172a',
     webPreferences: {
       nodeIntegration: false,
       contextIsolation: true,
@@ -90,7 +249,8 @@ function createWindow() {
     show: false,
   });
 
-  mainWindow.loadURL(SERVER_URL);
+  // Load branded loading splash screen first
+  mainWindow.loadURL(getSplashHtml(useCloud));
 
   mainWindow.once('ready-to-show', () => {
     mainWindow.show();
@@ -192,14 +352,47 @@ async function startServer() {
 }
 
 app.whenReady().then(async () => {
+  createWindow();
+
   try {
-    await startServer();
-    await waitForServer(SERVER_URL);
-    createWindow();
-    autoUpdater.checkForUpdatesAndNotify();
+    if (!useCloud) {
+      // Local development or local offline server
+      await startServer();
+      const ready = await waitForServer(`${LOCAL_SERVER_URL}/api/health`, 60, 1000);
+      if (ready && mainWindow && !mainWindow.isDestroyed()) {
+        mainWindow.loadURL(LOCAL_SERVER_URL);
+      }
+    } else {
+      // Packaged / Cloud Mode: connect to shared cloud instance
+      console.log(`[Electron] Cloud Mode active. Target: ${CLOUD_URL}`);
+      const ready = await waitForServer(`${CLOUD_URL}/api/health`, 90, 1500);
+      if (ready) {
+        if (mainWindow && !mainWindow.isDestroyed()) {
+          console.log(`[Electron] Cloud server ready. Loading: ${CLOUD_URL}`);
+          mainWindow.loadURL(CLOUD_URL);
+        }
+      } else {
+        if (mainWindow && !mainWindow.isDestroyed()) {
+          mainWindow.webContents.executeJavaScript(`
+            document.getElementById('spinner').style.display = 'none';
+            document.getElementById('status').innerText = 'Cloud Chamber Server Unreachable';
+            document.getElementById('subStatus').innerText = 'Could not establish connection to the cloud chamber. Please verify your internet connection and try again.';
+            const btn = document.getElementById('retryBtn');
+            btn.style.display = 'inline-block';
+            btn.onclick = () => { location.href = '${CLOUD_URL}'; };
+          `).catch(() => {});
+        }
+      }
+    }
+
+    if (app.isPackaged) {
+      autoUpdater.checkForUpdatesAndNotify();
+    }
   } catch (err) {
-    console.error('[Electron] Fatal:', err);
-    app.quit();
+    console.error('[Electron] Fatal startup error:', err);
+    if (!useCloud) {
+      app.quit();
+    }
   }
 
   app.on('activate', () => {

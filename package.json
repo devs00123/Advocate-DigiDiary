@@ -1,6 +1,6 @@
 {
   "name": "advocate-digidiary",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "Advocate DigiDiary - Digital Legal Practice Companion & Court Diary",
   "main": "electron/main.js",
   "author": "Advocate DigiDiary Team",
@@ -23,6 +23,11 @@
   "build": {
     "appId": "com.advocatedigidiary.app",
     "productName": "Advocate DigiDiary",
+    "publish": {
+      "provider": "github",
+      "owner": "devs00123",
+      "repo": "Advocate-DigiDiary"
+    },
     "directories": {
       "output": "dist"
     },
