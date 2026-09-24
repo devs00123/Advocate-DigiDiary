@@ -135,11 +135,15 @@
     const eyeIcon = document.getElementById('eyeIcon');
 
     // Auto-fill remembered email if previously checked
-    const savedEmail = localStorage.getItem('digidiary_remembered_email');
-    if (savedEmail) {
-      emailInput.value = savedEmail;
-      rememberMeCheckbox.checked = true;
-      passInput.focus();
+    try {
+      const savedEmail = localStorage.getItem('digidiary_remembered_email');
+      if (savedEmail) {
+        emailInput.value = savedEmail;
+        if (rememberMeCheckbox) rememberMeCheckbox.checked = true;
+        passInput.focus();
+      }
+    } catch (_) {
+      // Storage unavailable, continue without pre-fill
     }
 
     // Password visibility toggle
@@ -163,12 +167,16 @@
       try {
         const email = emailInput.value.trim();
         const password = passInput.value;
-        const rememberMe = rememberMeCheckbox.checked;
+        const rememberMe = rememberMeCheckbox ? rememberMeCheckbox.checked : false;
 
-        if (rememberMe) {
-          localStorage.setItem('digidiary_remembered_email', email);
-        } else {
-          localStorage.removeItem('digidiary_remembered_email');
+        try {
+          if (rememberMe) {
+            localStorage.setItem('digidiary_remembered_email', email);
+          } else {
+            localStorage.removeItem('digidiary_remembered_email');
+          }
+        } catch (_) {
+          // Storage unavailable, continue with login
         }
 
         const res = await api.post('/auth/login', { email, password, rememberMe });

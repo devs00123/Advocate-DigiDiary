@@ -1,5 +1,6 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const ms = require('ms');
 const User = require('../models/User');
 const LawFirm = require('../models/LawFirm');
 const Case = require('../models/Case');
@@ -13,8 +14,34 @@ const Expense = require('../models/Expense');
 const AuditLog = require('../models/AuditLog');
 const { logAudit } = require('../utils/auditLogger');
 
+const parseExpiryToMs = (val, fallbackMs = 7 * 24 * 60 * 60 * 1000) => {
+  if (!val) return fallbackMs;
+  if (typeof val === 'number') return val;
+  const str = String(val).trim();
+  const match = str.match(/^(\d+(?:\.\d+)?)\s*(d|days?|h|hours?|m|mins?|minutes?|s|secs?|seconds?|w|weeks?|y|years?)$/i);
+  if (match) {
+    const n = parseFloat(match[1]);
+    const unit = match[2].toLowerCase();
+    if (unit.startsWith('d')) return n * 24 * 60 * 60 * 1000;
+    if (unit.startsWith('h')) return n * 60 * 60 * 1000;
+    if (unit.startsWith('m')) return n * 60 * 1000;
+    if (unit.startsWith('s')) return n * 1000;
+    if (unit.startsWith('w')) return n * 7 * 24 * 60 * 60 * 1000;
+  }
+  const num = Number(str);
+  if (!isNaN(num) && num > 0) return num;
+  try {
+    const parsed = ms(str);
+    return typeof parsed === 'number' && !isNaN(parsed) && parsed > 0 ? parsed : fallbackMs;
+  } catch (_) {
+    return fallbackMs;
+  }
+};
+
 const sendTokenResponse = (user, statusCode, res, message = 'Success', rememberMe = false) => {
-  const expiresIn = rememberMe ? '30d' : (process.env.JWT_EXPIRES_IN || '7d');
+  const isRemembered = rememberMe === true;
+  const jwtExpiresIn = process.env.JWT_EXPIRES_IN || '7d';
+  const expiresIn = isRemembered ? '30d' : jwtExpiresIn;
   const token = jwt.sign(
     { id: user._id, role: user.role, lawFirmId: user.lawFirmId },
     process.env.JWT_SECRET || 'fallback_secret_for_tests',
@@ -22,7 +49,8 @@ const sendTokenResponse = (user, statusCode, res, message = 'Success', rememberM
   );
 
   const isProduction = process.env.NODE_ENV === 'production';
-  const maxAge = rememberMe ? (30 * 24 * 60 * 60 * 1000) : (7 * 24 * 60 * 60 * 1000);
+  const ordinaryMaxAge = parseExpiryToMs(jwtExpiresIn, 7 * 24 * 60 * 60 * 1000);
+  const maxAge = isRemembered ? (30 * 24 * 60 * 60 * 1000) : ordinaryMaxAge;
   const cookieOptions = {
     expires: new Date(Date.now() + maxAge),
     maxAge,
@@ -167,7 +195,7 @@ exports.login = async (req, res, next) => {
       ipAddress: req.ip,
     });
 
-    sendTokenResponse(user, 200, res, 'Login successful.', Boolean(rememberMe));
+    sendTokenResponse(user, 200, res, 'Login successful.', rememberMe === true);
   } catch (err) {
     next(err);
   }
