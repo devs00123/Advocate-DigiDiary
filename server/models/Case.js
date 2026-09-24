@@ -31,20 +31,11 @@ const caseSchema = new mongoose.Schema(
     },
     clientRepresentation: {
       type: String,
-      enum: ['Plaintiff', 'Defendant', 'Petitioner', 'Respondent', 'Appellant', 'Complainant', 'Accused', 'Opposite Party', 'Other'],
-      default: 'Plaintiff',
+      default: 'Petitioner',
+      trim: true,
       set: (val) => {
-        if (!val) return 'Plaintiff';
-        const trimmed = String(val).trim();
-        if (/opposite/i.test(trimmed)) return 'Opposite Party';
-        if (/petitioner/i.test(trimmed)) return 'Petitioner';
-        if (/respondent/i.test(trimmed)) return 'Respondent';
-        if (/plaintiff/i.test(trimmed)) return 'Plaintiff';
-        if (/defendant/i.test(trimmed)) return 'Defendant';
-        if (/appellant/i.test(trimmed)) return 'Appellant';
-        if (/complainant/i.test(trimmed)) return 'Complainant';
-        if (/accused/i.test(trimmed)) return 'Accused';
-        return trimmed;
+        if (!val || !String(val).trim()) return 'Petitioner';
+        return String(val).trim();
       },
     },
     oppositeParty: {

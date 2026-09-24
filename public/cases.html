@@ -415,17 +415,20 @@
             </div>
             <div class="form-group">
               <label class="form-label" for="casePartyRoleSelect">Representing</label>
-              <select id="casePartyRoleSelect" class="form-control">
-                <option value="Petitioner">Petitioner</option>
-                <option value="Respondent">Respondent</option>
-                <option value="Plaintiff">Plaintiff</option>
-                <option value="Defendant">Defendant</option>
-                <option value="Appellant">Appellant</option>
-                <option value="Complainant">Complainant</option>
-                <option value="Accused">Accused / Applicant</option>
-                <option value="Opposite Party">Opposite Party</option>
-                <option value="Other">Other Counsel</option>
-              </select>
+              <input type="text" id="casePartyRoleSelect" class="form-control" list="casePartyRoleOptions" placeholder="e.g. Petitioner, Respondent, Applicant" value="Petitioner">
+              <datalist id="casePartyRoleOptions">
+                <option value="Petitioner">
+                <option value="Respondent">
+                <option value="Plaintiff">
+                <option value="Defendant">
+                <option value="Appellant">
+                <option value="Applicant">
+                <option value="Accused">
+                <option value="Complainant">
+                <option value="Caveator">
+                <option value="Intervenor">
+                <option value="Opposite Party">
+              </datalist>
             </div>
           </div>
 

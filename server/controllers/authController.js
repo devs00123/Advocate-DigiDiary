@@ -13,16 +13,19 @@ const Expense = require('../models/Expense');
 const AuditLog = require('../models/AuditLog');
 const { logAudit } = require('../utils/auditLogger');
 
-const sendTokenResponse = (user, statusCode, res, message = 'Success') => {
+const sendTokenResponse = (user, statusCode, res, message = 'Success', rememberMe = false) => {
+  const expiresIn = rememberMe ? '30d' : (process.env.JWT_EXPIRES_IN || '7d');
   const token = jwt.sign(
     { id: user._id, role: user.role, lawFirmId: user.lawFirmId },
     process.env.JWT_SECRET || 'fallback_secret_for_tests',
-    { expiresIn: process.env.JWT_EXPIRES_IN || '7d' }
+    { expiresIn }
   );
 
   const isProduction = process.env.NODE_ENV === 'production';
+  const maxAge = rememberMe ? (30 * 24 * 60 * 60 * 1000) : (7 * 24 * 60 * 60 * 1000);
   const cookieOptions = {
-    expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 7 days
+    expires: new Date(Date.now() + maxAge),
+    maxAge,
     httpOnly: true,
     secure: isProduction,
     sameSite: isProduction ? 'strict' : 'lax',
@@ -118,7 +121,7 @@ exports.register = async (req, res, next) => {
 
 exports.login = async (req, res, next) => {
   try {
-    const { email, password } = req.body;
+    const { email, password, rememberMe } = req.body;
 
     if (!email || !password) {
       return res.status(400).json({ success: false, message: 'Email and password are required.' });
@@ -164,7 +167,7 @@ exports.login = async (req, res, next) => {
       ipAddress: req.ip,
     });
 
-    sendTokenResponse(user, 200, res, 'Login successful.');
+    sendTokenResponse(user, 200, res, 'Login successful.', Boolean(rememberMe));
   } catch (err) {
     next(err);
   }
